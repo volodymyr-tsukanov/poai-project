@@ -1,4 +1,4 @@
-const textContent = {
+const langMain = {
 	en: {
 		title: "Welcome to our website",
 		description: "This is the default content in English."
@@ -13,10 +13,8 @@ const textContent = {
 	}
 };
 
-function changeLanguage(lang) {
-	const titleElement = document.getElementById('title');
-	const descriptionElement = document.getElementById('description');
 
+/*function loadMain(lang) {
 	titleElement.textContent = content[lang].title;
 	descriptionElement.textContent = content[lang].description;
 
@@ -25,4 +23,4 @@ function changeLanguage(lang) {
 		button.classList.remove('active');
 	});
 	document.querySelector(`.language-switcher button:nth-child(${lang === 'en' ? 1 : lang === 'es' ? 2 : 3})`).classList.add('active');
-}
+}*/
