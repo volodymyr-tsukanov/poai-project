@@ -1,6 +1,10 @@
 # HTML Projekt końcowy
 Informatyka l stopień 4 semestr; Podstawy aplikacji internetowych <br>
-HTML, CSS, JavaScript <br>
+
+## Used packages
+  - yuichinukiyama.vscode-preview-server
+
+**HTML**; **CSS**; **JavaScript**; **JSON**; **Fetch API**
 
 
 Shield: [![CC BY-NC 4.0][cc-by-nc-shield]][cc-by-nc]

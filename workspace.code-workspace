@@ -3,5 +3,10 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"previewServer.browsers": [
+			"firefox"
+		]
+	}
 }

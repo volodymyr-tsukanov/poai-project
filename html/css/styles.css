@@ -1,38 +1,22 @@
 /* Default */
 	/* - Containers */
-body {
-	background: white;
-	color: #000040;
-}
-
 header {
 	order: 1;
 	width: 100%;
-	background: #000040;
-	color: #f0f0ff;
-	text-align: center;
-	border-radius: 0 0 10px 10px;
 }
 
 nav {
-	order: 3;
+	order: 2;
 	width: 100%;
 }
 
 aside {
-	order: 5;
-	padding: 1%;
-	width: 18%;
+	order: 3;
 }
 
 footer {
-	order: 6;
-	width: 92%;
-	padding: 5px 0 5px 0;
-	background: #000040;
-	color: #f0f0ff;
-	text-align: center;
-	border-radius: 0 17px 15px 13px;
+	order: 5;
+	width: 100%;
 }
 
 	/*  - Basic */
@@ -47,60 +31,32 @@ label {
 	cursor: help;
 }
 
-textarea {
-	width: 40%;
-}
-
-	/*  - Table */
-
-
 
 /* Ids */
 	/* - Containers */
 #cntnr {
-	background: #ffffff;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
 }
 
-
-	/*  - Other */
-#link {
-	color: #ffffff;
-	text-decoration: underline;
+#mainBody {
+	order: 4;
+	width: 100%;
 }
-
 
 
 /* Classes */
-*.btn {
-	color: white;
-	background: red;
-	padding: 3px;
-	margin: 3px;
-	font-size: 17px;
-	font-family: Consolas, monaco, monospace;
-	border-radius: 4px;
+*.lang-en{
+	display: block;
 }
-
-*.box {
-	background: #0000a0;
-	color: #dbffff;
-	padding: 5px;
-	margin: 5px;
-	font-size: 90%;
-	border-radius: 8px 3px 0 6px;
-	box-shadow: 1px 3px navajowhite;
+*.lang-pl{
+	display: none;
 }
-*.box h3 {
-	text-align: left;
+*.lang-ua{
+	display: none;
 }
-*.box a {
-	color: #ffffb0
-}
-
 
 /* Screen size */
 @media screen and (max-width: 860px) and (orientation : landscape) {
