@@ -1,13 +1,49 @@
 /* Default */
 	/* - Containers */
+body {
+	background: black;
+}
+
 header {
 	order: 1;
 	width: 100%;
+	z-index: 2;
+	background: cadetblue;
+	border-radius: 6px 6px 22px 22px;
+	color: white;
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+	font-size: 210%;
 }
 
 nav {
 	order: 2;
-	width: 100%;
+	width: 95%;
+	height: 100%;
+	position: relative;
+	z-index: 1;
+	transform: translateY(-40px);
+	opacity: 0.8;
+	background: rgb(70, 115, 116);
+	border-radius: 20px 20px 22px 22px;
+	color: white;
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 170%;
+	transition: opacity 0.2s, transform 0.3s ease-in;
+}
+nav:hover {
+	opacity: 1;
+	transform: translateY(-22px);
+}
+nav:hover #navBtns {
+	opacity: 1;
+	transform: translateY(32px);
+}
+nav:hover #navClosed {
+	opacity: 0;
+	transform: translateY(20px);
 }
 
 aside {
@@ -16,7 +52,14 @@ aside {
 
 footer {
 	order: 5;
-	width: 100%;
+	width: 95%;
+	background: cadetblue;
+	border-radius: 20px 20px 0 0;
+	color: whitesmoke;
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;
+	font-style: normal;
+	font-size: 140%;
 }
 
 	/*  - Basic */
@@ -39,6 +82,26 @@ label {
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
+	margin: 1px;
+	background: rgb(16, 16, 16);
+	border-radius: 6px;
+	color: whitesmoke;
+	font-size: 13pt;
+}
+
+#navBtns {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: nowrap;
+	opacity: 0;
+	transform: translateY(0);
+	transition: opacity 0.4s, transform 0.25s ease-in-out;
+}
+#navClosed {
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 0.4s, transform 0.25s ease-out;
 }
 
 #mainBody {
@@ -48,15 +111,21 @@ label {
 
 
 /* Classes */
-*.lang-en{
-	display: block;
+.btn1 {
+	flex-grow: 0;
+	background: rgb(12, 12, 12);
+	border-radius: 5px;
+	margin: 0 3px 3px 0;
+	padding: 8px 5px 5px 8px;
+	font-size: 80%;
+	color: wheat;
+	transition: font-size 0.1s, padding 0.2s ease;
 }
-*.lang-pl{
-	display: none;
+.btn1:hover {
+	font-size: 85%;
+	padding: 10px;
 }
-*.lang-ua{
-	display: none;
-}
+
 
 /* Screen size */
 @media screen and (max-width: 860px) and (orientation : landscape) {
