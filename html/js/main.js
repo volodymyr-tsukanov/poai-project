@@ -8,6 +8,27 @@ class Settings {
 		}
 	}
 
+	preview(){
+		const sl = document.getElementsByName('settingsLangs');
+		for(let i = 0; i < sl.length; i++){
+			if(sl[i].checked){
+				this.lang = sl[i].value;
+				break;
+			}
+		}
+		this.applyLanguage();
+	}
+	update(){
+		this.lastPage = 0;
+		const sl = document.getElementsByName('settingsLangs');
+		for(let i = 0; i < sl.length; i++){
+			if(sl[i].checked){
+				this.lang = sl[i].value;
+				break;
+			}
+		}
+		this.save();
+	}
 	set(pageId, lang){
 		if(pageId != undefined) this.lastPage = pageId;
 		if(lang != undefined) this.lang = lang;
@@ -17,6 +38,28 @@ class Settings {
 		this.lastPage = -1; //load settings page by default
 		this.lang = 'en';
 		this.save();
+	}
+
+	applyLanguage(){
+		// langs.css
+		const styleshit = document.styleSheets[1];
+		const ruleIndex = 3;
+		
+		styleshit.deleteRule(3);
+		console.log('before: ', styleshit);
+
+		switch(this.lang){
+			case "pl":
+				styleshit.insertRule('.lang-pl{display:block;}', 3);
+				break;
+			case "ua":
+				styleshit.insertRule('.lang-ua{display:block;}', 3);
+				break;
+			default:
+				styleshit.insertRule('.lang-en{display:block;}', 3);
+				break;
+		}
+		console.log('after: ', styleshit);
 	}
 
 	save(){
@@ -33,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const container = document.getElementById('cntnr');
 
 	// Awake
+	settings.applyLanguage();
 	loadPage(settings.lastPage, settings.lang);
 	
 	// Events
@@ -50,6 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		document.getElementById('navBtnCots').addEventListener('click', ()=> {
 			loadPage(3);
 		});
+		document.getElementById('navBtnSegs').addEventListener('click', ()=> {
+			loadPage(-1);
+		});
 	} catch(e){console.error(e);}
 
 	// Start
@@ -65,7 +112,9 @@ function loadPage(pageId, lang) {
 		case -1: //settings
 			fetchPage('blocks/settings.html', mainBody).then(() => {
 				const nav = document.querySelector('nav');
+				const aside = document.querySelector('aside');
 				nav.style = 'display:none';
+				aside.style = 'display:none';
 			});
 			break;
 		case 0: //main
@@ -85,7 +134,6 @@ function loadPage(pageId, lang) {
 	}
 
 	settings.set(pageId, lang);
-	console.log(pageId, lang);
 }
 async function fetchPage(path, element){
 	try {
@@ -98,19 +146,4 @@ async function fetchPage(path, element){
 	} catch (e) {
 		console.error(e);
 	}
-}
-
-function saveSettings(){
-	let lang = 'en';
-	let sl = document.getElementsByName('settingsLangs');
-	for(let i = 0; i < sl.length; i++){
-		if(sl[i].checked){
-			lang = sl[i].value;
-			break;
-		}
-	}
-	settings.set(0, lang);
-}
-function resetSettings(){
-	settings.reset();
 }

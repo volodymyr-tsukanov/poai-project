@@ -1,11 +1,11 @@
-<form method="post" action="#" onsubmit="saveSettings()" onabort="resetSettings()">
+<form onsubmit="settings.save(); loadPage(0)" onabort="settings.reset()">
 	<fieldset>
-		<legend>Select language</legend>
-		<input type="radio" name="settingsLangs" value="en" checked> English <br>
-		<input type="radio" name="settingsLangs" value="pl"> Polski <br>
-		<input type="radio" name="settingsLangs" value="ua"> Українська <br><br>
+		<legend><div class="lang-en">Select language</div><div class="lang-pl">Wybranie języka</div><div class="lang-ua">Виберіть мову</div></legend>
+		<input type="radio" name="settingsLangs" value="en" checked onchange="settings.preview()"><label> English</label> <br>
+		<input type="radio" name="settingsLangs" value="pl" onchange="settings.preview()"><label> Polski</label> <br>
+		<input type="radio" name="settingsLangs" value="ua" onchange="settings.preview()"><label> Українська</label> <br><br>
 	</fieldset>
 	
-	<input type="submit" value="Apply">
-	<input type="reset" value="Set defaults">
+	<input class="btnA1" type="submit" value="Apply">
+	<input class="btnA1" type="reset" value="Set defaults">
 </form>
