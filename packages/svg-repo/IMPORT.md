@@ -15,7 +15,7 @@
     COLLECTION: Remix Line Interface Icons
     LICENSE: Apache License
     AUTHOR: Remix Design
-  - [settings.png](https://www.svgrepo.com/svg/498931/settings2
+  - [settings.png](https://www.svgrepo.com/svg/498931/settings2)
     COLLECTION: Uxwb Bold Line Icons
     LICENSE: GPL License
     AUTHOR: UXWB

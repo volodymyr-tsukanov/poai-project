@@ -112,9 +112,7 @@ function loadPage(pageId, lang) {
 		case -1: //settings
 			fetchPage('blocks/settings.html', mainBody).then(() => {
 				const nav = document.querySelector('nav');
-				const aside = document.querySelector('aside');
 				nav.style = 'display:none';
-				aside.style = 'display:none';
 			});
 			break;
 		case 0: //main
@@ -143,6 +141,15 @@ async function fetchPage(path, element){
 		}
 		const html = await response.text();
 		element.innerHTML = html;
+
+		// Header
+		const header = document.querySelector('header');
+		const h1 = document.querySelector('h1');
+		if(h1){
+			header.innerHTML = h1.innerHTML;
+			h1.remove();
+		}
+		else header.innerHTML = 'Error 001 ???';
 	} catch (e) {
 		console.error(e);
 	}
