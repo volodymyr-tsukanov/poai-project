@@ -8,8 +8,9 @@ header {
 	order: 1;
 	width: 100%;
 	z-index: 2;
-	background: cadetblue;
+	background: #0b0b0b;
 	border-radius: 6px 6px 22px 22px;
+	border: 3px solid #C7C3C3;
 	color: white;
 	text-align: center;
 	font-family: "Courier New", Courier, monospace;
@@ -25,8 +26,9 @@ nav {
 	z-index: 1;
 	transform: translateY(-40px);
 	opacity: 0.8;
-	background: rgb(70, 115, 116);
+	background: #32323F;
 	border-radius: 20px 20px 22px 22px;
+	border: 2px solid #D9D9D9;
 	color: white;
 	text-align: center;
 	font-family: "Courier New", Courier, monospace;
@@ -54,7 +56,7 @@ aside {
 footer {
 	order: 5;
 	width: 95%;
-	background: cadetblue;
+	background: #3E4C4C;
 	border-radius: 20px 20px 0 0;
 	color: whitesmoke;
 	text-align: center;
@@ -88,7 +90,7 @@ label {
 	justify-content: center;
 	flex-wrap: wrap;
 	margin: 1px;
-	background: rgb(16, 16, 16);
+	background: #161A1D;
 	border-radius: 6px;
 	color: whitesmoke;
 	font-size: 13pt;
@@ -98,7 +100,7 @@ label {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	opacity: 0;
 	transform: translateY(0);
 	transition: opacity 0.4s, transform 0.25s ease-in-out;
@@ -118,17 +120,42 @@ label {
 /* Classes */
 .btnNav {
 	flex-grow: 0;
-	background: rgb(12, 12, 12);
+	background: #141414;
 	border-radius: 5px;
 	margin: 0 3px 3px 0;
 	padding: 8px 5px 5px 8px;
 	font-size: 80%;
-	color: wheat;
-	transition: font-size 0.1s, padding 0.2s ease;
+	color: #E8EEEA;
+	transition: font-size 0.1s, padding 0.2s, background 0.3s, color 0.4s ease;
+}
+.btnNavContent {
+	display: none;
+	opacity: 0;
+}
+.btnNavIcon {
+	display: block;
+	opacity: 1;
+	height: 30px;
+	width: 30px;
 }
 .btnNav:hover {
-	font-size: 85%;
+	background: #E8EEEA;
+	color: #141414;
+	font-size: 86%;
 	padding: 10px;
+}
+.btnNav:hover .btnNavContent {
+	display: block;
+	opacity: 1;
+}
+.btnNav:hover .btnNavIcon {
+	display: none;
+	opacity: 0;
+}
+.btnNav:active {
+	background: black;
+	color: white;
+	padding: 5px;
 }
 
 .btnA1 {
