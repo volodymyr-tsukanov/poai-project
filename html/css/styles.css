@@ -56,6 +56,7 @@ aside {
 footer {
 	order: 5;
 	width: 95%;
+	margin: 25px 0 0 0;
 	background: #3E4C4C;
 	border-radius: 20px 20px 0 0;
 	color: whitesmoke;
@@ -70,6 +71,14 @@ h1, h2, h3 {
 	margin: 0;
 	padding: 0;
 	text-align: center;
+}
+
+b, i {
+	font-size: 100%;
+	transition: font-size 0.3s linear;
+}
+b:hover, i:hover {
+	font-size: 102%;
 }
 
 	/*  - Form */
@@ -114,6 +123,7 @@ label {
 #mainBody {
 	order: 4;
 	width: 100%;
+	padding: 0 10px 0 30px;
 }
 
 
@@ -126,6 +136,7 @@ label {
 	padding: 8px 5px 5px 8px;
 	font-size: 80%;
 	color: #E8EEEA;
+	cursor: pointer;
 	transition: font-size 0.1s, padding 0.2s, background 0.3s, color 0.4s ease;
 }
 .btnNavContent {
@@ -159,8 +170,55 @@ label {
 }
 
 .btnA1 {
+	padding: 2px;
+	background: #959595;
+	border-radius: 8px;
+	color: #161A1D;
 	font-size: 100%;
 	margin: 3px;
+	cursor: pointer;
+	transition: background 0.1s, font-size 0.2s linear;
+}
+.btnA1:hover {
+	background: #B6B6B6;
+	font-size: 105%;
+}
+
+.rdoA1 {
+	font-size: 100%;
+	cursor: pointer;
+	transition: font-size 0.2s linear;
+}
+.rdoA1:hover {
+	font-size: 105%;
+}
+
+.lnkA1 {
+	font-size: 120%;
+	cursor: alias;
+	transition: font-size 0.2s linear;
+}
+.lnkA1 img {
+	height: 50px;
+	width: auto;
+	transition: height 0.3s linear;
+}
+.lnkA1:hover {
+	font-size: 130%;
+}
+.lnkA1:hover img {
+	height: 56px;
+	width: auto;
+}
+
+.smlA1 {
+	display: inline;
+	font-size: 100%;
+	cursor: none;
+	transition: font-size 0.3s linear;
+}
+.smlA1:hover {
+	font-size: 108%;
 }
 
 

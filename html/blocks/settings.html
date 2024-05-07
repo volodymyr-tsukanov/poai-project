@@ -3,14 +3,15 @@
 	<div class="lang-pl">Ustawienia</div>
 	<div class="lang-ua">???</div>
 </h1>
-<form onsubmit="settings.save(); loadPage(0)" onabort="settings.reset()">
+
+<form onsubmit="settings.save();loadPage(0)" onreset="settings.reset();loadPage(0)">
 	<fieldset>
 		<legend><div class="lang-en">Select language</div><div class="lang-pl">Wybranie języka</div><div class="lang-ua">Виберіть мову</div></legend>
-		<input type="radio" name="settingsLangs" value="en" checked onchange="settings.preview()"><label> English</label> <br>
-		<input type="radio" name="settingsLangs" value="pl" onchange="settings.preview()"><label> Polski</label> <br>
-		<input type="radio" name="settingsLangs" value="ua" onchange="settings.preview()"><label> Українська</label> <br><br>
+		<input class="rdoA1" type="radio" name="settingsLangs" value="en" checked onchange="settings.preview()"><label class="rdoA1"> English</label> <br>
+		<input class="rdoA1" type="radio" name="settingsLangs" value="pl" onchange="settings.preview()"><label class="rdoA1"> Polski</label> <br>
+		<input class="rdoA1" type="radio" name="settingsLangs" value="ua" onchange="settings.preview()"><label class="rdoA1"> Українська</label>
 	</fieldset>
 	
 	<input class="btnA1" type="submit" value="Apply">
-	<input class="btnA1" type="reset" value="Set defaults">
+	<input class="btnA1" type="reset" value="Reset">
 </form>

@@ -1,3 +1,4 @@
+// Classes
 class Settings {
 	constructor(){
 		let s = JSON.parse(localStorage.getItem('settings'));
@@ -69,14 +70,14 @@ class Settings {
 }
 
 
-//Preload
+// Main
+	// Preload
 var settings = new Settings();
 
 document.addEventListener('DOMContentLoaded', () => {
 	const container = document.getElementById('cntnr');
 
 	// Awake
-	settings.applyLanguage();
 	loadPage(settings.lastPage, settings.lang);
 	
 	// Events
@@ -107,6 +108,7 @@ function loadPage(pageId, lang) {
 	const mainBody = document.getElementById('mainBody');
 
 	if(lang == undefined) lang = settings.lang;
+	settings.applyLanguage();
 
 	switch(pageId){
 		case -1: //settings
@@ -116,7 +118,10 @@ function loadPage(pageId, lang) {
 			});
 			break;
 		case 0: //main
-			fetchPage('blocks/main.html', mainBody);
+			fetchPage('blocks/main.html', mainBody).then(() => {
+				const nav = document.querySelector('nav');
+				nav.style = 'display:block';
+			});;
 			break;
 		case 1: //projects
 			fetchPage('blocks/projects.html', mainBody);
@@ -133,6 +138,8 @@ function loadPage(pageId, lang) {
 
 	settings.set(pageId, lang);
 }
+
+
 async function fetchPage(path, element){
 	try {
 		const response = await fetch(path);
