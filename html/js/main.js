@@ -79,49 +79,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Awake
 	loadPage(settings.lastPage, settings.lang);
-	
-	// Events
-		//Navigation
-	try{
-		document.getElementById('navBtnMain').addEventListener('click', ()=> {
-			loadPage(0);
-		});
-		document.getElementById('navBtnPrjs').addEventListener('click', ()=> {
-			loadPage(1);
-		});
-		document.getElementById('navBtnFoms').addEventListener('click', ()=> {
-			loadPage(2);
-		});
-		document.getElementById('navBtnCots').addEventListener('click', ()=> {
-			loadPage(3);
-		});
-		document.getElementById('navBtnSegs').addEventListener('click', ()=> {
-			loadPage(-1);
-		});
-	} catch(e){console.error(e);}
-
-	// Start
 });
 
 
 function loadPage(pageId, lang) {
+	const nav = document.querySelector('nav');
 	const mainBody = document.getElementById('mainBody');
 
 	if(lang == undefined) lang = settings.lang;
 	settings.applyLanguage();
 
+	fetchPage('blocks/nav.html', nav, false, true);
+
 	switch(pageId){
 		case -1: //settings
 			fetchPage('blocks/settings.html', mainBody).then(() => {
-				const nav = document.querySelector('nav');
 				nav.style = 'display:none';
 			});
 			break;
 		case 0: //main
 			fetchPage('blocks/main.html', mainBody).then(() => {
-				const nav = document.querySelector('nav');
 				nav.style = 'display:block';
-			});;
+			});
 			break;
 		case 1: //projects
 			fetchPage('blocks/projects.html', mainBody);
@@ -140,7 +119,7 @@ function loadPage(pageId, lang) {
 }
 
 
-async function fetchPage(path, element){
+async function fetchPage(path='blocks/main.html', element, modify=true, startup=false){
 	try {
 		const response = await fetch(path);
 		if (!response.ok) {
@@ -149,14 +128,49 @@ async function fetchPage(path, element){
 		const html = await response.text();
 		element.innerHTML = html;
 
-		// Header
-		const header = document.querySelector('header');
-		const h1 = document.querySelector('h1');
-		if(h1){
-			header.innerHTML = h1.innerHTML;
-			h1.remove();
+		if(modify){
+			// Header
+			const header = document.querySelector('header');
+			const h1 = document.querySelector('h1');
+			if(h1){
+				header.innerHTML = h1.innerHTML;
+				h1.remove();
+			}
+			else{
+				header.innerHTML = 'Main';
+				console.error('h1 not found in loaded page');
+			}
 		}
-		else header.innerHTML = 'Error 001 ???';
+
+		if(startup){
+		// Events
+			//Navigation
+			try{
+				document.getElementById('navBtnMain').addEventListener('click', ()=> {
+					loadPage(0);
+				});
+				document.getElementById('navBtnPrjs').addEventListener('click', ()=> {
+					loadPage(1);
+				});
+				document.getElementById('navBtnFoms').addEventListener('click', ()=> {
+					loadPage(2);
+				});
+				document.getElementById('navBtnCots').addEventListener('click', ()=> {
+					loadPage(3);
+				});
+				document.getElementById('navBtnSegs').addEventListener('click', ()=> {
+					loadPage(-1);
+				});
+				document.querySelector('nav').addEventListener('click', ()=>{
+					const btns = document.getElementById('navBtns');
+					if(btns.checkVisibility()){
+						btns.innerHTML = '';
+					} else{
+						btns.innerHTML = 'show';
+					}
+				});
+			} catch(e){console.error(e);}
+		}
 	} catch (e) {
 		console.error(e);
 	}

@@ -21,23 +21,23 @@ header {
 nav {
 	order: 2;
 	width: 95%;
-	height: 100%;
 	position: relative;
 	z-index: 1;
 	transform: translateY(-40px);
 	opacity: 0.8;
-	background: #32323F;
+	background: radial-gradient(circle, #959595 0%, #171717 15%);
 	border-radius: 20px 20px 22px 22px;
 	border: 2px solid #D9D9D9;
 	color: white;
 	text-align: center;
 	font-family: "Courier New", Courier, monospace;
 	font-size: 170%;
-	transition: opacity 0.2s, transform 0.3s ease-in;
+	transition: opacity 0.2s, transform 0.3s, background 0.1s ease-in;
 }
 nav:hover {
 	opacity: 1;
 	transform: translateY(-22px);
+	background: radial-gradient(circle, #959595 0%, #2F2F2F 21%);
 }
 nav:hover #navBtns {
 	opacity: 1;
@@ -59,6 +59,7 @@ footer {
 	margin: 25px 0 0 0;
 	background: #3E4C4C;
 	border-radius: 20px 20px 0 0;
+	box-shadow: #edeee70f -2px -3px;
 	color: whitesmoke;
 	text-align: center;
 	font-family: "Courier New", Courier, monospace;
@@ -84,6 +85,9 @@ b:hover, i:hover {
 	/*  - Form */
 form {
 	margin: 10px;
+	background: linear-gradient(45deg, #0b0b0b 0%, #32323F 30%, #2F2F2F 80%);
+	border-radius: 1px;
+	box-shadow: #0b0b0b5e 1px 3px;
 }
 
 label {
@@ -173,14 +177,16 @@ label {
 	padding: 2px;
 	background: #959595;
 	border-radius: 8px;
+	box-shadow: #0b0b0b8d 2px 4px;
 	color: #161A1D;
 	font-size: 100%;
 	margin: 3px;
 	cursor: pointer;
-	transition: background 0.1s, font-size 0.2s linear;
+	transition: background 0.1s, box-shadow 0.1s, font-size 0.2s linear;
 }
 .btnA1:hover {
 	background: #B6B6B6;
+	box-shadow: none;
 	font-size: 105%;
 }
 
@@ -223,14 +229,70 @@ label {
 
 
 /* Screen size */
-@media screen and (max-width: 860px) and (orientation : landscape) {
+@media screen and (max-width: 840px) and (orientation : landscape) {
 	#cntnr {
 		font-size: 15pt;
+	}
+	#mainBody {
+		padding: 0 5px 0 10px;
 	}
 }
 @media screen and (max-width: 720px) and (orientation : portrait) {
 	#cntnr {
-		width: 100%;
 		font-size: 18pt;
+	}
+	#mainBody {
+		padding: 10px 2px 0 4px;
+	}
+
+	nav {
+		width: 80%;
+		transform: translateY(0);
+		opacity: 1;
+		background: #2F2F2F;
+	}
+	nav:hover {
+		transform: translateY(0);
+		background: #2F2F2F;
+	}
+	nav:hover #navBtns {
+		transform: translateY(0);
+	}
+	nav:hover #navClosed {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	#navBtns {
+		margin: 10px;
+		flex-direction: column;
+		opacity: 1;
+	}
+	.btnNav {
+		font-size: 80%;
+	}
+	.btnNavContent {
+		display: inline-block;
+		opacity: 1;
+	}
+	.btnNavIcon {
+		display: inline-block;
+	}
+	.btnNav:hover {
+		background: #141414;
+		color: #E8EEEA;
+		font-size: 86%;
+		padding: 10px;
+	}
+	.btnNav:hover .btnNavContent {
+		display: block;
+	}
+	.btnNav:hover .btnNavIcon {
+		display: inline-block;
+		opacity: 1;
+	}
+	.btnNav:active {
+		background: black;
+		color: white;
+		padding: 5px;
 	}
 }
