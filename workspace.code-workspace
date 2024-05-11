@@ -7,6 +7,7 @@
 	"settings": {
 		"previewServer.browsers": [
 			"firefox"
-		]
+		],
+		"editor.insertSpaces": false
 	}
 }

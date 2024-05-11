@@ -116,8 +116,19 @@ function loadPage(pageId, lang) {
 	}
 
 	settings.set(pageId, lang);
+	reloadCSS();
 }
 
+function reloadCSS() {
+	const lnks = document.getElementsByTagName('link');
+	for (let i = 0; i < lnks.length; i++) {
+		if (lnks[i].rel === "stylesheet") {
+		var href = lnks[i].href.split("?")[0];
+		lnks[i].href = href + "?rnd=" + new Date().getMilliseconds();
+		}
+	}
+}
+  
 
 async function fetchPage(path='blocks/main.html', element, modify=true, startup=false){
 	try {
@@ -146,6 +157,17 @@ async function fetchPage(path='blocks/main.html', element, modify=true, startup=
 		// Events
 			//Navigation
 			try{
+				const navCBtn1 = document.getElementById('navCBtn1');
+				navCBtn1.addEventListener('click', ()=> {
+					const btns = document.getElementById('navBtns');
+					if(btns.checkVisibility()){
+						btns.style.setProperty('display', 'none');
+						navCBtn1.innerHTML = '<div class="lang-en lang-pl">Menu</div><div class="lang-ua">Меню</div>';
+					} else{
+						btns.style.setProperty('display', 'block');
+						navCBtn1.innerHTML = '^^^';
+					}
+				});
 				document.getElementById('navBtnMain').addEventListener('click', ()=> {
 					loadPage(0);
 				});
@@ -160,14 +182,6 @@ async function fetchPage(path='blocks/main.html', element, modify=true, startup=
 				});
 				document.getElementById('navBtnSegs').addEventListener('click', ()=> {
 					loadPage(-1);
-				});
-				document.querySelector('nav').addEventListener('click', ()=>{
-					const btns = document.getElementById('navBtns');
-					if(btns.checkVisibility()){
-						btns.innerHTML = '';
-					} else{
-						btns.innerHTML = 'show';
-					}
 				});
 			} catch(e){console.error(e);}
 		}

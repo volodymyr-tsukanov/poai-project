@@ -123,6 +123,9 @@ label {
 	transform: translateY(0);
 	transition: opacity 0.4s, transform 0.25s ease-out;
 }
+#navCBtn1 {
+	display: none;
+}
 
 #mainBody {
 	order: 4;
@@ -227,6 +230,13 @@ label {
 	font-size: 108%;
 }
 
+.embededCode {
+	color: #F5ECE4;
+	font-size: 90%;
+	font-family: "Courier New", Courier, monospace;
+	cursor: not-allowed;
+}
+
 
 /* Screen size */
 @media screen and (max-width: 840px) and (orientation : landscape) {
@@ -250,6 +260,7 @@ label {
 		transform: translateY(0);
 		opacity: 1;
 		background: #2F2F2F;
+		border-radius: 10px 10px 12px 12px;
 	}
 	nav:hover {
 		transform: translateY(0);
@@ -263,9 +274,23 @@ label {
 		transform: translateY(20px);
 	}
 	#navBtns {
+		display: none;
 		margin: 10px;
 		flex-direction: column;
 		opacity: 1;
+	}
+	#navClosed {
+		display: none;
+	}
+	#navCBtn1 {
+		display: block;
+		width: 100%;
+		padding: 2px;
+		background: #161a1d00;
+		border-style: none;
+		color: #D9D9D9;
+		cursor: pointer;
+		font-size: 80%;
 	}
 	.btnNav {
 		font-size: 80%;
@@ -280,19 +305,22 @@ label {
 	.btnNav:hover {
 		background: #141414;
 		color: #E8EEEA;
-		font-size: 86%;
-		padding: 10px;
+		font-size: 80%;
+		padding: 8px 5px 5px 8px;
 	}
 	.btnNav:hover .btnNavContent {
-		display: block;
+		display: inline-block;
 	}
 	.btnNav:hover .btnNavIcon {
 		display: inline-block;
 		opacity: 1;
 	}
 	.btnNav:active {
-		background: black;
-		color: white;
+		padding: 2px;
+	}
+	#navCBtn1:active {
+		background: rgba(245, 245, 245, 0.9);
+		color: black;
 		padding: 5px;
 	}
 }
