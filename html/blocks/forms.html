@@ -4,13 +4,20 @@
 	<div class="lang-ua">Відгук</div>
 </h1>
 
-<form action="mailto:volodymyr.tsukanov.23@gmail.com" onsubmit="" onreset="">
+<form action="mailto:volodymyr.tsukanov.23@gmail.com" onsubmit="giveFeedback()" onreset="">
 	<fieldset>
 		<legend>
 			<div class="lang-en">Give feedback</div>
-			<div class="lang-pl">Podzielić opinią</div>
+			<div class="lang-pl">Podzielić swoją opinią</div>
 			<div class="lang-ua">Залишити відгук</div>
 		</legend>
+		
+		<label for="gndr"><div class="lang-en">Gender</div><div class="lang-pl">Plec</div><div class="lang-ua">???</div>: </label><select id="gndr">
+			<option value="ml">Male</option>
+			<option value="fl">Female</option>
+			<option value="tr">Other</option>
+		</select> <br>
+		<textarea id="cmnt" minlength="5" maxlength="2300" rows="7" placeholder="Comment..." title="Comment" required></textarea>
 	</fieldset>
 	
 	<input class="btnA1" type="submit" value="Send">

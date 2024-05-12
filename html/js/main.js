@@ -51,13 +51,13 @@ class Settings {
 
 		switch(this.lang){
 			case "pl":
-				styleshit.insertRule('.lang-pl{display:block;}', 3);
+				styleshit.insertRule('.lang-pl{display:inline-block;}', 3);
 				break;
 			case "ua":
-				styleshit.insertRule('.lang-ua{display:block;}', 3);
+				styleshit.insertRule('.lang-ua{display:inline-block;}', 3);
 				break;
 			default:
-				styleshit.insertRule('.lang-en{display:block;}', 3);
+				styleshit.insertRule('.lang-en{display:inline-block;}', 3);
 				break;
 		}
 		console.log('after: ', styleshit);
@@ -116,9 +116,7 @@ function loadPage(pageId, lang) {
 	}
 
 	settings.set(pageId, lang);
-	reloadCSS();
 }
-
 function reloadCSS() {
 	const lnks = document.getElementsByTagName('link');
 	for (let i = 0; i < lnks.length; i++) {
@@ -128,7 +126,11 @@ function reloadCSS() {
 		}
 	}
 }
-  
+
+function giveFeedback(){
+
+}
+
 
 async function fetchPage(path='blocks/main.html', element, modify=true, startup=false){
 	try {
@@ -182,6 +184,7 @@ async function fetchPage(path='blocks/main.html', element, modify=true, startup=
 				});
 				document.getElementById('navBtnSegs').addEventListener('click', ()=> {
 					loadPage(-1);
+					reloadCSS();
 				});
 			} catch(e){console.error(e);}
 		}

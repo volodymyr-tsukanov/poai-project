@@ -90,6 +90,14 @@ form {
 	box-shadow: #0b0b0b5e 1px 3px;
 }
 
+textarea {
+	width: 80%;
+	background: #E8EEEA;
+	color: black;
+	font-size: 105%;
+	font-family: Consolas, monospace;
+}
+
 label {
 	cursor: help;
 }
