@@ -1,10 +1,10 @@
 <h1>
 	<div class="lang-en">Feedback</div>
-	<div class="lang-pl">???</div>
+	<div class="lang-pl">Opinia</div>
 	<div class="lang-ua">Відгук</div>
 </h1>
 
-<form action="mailto:volodymyr.tsukanov.23@gmail.com" onsubmit="giveFeedback()" onreset="">
+<form action="mailto:volodymyr.tsukanov.23@gmail.com" onsubmit="return giveFeedback()" onreset="clearFields()">
 	<fieldset>
 		<legend>
 			<div class="lang-en">Give feedback</div>
@@ -12,14 +12,32 @@
 			<div class="lang-ua">Залишити відгук</div>
 		</legend>
 		
-		<label for="gndr"><div class="lang-en">Gender</div><div class="lang-pl">Plec</div><div class="lang-ua">???</div>: </label><select id="gndr">
-			<option value="ml">Male</option>
-			<option value="fl">Female</option>
-			<option value="tr">Other</option>
-		</select> <br>
-		<textarea id="cmnt" minlength="5" maxlength="2300" rows="7" placeholder="Comment..." title="Comment" required></textarea>
+		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">???</div>: </label></label><input id="name" name="name" type="text" pattern="[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+( [A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?" required> <br>
+		<span id="error_name" class="error"></span>
+
+		<fieldset style="width:fit-content;">
+			<legend>
+				<div class="lang-en">Gender</div>
+				<div class="lang-pl">Plec</div>
+				<div class="lang-ua">???</div>
+			</legend>
+			<input name="gender" type="radio" value="ml"><label class="rdoA1"> <div class="lang-en">Male</div><div class="lang-pl">Męszczyzna</div><div class="lang-ua">???</div></label>
+			<input name="gender" type="radio" value= "fl" checked><label class="rdoA1"> <div class="lang-en">Female</div><div class="lang-pl">Kobieta</div><div class="lang-ua">???</div></label>
+			<input name="gender" type="radio" value= "tr"><label class="rdoA1"> <div class="lang-en">Other</div><div class="lang-pl">Inne</div><div class="lang-ua">???</div></label>
+		</fieldset>
+
+		<label for="prjt"><div class="lang-en">Mail title</div><div class="lang-pl">Nagłówek maila</div><div class="lang-ua">???</div></label> <select id="prjt" name="project">
+			<option value="1">1</option>
+			<option value="1">2</option>
+			<option value="1">3</option>
+			<option value="1">4</option>
+			<option value="nspec" selected>NoThInG</option>
+		</select> <span id="error_project" class="error"></span> <br>
+		
+		<textarea id="cmnt" name="comment" minlength="5" maxlength="2300" rows="7" placeholder="Comment..." title="Comment" required></textarea> <br>
+		<span id="error_comment" class="error"></span>
 	</fieldset>
 	
-	<input class="btnA1" type="submit" value="Send">
+	<input class="btnA1" type="submit" value="Send mail">
 	<input class="btnA1" type="reset" value="Reset">
 </form>

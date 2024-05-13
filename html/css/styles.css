@@ -90,16 +90,30 @@ form {
 	box-shadow: #0b0b0b5e 1px 3px;
 }
 
-textarea {
-	width: 80%;
-	background: #E8EEEA;
-	color: black;
-	font-size: 105%;
-	font-family: Consolas, monospace;
+label {
+	margin-top: 8px;
+	cursor: help;
 }
 
-label {
-	cursor: help;
+input {
+	margin-top: 8px;
+	font-size: 100%;
+}
+
+select {
+	margin-top: 8px;
+	font-size: 84%;
+}
+
+textarea {
+	width: 80%;
+	min-width: 50%;
+	max-width: 94%;
+	margin-top: 8px;
+	background: #E8EEEA;
+	color: black;
+	font-size: 92%;
+	font-family: Consolas, monospace;
 }
 
 
@@ -203,7 +217,7 @@ label {
 
 .rdoA1 {
 	font-size: 100%;
-	cursor: pointer;
+	cursor: default;
 	transition: font-size 0.2s linear;
 }
 .rdoA1:hover {
@@ -242,6 +256,12 @@ label {
 	color: #F5ECE4;
 	font-size: 90%;
 	font-family: "Courier New", Courier, monospace;
+	cursor: not-allowed;
+}
+
+.error {
+	color: palevioletred;
+	font-size: 110%;
 	cursor: not-allowed;
 }
 
