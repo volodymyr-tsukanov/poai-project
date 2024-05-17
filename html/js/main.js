@@ -93,6 +93,7 @@ function loadPage(pageId, lang) {
 
 	switch(pageId){
 		case -1: //settings
+			reloadCSS();
 			fetchPage('blocks/settings.html', mainBody).then(() => {
 				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">???</div>: ' + settings.lang;
 				nav.style = 'display:none';
@@ -107,7 +108,7 @@ function loadPage(pageId, lang) {
 			fetchPage('blocks/projects.html', mainBody);
 			break;
 		case 2: //forms
-			fetchPage('blocks/forms.html', mainBody);
+			fetchPage('blocks/forms.html', mainBody).then(()=>loadFields());
 			break;
 		case 3: //contacts
 			fetchPage('blocks/contacts.html', mainBody);
@@ -126,6 +127,10 @@ function reloadCSS() {
 		lnks[i].href = href + "?rnd=" + new Date().getMilliseconds();
 		}
 	}
+}
+
+function clearCashe(){
+	localStorage.removeItem('feedback');
 }
 
 
@@ -166,22 +171,6 @@ async function fetchPage(path='blocks/main.html', element, modify=true, startup=
 						btns.style.setProperty('display', 'block');
 						navCBtn1.innerHTML = '^^^';
 					}
-				});
-				document.getElementById('navBtnMain').addEventListener('click', ()=> {
-					loadPage(0);
-				});
-				document.getElementById('navBtnPrjs').addEventListener('click', ()=> {
-					loadPage(1);
-				});
-				document.getElementById('navBtnFoms').addEventListener('click', ()=> {
-					loadPage(2);
-				});
-				document.getElementById('navBtnCots').addEventListener('click', ()=> {
-					loadPage(3);
-				});
-				document.getElementById('navBtnSegs').addEventListener('click', ()=> {
-					loadPage(-1);
-					reloadCSS();
 				});
 			} catch(e){console.error(e);}
 		}

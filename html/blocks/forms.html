@@ -4,7 +4,7 @@
 	<div class="lang-ua">Відгук</div>
 </h1>
 
-<form action="mailto:volodymyr.tsukanov.23@gmail.com" onsubmit="return giveFeedback()" onreset="clearFields()">
+<form action="mailto:volodymyr.tsukanov.23@gmail.com" onsubmit="return giveFeedback()" onreset="clearFields()" onchange="saveFields()">
 	<fieldset>
 		<legend>
 			<div class="lang-en">Give feedback</div>
@@ -34,7 +34,7 @@
 			<option value="nspec" selected>NoThInG</option>
 		</select> <span id="error_project" class="error"></span> <br>
 		
-		<textarea id="cmnt" name="comment" minlength="5" maxlength="2300" rows="7" placeholder="Comment..." title="Comment" required></textarea> <br>
+		<textarea id="cmnt" name="comment" rows="7" placeholder="Comment..." title="Comment" required></textarea> <br>
 		<span id="error_comment" class="error"></span>
 	</fieldset>
 	

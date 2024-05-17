@@ -256,7 +256,7 @@ textarea {
 	color: #F5ECE4;
 	font-size: 90%;
 	font-family: "Courier New", Courier, monospace;
-	cursor: not-allowed;
+	cursor: copy;
 }
 
 .error {
