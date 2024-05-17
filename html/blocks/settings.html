@@ -4,7 +4,7 @@
 	<div class="lang-ua">???</div>
 </h1>
 
-<form onsubmit="settings.save();loadPage(0)" onreset="settings.reset();loadPage(0)">
+<form action="" onsubmit="saveSettings()" onreset="resetSettings()">
 	<fieldset>
 		<legend>
 			<div class="lang-en">Select language</div>
@@ -22,9 +22,10 @@
 			<div class="lang-pl">Haszowane dane</div>
 			<div class="lang-ua">???</div>
 		</legend>
-		<button class="btnA1" onclick="clearCashe()"><div class="lang-en">Clear</div></button>
+		<button type="button" class="btnA1" onclick="clearCashe()"><div class="lang-en">Clear</div><div class="lang-pl">Wyczyścić</div><div class="lang-ua">???</div></button>
 	</fieldset>
 	
-	<input class="btnA1" type="submit" value="Apply">
-	<input class="btnA1" type="reset" value="Reset">
+	<button type="submit" class="btnA1"><div class="lang-en">Apply</div><div class="lang-pl">Zapisać</div><div class="lang-ua">???</div></button>
+	<button type="reset" class="btnA1"><div class="lang-en">Reset</div><div class="lang-pl">Zresetować</div><div class="lang-ua">???</div></button>
+	<button type="button" class="btnA1" onclick="loadPage(0)"><div class="lang-en">Go back</div><div class="lang-pl">Wrócić</div><div class="lang-ua">???</div></button>
 </form>

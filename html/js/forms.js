@@ -24,7 +24,13 @@ class Mail {
 		//Comment
 		if(comment.value.length < 5){
 			result = false;
-			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed.</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+		} else if(comment.value.length > 300 && comment.value.length < 800){
+			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now.</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+		} else if(comment.value.length > 800 && comment.value.length < 1000){
+			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped.</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+		} else {
+			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment&hellip;</div><div class="lang-pl"></div><div class="lang-ua"></div>';
 		}
 
 		if(result){
@@ -39,6 +45,31 @@ class Mail {
 	}
 }
 
+
+function loadSettings(){
+
+}
+function saveSettings(){
+	settings.save();
+
+	document.getElementById('mainBody').innerHTML = loadingHTML;
+	reloadCSS().then(()=>loadPage(0)).catch(e=>{
+		console.log('Error CSS reset: ' + e);
+		loadPage(0);
+	});
+}
+function resetSettings(){
+	settings.reset();
+
+	document.getElementById('mainBody').innerHTML = loadingHTML;
+	reloadCSS().then(()=>loadPage(0)).catch(e=>{
+		console.log('Error CSS reset: ' + e);
+		loadPage(0);
+	});
+}
+function clearCashe(){
+	localStorage.removeItem('feedback');
+}
 
 function loadFields(){
 	let fields = localStorage.getItem('feedback');
@@ -58,11 +89,17 @@ function saveFields(){
 }
 function clearFields(){
 	document.getElementById('name').value ='';
-	document.getElementById('prjt').value = '';
+	document.getElementById('prjt').value = 'nspec';
 	document.getElementById('cmnt').value = '';
 	document.getElementById('error_name').innerHTML = '';
 	document.getElementById('error_project').innerHTML = '';
 	document.getElementById('error_comment').innerHTML = '';
+}
+function resetFields(){
+	if(confirm('Reset feedback?')){
+		localStorage.removeItem('feedback');
+		clearFields();
+	}
 }
 
 function giveFeedback(){

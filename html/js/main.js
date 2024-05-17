@@ -72,6 +72,7 @@ class Settings {
 
 // Main
 	// Preload
+const loadingHTML = '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>';
 var settings = new Settings();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -89,11 +90,11 @@ function loadPage(pageId, lang) {
 	if(lang == undefined) lang = settings.lang;
 	settings.applyLanguage();
 
+	mainBody.innerHTML = loadingHTML;
 	fetchPage('blocks/nav.html', nav, false, true);
 
 	switch(pageId){
 		case -1: //settings
-			reloadCSS();
 			fetchPage('blocks/settings.html', mainBody).then(() => {
 				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">???</div>: ' + settings.lang;
 				nav.style = 'display:none';
@@ -118,19 +119,6 @@ function loadPage(pageId, lang) {
 	}
 
 	settings.set(pageId, lang);
-}
-function reloadCSS() {
-	const lnks = document.getElementsByTagName('link');
-	for (let i = 0; i < lnks.length; i++) {
-		if (lnks[i].rel === "stylesheet") {
-		var href = lnks[i].href.split("?")[0];
-		lnks[i].href = href + "?rnd=" + new Date().getMilliseconds();
-		}
-	}
-}
-
-function clearCashe(){
-	localStorage.removeItem('feedback');
 }
 
 
@@ -177,4 +165,15 @@ async function fetchPage(path='blocks/main.html', element, modify=true, startup=
 	} catch (e) {
 		console.error(e);
 	}
+}
+
+async function reloadCSS() {
+	const lnks = document.getElementsByTagName('link');
+	for (let i = 0; i < lnks.length; i++) {
+		if (lnks[i].rel === "stylesheet") {
+		var href = lnks[i].href.split("?")[0];
+		lnks[i].href = href + "?rnd=" + new Date().getMilliseconds();
+		}
+	}
+	await new Promise(wt => setTimeout(wt, 2500));
 }
