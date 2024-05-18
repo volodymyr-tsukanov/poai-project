@@ -11,9 +11,9 @@
 			<div class="lang-pl">Wybranie języka</div>
 			<div class="lang-ua">Виберіть мову</div>
 		</legend>
-		<input class="rdoA1" type="radio" name="settingsLangs" value="en" checked onchange="settings.preview()"><label class="rdoA1"> English</label> <br>
-		<input class="rdoA1" type="radio" name="settingsLangs" value="pl" onchange="settings.preview()"><label class="rdoA1"> Polski</label> <br>
-		<input class="rdoA1" type="radio" name="settingsLangs" value="ua" onchange="settings.preview()"><label class="rdoA1"> Українська</label> <br>
+		<input class="rdoA1" type="radio" name="langs" value="en" checked onchange="settings.preview()"><label class="rdoA1"> English</label> <br>
+		<input class="rdoA1" type="radio" name="langs" value="pl" onchange="settings.preview()"><label class="rdoA1"> Polski</label> <br>
+		<input class="rdoA1" type="radio" name="langs" value="ua" onchange="settings.preview()"><label class="rdoA1"> Українська</label> <br>
 		<span id="error_langs" class="error"></span>
 	</fieldset>
 	<fieldset>
@@ -27,5 +27,5 @@
 	
 	<button type="submit" class="btnA1"><div class="lang-en">Apply</div><div class="lang-pl">Zapisać</div><div class="lang-ua">???</div></button>
 	<button type="reset" class="btnA1"><div class="lang-en">Reset</div><div class="lang-pl">Zresetować</div><div class="lang-ua">???</div></button>
-	<button type="button" class="btnA1" onclick="loadPage(0)"><div class="lang-en">Go back</div><div class="lang-pl">Wrócić</div><div class="lang-ua">???</div></button>
+	<button type="button" class="btnA1" onclick="loadPage(settings.lastPage)"><div class="lang-en">Go back</div><div class="lang-pl">Wrócić</div><div class="lang-ua">???</div></button>
 </form>

@@ -10,7 +10,7 @@ class Settings {
 	}
 
 	preview(){
-		const sl = document.getElementsByName('settingsLangs');
+		const sl = document.getElementsByName('langs');
 		for(let i = 0; i < sl.length; i++){
 			if(sl[i].checked){
 				this.lang = sl[i].value;
@@ -21,7 +21,7 @@ class Settings {
 	}
 	update(){
 		this.lastPage = 0;
-		const sl = document.getElementsByName('settingsLangs');
+		const sl = document.getElementsByName('langs');
 		for(let i = 0; i < sl.length; i++){
 			if(sl[i].checked){
 				this.lang = sl[i].value;
@@ -98,6 +98,7 @@ function loadPage(pageId, lang) {
 			fetchPage('blocks/settings.html', mainBody).then(() => {
 				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">???</div>: ' + settings.lang;
 				nav.style = 'display:none';
+				loadSettings();
 			});
 			break;
 		case 0: //main
@@ -106,19 +107,26 @@ function loadPage(pageId, lang) {
 			});
 			break;
 		case 1: //projects
-			fetchPage('blocks/projects.html', mainBody);
+			fetchPage('blocks/projects.html', mainBody).then(() => {
+				nav.style = 'display:block';
+			});
 			break;
 		case 2: //forms
-			fetchPage('blocks/forms.html', mainBody).then(()=>loadFields());
+			fetchPage('blocks/forms.html', mainBody).then(() => {
+				nav.style = 'display:block';
+				loadFields();
+			});
 			break;
 		case 3: //contacts
-			fetchPage('blocks/contacts.html', mainBody);
+			fetchPage('blocks/contacts.html', mainBody).then(() => {
+				nav.style = 'display:block';
+			});
 			break;
 		default:
 			break;
 	}
 
-	settings.set(pageId, lang);
+	if(pageId >= 0) settings.set(pageId);
 }
 
 
