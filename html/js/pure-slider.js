@@ -11,6 +11,25 @@ function openImageView(index=0){
 				removeAfter(pureSlider, 1);
 				break;
 			case 2:
+				slides[0].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true');
+				slides[0].children[2].setAttribute('alt', 'Pear 7');
+				slides[1].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-4.jpg?raw=true');
+				slides[1].children[2].setAttribute('alt', 'Pear 4');
+				slides[2].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-3.jpg?raw=true');
+				slides[2].children[2].setAttribute('alt', 'Pear 3');
+				slides[3].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-8.jpg?raw=true');
+				slides[3].children[2].setAttribute('alt', 'Pear 8');
+				slides[4].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-1.jpg?raw=true');
+				slides[4].children[2].setAttribute('alt', 'Pear 1');
+				break;
+			case 3:
+				slides[0].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true');
+				slides[0].children[2].setAttribute('alt', 'Telephone book icon');
+				slides[1].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true');
+				slides[1].children[2].setAttribute('alt', 'Telephone book contact');
+				slides[2].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true');
+				slides[2].children[2].setAttribute('alt', 'Telephone book search');
+				removeAfter(pureSlider, 3);
 				break;
 			default:
 				slides[0].children[2].setAttribute('src', 'assets/icons/favicon.png');
