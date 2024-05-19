@@ -15,6 +15,7 @@ class Mail {
 
 	gather(){
 		let result = true;
+		let regexName = /^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+( [A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)$/;
 		const name = document.getElementById('name');
 		const sender = document.getElementById('sender');
 		const projects = document.getElementById('prjt');
@@ -24,31 +25,46 @@ class Mail {
 		const errorProject = document.getElementById('error_project');
 		const errorComment = document.getElementById('error_comment');
 
+		//Reset errors
+		errorName.innerHTML = '';
+		errorSender.innerHTML = '';
+		errorProject.innerHTML = '';
+		errorComment.innerHTML = '';
+
+		//Sender
+		if(name.value == null){
+			result = false;
+			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">???</div>.';
+		} else if(!regexName.test(name.value)){
+			result = false;
+			errorName.innerHTML = '<div class="lang-en">This name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">???</div>.';
+		}
+
 		//Sender
 		this.sender = sender.value;
 		if(this.sender == null){
 			result = false;
-			errorSender.innerHTML = '<div class="lang-en"></div><div class="lang-pl"></div><div class="lang-ua"></div>';
+			errorSender.innerHTML = '<div class="lang-en">Email is needed</div><div class="lang-pl">Podanie emaila jest obowiązkowe</div><div class="lang-ua">???</div>.';
 		}
 
 		//Subject
 		this.subject = projects.value;
 		if(this.subject == null){
 			result = false;
-			errorProject.innerHTML = '<div class="lang-en"></div><div class="lang-pl"></div><div class="lang-ua"></div>';
+			errorProject.innerHTML = '<div class="lang-en">Subject is needed for mail</div><div class="lang-pl">Nagłówek maila jest wymagany</div><div class="lang-ua">???</div>.';
 		}
 
 		//Comment
 		this.body = comment.value;
 		if(this.body.length < 5){
 			result = false;
-			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed.</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed</div><div class="lang-pl">Komentarz jest za mały. Trzeba dodać jeszcze trochę</div><div class="lang-ua">???</div>.';
 		} else if(this.body.length > 300 && comment.value.length < 800){
-			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now.</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now</div><div class="lang-pl">Komentarz jest wystarczająco długi i może być wysłany</div><div class="lang-ua">???</div>.';
 		} else if(this.body.length > 800 && comment.value.length < 1000){
-			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped.</div><div class="lang-pl"></div><div class="lang-ua"></div>';
-		} else {
-			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment&hellip;</div><div class="lang-pl"></div><div class="lang-ua"></div>';
+			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped</div><div class="lang-pl">Komentarz jest za długi. On może zostać zignorowany</div><div class="lang-ua"></div>.';
+		} else if(this.body.length > 1900){
+			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment</div><div class="lang-pl">Ja nie będę tego czytał</div><div class="lang-ua">???</div>&hellip;';
 		}
 
 		if(result){
@@ -156,8 +172,7 @@ function resetFields(){
 function giveFeedback(){
 	let mail = new Mail();
 	if(mail.gather()){
-		console.log(new URL(mail.format()));
-		//window.open(new URL(mail.format()), '_blank');
+		window.open(new URL(mail.format()), '_blank');
 		return false;
 	}
 	else return false;

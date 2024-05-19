@@ -5,6 +5,7 @@ Informatyka l stopień 4 semestr; Podstawy aplikacji internetowych <br>
   - yuichinukiyama.vscode-preview-server
   - [SvgRepo](packages/svg-repo/README.md)
   - [Shields.io](https://shields.io)
+  - [pure-slider](packages/pure-slider/README.md)
 
 **HTML**; **CSS**; **JavaScript**; **JSON**; **Fetch API**
 

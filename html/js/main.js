@@ -47,7 +47,7 @@ class Settings {
 		const ruleIndex = 3;
 		
 		styleshit.deleteRule(3);
-		console.log('before: ', styleshit);
+		//console.log('before: ', styleshit);
 
 		switch(this.lang){
 			case "pl":
@@ -60,7 +60,7 @@ class Settings {
 				styleshit.insertRule('.lang-en{display:inline-block;}', 3);
 				break;
 		}
-		console.log('after: ', styleshit);
+		//console.log('after: ', styleshit);
 	}
 
 	save(){

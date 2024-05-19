@@ -1,3 +1,22 @@
+/* Variables */
+:root{
+		/* - Colors */
+			/*Graytone*/
+	--color-jet: #2F2F2F;
+	--color-battleship-gray: #959595;
+			/*Dark*/
+	--color-eerie-black: #161A1D;
+	--color-raisin-black: #32323F;
+	--color-outer-space: #3E4C4C;
+			/*Light*/
+	--color-mint-cream: #E8EEEA;
+	--color-platinum: #D9D9D9;
+	--color-silver: #C7C3C3;
+	--color-silver2: #B6B6B6;
+	--color-linen: #F5ECE4;
+}
+
+
 /* Default */
 	/* - Containers */
 body {
@@ -10,7 +29,7 @@ header {
 	z-index: 2;
 	background: #0b0b0b;
 	border-radius: 6px 6px 22px 22px;
-	border: 3px solid #C7C3C3;
+	border: 3px solid var(--color-silver);
 	color: white;
 	text-align: center;
 	font-family: "Courier New", Courier, monospace;
@@ -25,9 +44,9 @@ nav {
 	z-index: 1;
 	transform: translateY(-40px);
 	opacity: 0.8;
-	background: radial-gradient(circle, #959595 0%, #171717 15%);
+	background: radial-gradient(circle, var(--color-battleship-grey) 0%, #171717 15%);
 	border-radius: 20px 20px 22px 22px;
-	border: 2px solid #D9D9D9;
+	border: 2px solid var(--color-platinum);
 	color: white;
 	text-align: center;
 	font-family: "Courier New", Courier, monospace;
@@ -37,7 +56,7 @@ nav {
 nav:hover {
 	opacity: 1;
 	transform: translateY(-22px);
-	background: radial-gradient(circle, #959595 0%, #2F2F2F 21%);
+	background: radial-gradient(circle, var(--color-battleship-grey) 0%, var(--color-jet) 21%);
 }
 nav:hover #navBtns {
 	opacity: 1;
@@ -57,7 +76,7 @@ footer {
 	order: 5;
 	width: 95%;
 	margin: 25px 0 0 0;
-	background: #3E4C4C;
+	background: var(--color-outer-space);
 	border-radius: 20px 20px 0 0;
 	box-shadow: #edeee70f -2px -3px;
 	color: whitesmoke;
@@ -85,7 +104,7 @@ b:hover, i:hover {
 	/*  - Form */
 form {
 	margin: 10px;
-	background: linear-gradient(45deg, #0b0b0b 0%, #32323F 30%, #2F2F2F 80%);
+	background: linear-gradient(45deg, #0b0b0b 0%, var(--color-raisin-black) 30%, var(--color-jet) 80%);
 	border-radius: 1px;
 	box-shadow: #0b0b0b5e 1px 3px;
 }
@@ -110,7 +129,7 @@ textarea {
 	min-width: 50%;
 	max-width: 94%;
 	margin-top: 8px;
-	background: #E8EEEA;
+	background: var(--color-mint-cream);
 	color: black;
 	font-size: 92%;
 	font-family: Consolas, monospace;
@@ -125,7 +144,7 @@ textarea {
 	justify-content: center;
 	flex-wrap: wrap;
 	margin: 1px;
-	background: #161A1D;
+	background: var(--color-eerie-black);
 	border-radius: 6px;
 	color: whitesmoke;
 	font-size: 13pt;
@@ -164,7 +183,7 @@ textarea {
 	margin: 0 3px 3px 0;
 	padding: 8px 5px 5px 8px;
 	font-size: 80%;
-	color: #E8EEEA;
+	color: var(--color-mint-cream);
 	cursor: pointer;
 	transition: font-size 0.1s, padding 0.2s, background 0.3s, color 0.4s ease;
 }
@@ -179,7 +198,7 @@ textarea {
 	width: 30px;
 }
 .btnNav:hover {
-	background: #E8EEEA;
+	background: var(--color-mint-cream);
 	color: #141414;
 	font-size: 86%;
 	padding: 10px;
@@ -200,17 +219,18 @@ textarea {
 
 .btnA1 {
 	padding: 2px;
-	background: #959595;
+	background: var(--color-battleship-grey);
 	border-radius: 8px;
 	box-shadow: #0b0b0b8d 2px 4px;
-	color: #161A1D;
+	color: var(--color-silver);
 	font-size: 100%;
 	margin: 3px;
 	cursor: pointer;
 	transition: background 0.1s, box-shadow 0.1s, font-size 0.2s linear;
 }
 .btnA1:hover {
-	background: #B6B6B6;
+	background: var(--color-silver2);
+	color: var(--color-raisin-black);
 	box-shadow: none;
 	font-size: 105%;
 }
@@ -256,7 +276,7 @@ textarea {
 }
 
 .embededCode {
-	color: #F5ECE4;
+	color: var(--color-linen);
 	font-size: 90%;
 	font-family: "Courier New", Courier, monospace;
 	cursor: copy;
@@ -290,12 +310,12 @@ textarea {
 		width: 80%;
 		transform: translateY(0);
 		opacity: 1;
-		background: #2F2F2F;
+		background: var(--color-jet);
 		border-radius: 10px 10px 12px 12px;
 	}
 	nav:hover {
 		transform: translateY(0);
-		background: #2F2F2F;
+		background: var(--color-jet);
 	}
 	nav:hover #navBtns {
 		transform: translateY(0);
@@ -317,9 +337,9 @@ textarea {
 		display: block;
 		width: 100%;
 		padding: 2px;
-		background: #161a1d00;
+		background: #161A1D00;
 		border-style: none;
-		color: #D9D9D9;
+		color: var(--color-platinum);
 		cursor: pointer;
 		font-size: 80%;
 	}
@@ -335,7 +355,7 @@ textarea {
 	}
 	.btnNav:hover {
 		background: #141414;
-		color: #E8EEEA;
+		color: var(--color-mint-cream);
 		font-size: 80%;
 		padding: 8px 5px 5px 8px;
 	}
