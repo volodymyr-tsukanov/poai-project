@@ -174,6 +174,15 @@ textarea {
 	padding: 0 10px 0 30px;
 }
 
+#imgView {
+	display: none;
+	position: absolute;
+	z-index: 10;
+	width: 100%;
+	height: 100%;
+	background: #0b0b0b8b;
+}
+
 
 /* Classes */
 .btnNav {
@@ -214,6 +223,33 @@ textarea {
 .btnNav:active {
 	background: black;
 	color: white;
+	padding: 5px;
+}
+
+.project {
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+	flex-wrap: wrap;
+	background: var(--color-jet);
+	border-radius: 10px;
+}
+.project img {
+	width: 20%;
+	margin: 4px 40px 4px 5px;
+}
+.project h2 {
+	flex-grow: 2;
+	align-self: flex-end;
+	font-size: 280%;
+	color: var(--color-linen);
+}
+.project div {
+	flex-grow: 1;
+	background: var(--color-outer-space);
+	border-radius: 16px;
+	font-size: 100%;
+	margin: 6px;
 	padding: 5px;
 }
 
@@ -292,7 +328,7 @@ textarea {
 /* Screen size */
 @media screen and (max-width: 840px) and (orientation : landscape) {
 	#cntnr {
-		font-size: 15pt;
+		font-size: 16pt;
 	}
 	#mainBody {
 		padding: 0 5px 0 10px;
@@ -300,7 +336,7 @@ textarea {
 }
 @media screen and (max-width: 720px) and (orientation : portrait) {
 	#cntnr {
-		font-size: 18pt;
+		font-size: 17pt;
 	}
 	#mainBody {
 		padding: 10px 2px 0 4px;
