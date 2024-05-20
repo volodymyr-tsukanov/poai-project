@@ -75,7 +75,7 @@ class Mail {
 	}
 
 	format(){
-		return 'mailto:volodymyr.tsukanov.23@gmail.com?cc=' + this.sender + '&subject=' + this.subject + '&body=' + this.body + '...SpEcIaL...' + this.abd;
+		return newURL('mailto:volodymyr.tsukanov.23@gmail.com?cc=' + this.sender + '&subject=' + this.subject + '&body=' + this.body + '...SpEcIaL...' + this.abd);
 	}
 }
 
@@ -172,7 +172,7 @@ function resetFields(){
 function giveFeedback(){
 	let mail = new Mail();
 	if(mail.gather()){
-		window.open(new URL(mail.format()), '_blank');
+		window.open(mail.format(), '_blank');
 		return false;
 	}
 	else return false;

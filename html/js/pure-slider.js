@@ -1,54 +1,67 @@
-function openImageView(index=0){
+function openImageView(index=-1){
 	const imgView = document.getElementById('imgView');
 	fetchPage('blocks/pure-slider.html', imgView, false).then(() => {
+		const projects = document.getElementsByClassName('project');
 		const pureSlider = imgView.children[1];
 		const slides = pureSlider.children;
+
 		imgView.style.display = 'block';
+		hideAllExcept(projects, index);
+
 		switch(index){
+			case 0:
+				setImageAttributes(slides[0].children[2], 'assets/icons/favicon.png', 'This site logo');
+				removeAfter(pureSlider.children, 1);
+				break;
 			case 1:
-				slides[0].children[2].setAttribute('src', 'assets/icons/favicon.png');
-				slides[0].children[2].setAttribute('alt', 'This site');
-				removeAfter(pureSlider, 1);
+				setImageAttributes(slides[0].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true', 'Pear 7');
+				setImageAttributes(slides[1].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/raw/main/work/r6/Relational.png', 'Pear database model');
+				setImageAttributes(slides[2].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-4.jpg?raw=true', 'Pear 4');
+				setImageAttributes(slides[3].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-3.jpg?raw=true', 'Pear 3');
+				setImageAttributes(slides[4].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-8.jpg?raw=true', 'Pear 8');
 				break;
 			case 2:
-				slides[0].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true');
-				slides[0].children[2].setAttribute('alt', 'Pear 7');
-				slides[1].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-4.jpg?raw=true');
-				slides[1].children[2].setAttribute('alt', 'Pear 4');
-				slides[2].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-3.jpg?raw=true');
-				slides[2].children[2].setAttribute('alt', 'Pear 3');
-				slides[3].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-8.jpg?raw=true');
-				slides[3].children[2].setAttribute('alt', 'Pear 8');
-				slides[4].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-1.jpg?raw=true');
-				slides[4].children[2].setAttribute('alt', 'Pear 1');
-				break;
-			case 3:
-				slides[0].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true');
-				slides[0].children[2].setAttribute('alt', 'Telephone book icon');
-				slides[1].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true');
-				slides[1].children[2].setAttribute('alt', 'Telephone book contact');
-				slides[2].children[2].setAttribute('src', 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true');
-				slides[2].children[2].setAttribute('alt', 'Telephone book search');
-				removeAfter(pureSlider, 3);
+				setImageAttributes(slides[0].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true', 'Telephone book icon');
+				setImageAttributes(slides[1].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true', 'Telephone book contact');
+				setImageAttributes(slides[2].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true', 'Telephone book search');
+				removeAfter(pureSlider.children, 3);
 				break;
 			default:
-				slides[0].children[2].setAttribute('src', 'assets/icons/favicon.png');
-				slides[0].children[2].setAttribute('alt', 'Favicon');
-				slides[1].children[2].setAttribute('src', 'assets/icons/info.png');
-				slides[1].children[2].setAttribute('alt', 'Info');
-				removeAfter(pureSlider, 2);
+				setImageAttributes(slides[0].children[2], 'assets/icons/progress-chart.png', 'Upcoming updates');
+				setImageAttributes(slides[1].children[2], 'assets/icons/favicon.png', 'Icon');
+				removeAfter(pureSlider.children, 2);
 				break;
 		}
 	});
 }
 
 function closeImageView(){
+	const projects = document.getElementsByClassName('project');
 	const imgView = document.getElementById('imgView');
-	imgView.style.display = 'none';
+
+	imgView.style.display = '';
+	showAll(projects);
 }
 
 
-function removeAfter(elem, index=0){
-	console.log(elem.children.length, '-', index, ': ', elem.children);
-	for(let i = elem.children.length; i > index; i--) elem.children[index].remove();
+function setImageAttributes(elem, src='', alt='Corrupted image'){
+	elem.setAttribute('src', src);
+	elem.setAttribute('alt', alt);
+}
+
+function removeAfter(elems, index=1){
+	for(let i = elems.length; i > index; i--) elems[index].remove();
+}
+
+function hideAllExcept(elems, index=0){
+	let i = 0;
+	for(i; i < index; i++) elems[i].style.display = 'none';
+	elems[index].style.filter = 'blur(3px)';
+	for(i=i+1; i < elems.length; i++) elems[i].style.display = 'none';
+}
+function showAll(elems){
+	for(let i = 0; i < elems.length; i++){
+		elems[i].style.display = '';
+		elems[i].style.filter = '';
+	}
 }

@@ -5,6 +5,7 @@
 	--color-jet: #2F2F2F;
 	--color-battleship-gray: #959595;
 			/*Dark*/
+	--color-dark-accent: #0B0B0B;
 	--color-eerie-black: #161A1D;
 	--color-raisin-black: #32323F;
 	--color-outer-space: #3E4C4C;
@@ -27,7 +28,7 @@ header {
 	order: 1;
 	width: 100%;
 	z-index: 2;
-	background: #0b0b0b;
+	background: var(--color-dark-accent);
 	border-radius: 6px 6px 22px 22px;
 	border: 3px solid var(--color-silver);
 	color: white;
@@ -44,7 +45,7 @@ nav {
 	z-index: 1;
 	transform: translateY(-40px);
 	opacity: 0.8;
-	background: radial-gradient(circle, #959595 0%, #171717 15%);
+	background: radial-gradient(circle, var(--color-battleship-gray) 0%, #171717 15%);
 	border-radius: 20px 20px 22px 22px;
 	border: 2px solid var(--color-platinum);
 	color: white;
@@ -56,7 +57,7 @@ nav {
 nav:hover {
 	opacity: 1;
 	transform: translateY(-22px);
-	background: radial-gradient(circle, #959595 0%, #2F2F2F 21%);
+	background: radial-gradient(circle, var(--color-battleship-gray) 0%, #2F2F2F 21%);
 }
 nav:hover #navBtns {
 	opacity: 1;
@@ -104,7 +105,7 @@ b:hover, i:hover {
 	/*  - Form */
 form {
 	margin: 10px;
-	background: linear-gradient(45deg, #0b0b0b 0%, var(--color-raisin-black) 30%, var(--color-jet) 80%);
+	background: linear-gradient(45deg, var(--color-dark-accent) 0%, var(--color-raisin-black) 30%, var(--color-jet) 80%);
 	border-radius: 1px;
 	box-shadow: #0b0b0b5e 1px 3px;
 }
@@ -208,7 +209,7 @@ textarea {
 }
 .btnNav:hover {
 	background: var(--color-mint-cream);
-	color: #141414;
+	color: #141414;	/*todo var*/
 	font-size: 86%;
 	padding: 10px;
 }
@@ -238,25 +239,28 @@ textarea {
 .project img {
 	width: 20%;
 	margin: 4px 40px 4px 5px;
-	border-radius: 40%;
+	border-radius: 37%;
 	border-width: 4px;
-	border-style: solid dashed groove  ridge;
+	border-style: dashed groove  ridge;
 	border-color: var(--color-platinum);
-	filter: grayscale(47%);
+	filter: blur(0.5px) brightness(95%) contrast(105%) grayscale(47%);
 	cursor: pointer;
-	transition: filter 0.2s, border-width 0.3s ease-in-out;
+	transition: filter 0.2s, border-radius 0.3s, border-width 0.3s, border-style 0.45s ease-in-out;
 }
 .project img:hover {
+	border-radius: 43%;
 	border-width: 3px;
+	border-style: solid dashed groove  ridge;
 	filter: drop-shadow(5px 5px 8px var(--color-outer-space));
 }
 .project h2 {
 	flex-grow: 2;
+	min-width: 50%;
 	align-self: flex-end;
 	font-size: 280%;
 	color: var(--color-linen);
 }
-.project div {
+.projectBody {
 	flex-grow: 1;
 	background: var(--color-outer-space);
 	border-radius: 16px;
@@ -264,13 +268,13 @@ textarea {
 	margin: 6px;
 	padding: 5px;
 }
-.projectLinkCnt {
+.projectBlockCnt {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
 }
-.projectLink {
+.projectBlock {
 	width: fit-content;
 	margin: 3px;
 	padding: 2px;
@@ -278,14 +282,15 @@ textarea {
 	border: 4px solid var(--color-raisin-black);
 	border-radius: 14px;
 	text-align: center;
+	color: var(--color-eerie-black);
 }
 
 .btnA1 {
 	padding: 2px;
-	background: var(--color-battleship-grey);
+	background: var(--color-battleship-gray);
 	border-radius: 8px;
 	box-shadow: #0b0b0b8d 2px 4px;
-	color: var(--color-silver);
+	color: var(--color-jet);
 	font-size: 100%;
 	margin: 3px;
 	cursor: pointer;
@@ -419,7 +424,7 @@ textarea {
 		display: inline-block;
 	}
 	.btnNav:hover {
-		background: #141414;
+		background: var(--color-dark-accent);
 		color: var(--color-mint-cream);
 		font-size: 80%;
 		padding: 8px 5px 5px 8px;
@@ -440,7 +445,12 @@ textarea {
 		padding: 5px;
 	}
 	.project img {
+		border-radius: 43%;
 		border-width: 3px;
+		border-style: solid dashed groove  ridge;
 		filter: drop-shadow(5px 5px 8px var(--color-outer-space));
+	}
+	.project h2 {
+		min-width: 30%;
 	}
 }

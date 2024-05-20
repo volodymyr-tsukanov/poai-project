@@ -97,29 +97,29 @@ function loadPage(pageId, lang) {
 		case -1: //settings
 			fetchPage('blocks/settings.html', mainBody).then(() => {
 				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">???</div>: ' + settings.lang;
-				nav.style = 'display:none';
+				nav.style.display = 'none';
 				loadSettings();
 			});
 			break;
 		case 0: //main
 			fetchPage('blocks/main.html', mainBody).then(() => {
-				nav.style = 'display:block';
+				nav.style.display = '';
 			});
 			break;
 		case 1: //projects
 			fetchPage('blocks/projects.html', mainBody).then(() => {
-				nav.style = 'display:block';
+				nav.style.display = '';
 			});
 			break;
 		case 2: //forms
 			fetchPage('blocks/forms.html', mainBody).then(() => {
-				nav.style = 'display:block';
+				nav.style.display = '';
 				loadFields();
 			});
 			break;
 		case 3: //contacts
 			fetchPage('blocks/contacts.html', mainBody).then(() => {
-				nav.style = 'display:block';
+				nav.style.display = '';
 			});
 			break;
 		default:
