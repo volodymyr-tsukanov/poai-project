@@ -19,3 +19,7 @@
     COLLECTION: Uxwb Bold Line Icons
     LICENSE: GPL License
     AUTHOR: UXWB
+  - [progress-chart.png](https://www.svgrepo.com/svg/85526/progress-chart)
+    COLLECTION: Ios7 Premium Fill 2
+    LICENSE: CC0 License
+    AUTHOR: SVG Repo
