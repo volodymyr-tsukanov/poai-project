@@ -96,7 +96,7 @@ function loadPage(pageId, lang) {
 	switch(pageId){
 		case -1: //settings
 			fetchPage('blocks/settings.html', mainBody).then(() => {
-				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">???</div>: ' + settings.lang;
+				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
 				nav.style.display = 'none';
 				loadSettings();
 			});

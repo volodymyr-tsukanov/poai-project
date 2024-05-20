@@ -15,7 +15,7 @@ class Mail {
 
 	gather(){
 		let result = true;
-		let regexName = /^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+( [A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)$/;
+		let regexName = /^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ-])*$/;
 		const name = document.getElementById('name');
 		const sender = document.getElementById('sender');
 		const projects = document.getElementById('prjt');
@@ -34,37 +34,40 @@ class Mail {
 		//Sender
 		if(name.value == null){
 			result = false;
-			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">???</div>.';
+			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">Поділіться іменем хочаб</div>.';
+		} else if(name.value.length < 4 || name.value.length > 30){
+			result = false;
+			errorName.innerHTML = '<div class="lang-en">Entered name has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone imię ma niepoprawną długość</div><div class="lang-ua">Або ваше ім\'я дійсно має стільки букв, або&hellip;</div>.';
 		} else if(!regexName.test(name.value)){
 			result = false;
-			errorName.innerHTML = '<div class="lang-en">This name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">???</div>.';
+			errorName.innerHTML = '<div class="lang-en">Entered name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
 		}
 
 		//Sender
 		this.sender = sender.value;
 		if(this.sender == null){
 			result = false;
-			errorSender.innerHTML = '<div class="lang-en">Email is needed</div><div class="lang-pl">Podanie emaila jest obowiązkowe</div><div class="lang-ua">???</div>.';
+			errorSender.innerHTML = '<div class="lang-en">Email is needed</div><div class="lang-pl">Podanie emaila jest obowiązkowe</div><div class="lang-ua">Відкрийте мені цей секрет</div>.';
 		}
 
 		//Subject
 		this.subject = projects.value;
 		if(this.subject == null){
 			result = false;
-			errorProject.innerHTML = '<div class="lang-en">Subject is needed for mail</div><div class="lang-pl">Nagłówek maila jest wymagany</div><div class="lang-ua">???</div>.';
+			errorProject.innerHTML = '<div class="lang-en">Subject is needed for mail</div><div class="lang-pl">Nagłówek maila jest wymagany</div><div class="lang-ua">Виберіть тему для повідомлення</div>.';
 		}
 
 		//Comment
 		this.body = comment.value;
 		if(this.body.length < 5){
 			result = false;
-			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed</div><div class="lang-pl">Komentarz jest za mały. Trzeba dodać jeszcze trochę</div><div class="lang-ua">???</div>.';
+			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed</div><div class="lang-pl">Komentarz jest za mały. Trzeba dodać jeszcze trochę</div><div class="lang-ua">Невже? І це все? Я думав що зможете більше</div>.';
 		} else if(this.body.length > 300 && comment.value.length < 800){
-			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now</div><div class="lang-pl">Komentarz jest wystarczająco długi i może być wysłany</div><div class="lang-ua">???</div>.';
+			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now</div><div class="lang-pl">Komentarz jest wystarczająco długi i może być wysłany</div><div class="lang-ua">Добре, цього досить</div>.';
 		} else if(this.body.length > 800 && comment.value.length < 1000){
-			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped</div><div class="lang-pl">Komentarz jest za długi. On może zostać zignorowany</div><div class="lang-ua"></div>.';
+			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped</div><div class="lang-pl">Komentarz jest za długi. On może zostać zignorowany</div><div class="lang-ua">Правда вже достатньо</div>.';
 		} else if(this.body.length > 1900){
-			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment</div><div class="lang-pl">Ja nie będę tego czytał</div><div class="lang-ua">???</div>&hellip;';
+			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment</div><div class="lang-pl">Ja nie będę tego czytał</div><div class="lang-ua">Я не читаю баллади</div>&hellip;';
 		}
 
 		if(result){
@@ -75,7 +78,7 @@ class Mail {
 	}
 
 	format(){
-		return newURL('mailto:volodymyr.tsukanov.23@gmail.com?cc=' + this.sender + '&subject=' + this.subject + '&body=' + this.body + '...SpEcIaL...' + this.abd);
+		return new URL('mailto:volodymyr.tsukanov.23@gmail.com?cc=' + this.sender + '&subject=' + this.subject + '&body=' + this.body + '...SpEcIaL...' + this.abd);
 	}
 }
 
