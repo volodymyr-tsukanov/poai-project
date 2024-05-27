@@ -1,6 +1,9 @@
 # HTML Projekt końcowy
 Informatyka l stopień 4 semestr; Podstawy aplikacji internetowych <br>
 
+## Instructions
+[General instruction](instructions/instruction.pdf)
+
 ## Used packages
   - yuichinukiyama.vscode-preview-server
   - [SvgRepo](packages/svg-repo/README.md)
