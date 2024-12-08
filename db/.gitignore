@@ -9,10 +9,6 @@
 .DS_Store
 Thumbs.db
 
-# compiled PHP files
-*.phar
-*.opcache
-
 # backup files
 *~
 *.bak
