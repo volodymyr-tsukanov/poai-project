@@ -1,0 +1,6 @@
+# IDEs
+.vs
+.vscode
+
+# Extensions
+*.*swp
