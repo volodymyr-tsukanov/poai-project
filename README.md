@@ -5,10 +5,10 @@ Frontend only version of **poai-project** <br>
 > Informatyka Ⅰ stopień 4 semestr; Podstawy aplikacji internetowych
 
 ## Instructions
-[General instruction](../docs/instructions/instruction.pdf)
+[General instruction](../docs/docs/instruction.pdf)
 
 > [!IMPORTANT]
-> All about used packages at **docs** branch
+> All about used packages at [**assets**](../assets) branch
 
 **HTML**, **CSS**, **JavaScript**; **JSON**; **Fetch API** <br><br>
 
