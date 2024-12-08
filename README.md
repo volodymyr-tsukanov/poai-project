@@ -1,16 +1,16 @@
-# HTML Projekt końcowy
-Informatyka l stopień 4 semestr; Podstawy aplikacji internetowych <br>
+# HTML
+Frontend only version of **poai-project** <br>
+
+> [!NOTE]
+> Informatyka Ⅰ stopień 4 semestr; Podstawy aplikacji internetowych
 
 ## Instructions
-[General instruction](instructions/instruction.pdf)
+[General instruction](../docs/instructions/instruction.pdf)
 
-## Used packages
-  - yuichinukiyama.vscode-preview-server
-  - [SvgRepo](packages/svg-repo/README.md)
-  - [Shields.io](https://shields.io)
-  - [pure-slider](packages/pure-slider/README.md)
+> [!IMPORTANT]
+> All about used packages at **docs** branch
 
-**HTML**; **CSS**; **JavaScript**; **JSON**; **Fetch API** </br></br>
+**HTML**, **CSS**, **JavaScript**; **JSON**; **Fetch API** <br><br>
 
 
 Shields: [![Apache 2.0][apache-shield]][apache]
