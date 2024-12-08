@@ -1,0 +1,7 @@
+# Folders
+.vs
+.vscode
+
+
+# Extensions
+*.exe
