@@ -1,7 +1,6 @@
-# Folders
+# IDEs
 .vs
 .vscode
 
-
 # Extensions
-*.exe
+*.*swp
