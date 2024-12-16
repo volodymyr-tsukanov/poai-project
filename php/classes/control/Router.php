@@ -24,6 +24,7 @@ use project_VT\data\User;
 
 
 enum RouterAction {
+    case Init;
     case View;
 }
 
@@ -38,12 +39,16 @@ class Router {
         $this->w = new Warden();
         $this->db = new DTBase('localhost','tester','pub0key','prai_project');
 
+        // Init (main)
+        $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/index.php', MainDispatcher::class,RouterAction::Init,'GET');
+
         // Main
-        $this->addRoute('/', MainDispatcher::class,RouterAction::View,'GET');
-        $this->addRoute('/index.php', MainDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'UPDATE');
         
         //!DEBUG ONLY
-        $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'UPDATE');
     }
 
 

@@ -20,6 +20,7 @@ use DateTime;
 
 
 enum WardenRizz {
+    case Debug;
     case Route;
     case Asset;
 }
@@ -45,6 +46,7 @@ class Warden {
         $req['uri'] = strtok($_SERVER['REQUEST_URI'], '?');
         $req['method'] =  $_SERVER['REQUEST_METHOD'];
 
+        $this->logActivity(WardenRizz::Debug,$req['uri']);
         if(strpos($req['uri'], '/data/') !== false){
             $this->logActivity(WardenRizz::Route, 'Accessing data: '.$req['uri']);
         }

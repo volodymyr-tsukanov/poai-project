@@ -41,11 +41,6 @@ class AssetManager {
         $am = new AssetManager();
         return $am->checkAsset($path);
     }
-    public static function getBlockPath(string $name): string{
-        $path = self::ASSET_PATH.'blocks/'.$name.'.php'; 
-        $am = new AssetManager();
-        return $am->checkAsset($path);
-    }
     public static function getScriptPath(string $name): string{
         $path = self::ASSET_PATH.'js/'.$name.'.js'; 
         $am = new AssetManager();
