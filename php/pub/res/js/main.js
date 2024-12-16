@@ -57,6 +57,24 @@ class Settings {
 	}
 
 	applyLanguage(){
+		// langs.css
+		const styleshit = document.styleSheets[1];
+		const ruleIndex = 3;
+		
+		styleshit.deleteRule(3);
+		//console.log('before: ', styleshit);
+
+		switch(this.lang){
+			case "pl":
+				styleshit.insertRule('.lang-pl{display:inline-block;}', 3);
+				break;
+			case "ua":
+				styleshit.insertRule('.lang-ua{display:inline-block;}', 3);
+				break;
+			default:
+				styleshit.insertRule('.lang-en{display:inline-block;}', 3);
+				break;
+		}
 	}
 
 	save(){
@@ -68,12 +86,22 @@ class Settings {
 
 // Main
 	// Preload
-const host = 'http://localhost/php/poai-project/php/pub/';	//default localhost
+const host = 'http://localhost/php/poai-project/php/pub/';	//!default 'http://localhost/'
 const loadingHTML = '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>';
+
+if(window.location.href != host) window.location.replace(host);	//jump to init
 var settings = new Settings();
 
 
-function loadPage(pageId, lang) {
+document.addEventListener('DOMContentLoaded', () => {
+	const container = document.getElementById('cntnr');
+
+	// Awake
+	loadPage(settings.lastPage, settings.lang);
+});
+
+
+function loadPage(pageId, lang){
 	const nav = document.querySelector('nav');
 	const mainBody = document.getElementById('mainBody');
 
@@ -84,14 +112,15 @@ function loadPage(pageId, lang) {
 	const requestData = {
 		method: 'UPDATE',
 		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'Bearer token'
+			'Content-Type': "application/json",
+			'Authorization': "Bearer token"
 		}
 	};
 
 	switch(pageId){
 		case -1: //settings
 			fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
+				updatePage(jsonData);
 				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
 				nav.style.display = 'none';
 				loadSettings();
@@ -99,23 +128,23 @@ function loadPage(pageId, lang) {
 			break;
 		case 0: //main
 			fetch(host+'main',requestData).then(response => response.json()).then((jsonData) => {
-				mainBody.innerHTML = jsonData.content.mainBody;
+				updatePage(jsonData);
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
 		case 1: //projects
 			fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
-				mainBody.innerHTML = jsonData.mainBody;
+				updatePage(jsonData);
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
 		case 2: //forms
 			fetch(host+'forms',requestData).then(response => response.json()).then((jsonData) => {
-				mainBody.innerHTML = jsonData.mainBody;
+				updatePage(jsonData);
 				loadFields();
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
 		case 3: //contacts
 			fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
-				mainBody.innerHTML = jsonData.mainBody;
+				updatePage(jsonData);
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
 		default:
@@ -123,6 +152,22 @@ function loadPage(pageId, lang) {
 	}
 
 	if(pageId >= 0) settings.set(pageId);
+}
+
+function updatePage(jsonData){
+	document.querySelector('header').innerHTML = jsonData.content.header;
+	document.getElementById('mainBody').innerHTML = jsonData.content.mainBody;
+	
+	// Update URL and browser history
+	const name = jsonData.name;
+	const title = jsonData.content.title;
+	console.log(window.history.state);
+	if(name != 'settings'){
+		const state = window.history.state;
+		if(state === null || (state !== null && state.page != name))
+			window.history.pushState({ page: name }, title, host+name);
+	}
+	document.title = title;
 }
 
 async function reloadCSS(){

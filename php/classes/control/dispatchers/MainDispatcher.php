@@ -20,6 +20,11 @@ use project_VT\control\Dispatcher;
 
 
 class MainDispatcher extends Dispatcher {
+    private function getHeader(): string{
+        return self::renderMinified('<div class="lang-en">Main</div>
+            <div class="lang-pl">Główna strona</div>
+            <div class="lang-ua">Титульна сторінка</div>',false);
+    }
     private function getMainBody(): string{
         return self::renderMinified('
             <div class="lang-en" style="text-align:center;">
@@ -83,10 +88,12 @@ class MainDispatcher extends Dispatcher {
     public function View(){
         header('Content-Type:application/json');
         $response = [
-            'status' => 'success',
-            'message' => 'Data loaded successfully',
+            'status' => "success",
+            'name' => "main",
+            'v' => "0.1",
             'content' => [
-                'header' => "Main",
+                'title' => "Project VT",
+                'header' => $this->getHeader(),
                 'mainBody' => $this->getMainBody()
             ]
         ];

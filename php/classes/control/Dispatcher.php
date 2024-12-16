@@ -52,7 +52,11 @@ class Dispatcher {
     }
     protected function renderBody(){
         self::renderMinified('<body><div id="cntnr">
-            <header>Main</header>
+            <header>
+                <div class="lang-en">Main</div>
+                <div class="lang-pl">Główna strona</div>
+                <div class="lang-ua">Титульна сторінка</div>
+            </header>
             <nav>
                 <div id="navBtns">
                     <button id="navBtnMain" class="btnNav" onclick="loadPage(0)">

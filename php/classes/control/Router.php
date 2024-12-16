@@ -16,9 +16,10 @@
 */
 namespace project_VT\control;
 
-use project_VT\control\dispatchers\MainDispatcher;
 use project_VT\control\Errorr;
 use project_VT\control\Warden;
+use project_VT\control\dispatchers\MainDispatcher;
+use project_VT\control\dispatchers\SettingsDispatcher;
 use project_VT\interfaces\DTBase;
 use project_VT\data\User;
 
@@ -44,11 +45,17 @@ class Router {
         $this->addRoute('/index.php', MainDispatcher::class,RouterAction::Init,'GET');
 
         // Main
+        $this->addRoute('/main', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
         
         //!DEBUG ONLY
         $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/php/poai-project/php/pub/settings', MainDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
     }
 
 

@@ -131,10 +131,10 @@ function saveSettings(){
 	settings.save();
 
 	document.getElementById('mainBody').innerHTML = loadingHTML;
-	reloadCSS().then(()=>loadPage(0)).catch(e=>{
+	/*reloadCSS().then(()=>loadPage(0)).catch(e=>{
 		console.log('Error CSS reset: ' + e);
 		loadPage(0);
-	});
+	});*/
 }
 function resetSettings(){
 	settings.reset();
