@@ -16,13 +16,20 @@
 */
 namespace project_VT\control;
 
-use project_VT\control\Errorr;
-
 
 class AssetManager {
-    const ASSET_PATH = '../res/'; //!change to '../../assets/'
+    const ASSET_PATH = '../res/';
+
+    private Warden $w;
+
+
+    function __construct(){
+        $this->w = new Warden();
+    }
+
 
     private function checkAsset(string $path): string{
+        $this->w->getAsset($path);
         if(file_exists($path)){
             return $path;
         } else throw new Errorr($this,ErrorCause::Resource,"Not found res: $path");
@@ -50,5 +57,4 @@ class AssetManager {
         return $am->checkAsset($path);
     }
 }
-
 ?>

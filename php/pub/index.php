@@ -18,10 +18,30 @@ namespace project_VT;
 
 require_once '../autoloader.php';
 include_once '../funcs.php';
+
 use project_VT\control\Router;
+use project_VT\control\Errorr;
+use project_VT\control\ErrorCause;
+
 
 setDebugMode(1);
+session_start();
 
 $router = new Router();
-$router->dispatch();
+
+try{
+    $router->dispatch();
+} catch(Errorr $err){
+    switch($err->getCause()){
+        case ErrorCause::Routing:
+            echo "router shits";
+            break;
+        case ErrorCause::FileOperation:
+            echo "shit file";
+            break;
+        case ErrorCause::UNDEFINED:
+            echo "unknown shit";
+            break;
+    }
+}
 ?>

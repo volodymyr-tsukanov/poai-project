@@ -16,13 +16,73 @@
 */
 namespace project_VT\control;
 
+use DateTime;
+
+
+enum WardenRizz {
+    case Route;
+    case Asset;
+}
 
 class Warden {
+    private function alarm(string $msg){
+
+    }
+    protected function logActivity(WardenRizz $rizzon, string $msg){
+        
+    }
+
+
     public function dispatch(): array{
         $req = array();
         $req['uri'] = strtok($_SERVER['REQUEST_URI'], '?');
         $req['method'] =  $_SERVER['REQUEST_METHOD'];
         return $req;
+    }
+
+    public function getAsset(string& $path){
+        //Check if the path is not default asset path
+        if(!str_starts_with($path, AssetManager::ASSET_PATH)){
+            $pathStart = substr($path,0,7);
+            $msg = "as asset at '$path'";
+            $this->logActivity(WardenRizz::Asset,$path);
+            switch($pathStart){
+                case '../clas':
+                    break;
+                case '../data':
+                    $this->alarm('UNWANTED ACCESS to ../data '.$msg);
+                    break;
+                default:
+                    break;
+            }
+            $path = AssetManager::ASSET_PATH.$path;
+        }
+    }
+
+
+    public static function protectPasswd(string $password, string $algorithm = PASSWORD_ARGON2I): string{
+        $options = [];
+        switch($algorithm) {
+            case PASSWORD_BCRYPT:
+                $options = [
+                    'cost' => 12    //recommended cost factor
+                ];
+                break;
+            default:
+                $algorithm = PASSWORD_ARGON2I;
+            case PASSWORD_ARGON2I:
+            case PASSWORD_ARGON2ID:
+                $options = [
+                    'memory_cost' => 49152,    //48MB
+                    'time_cost'   => 4,        //iterations
+                    'threads'     => 3         //parallel threads
+                ];
+                break;
+        }
+        return password_hash($password, $algorithm, $options);
+    }
+    public static function packTime(DateTime $dt): string{
+        return $dt->format('Y-m-d H:i:s');
     }
 }
 ?>

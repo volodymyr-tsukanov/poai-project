@@ -19,11 +19,12 @@ namespace project_VT\control;
 use Exception;
 
 
-enum ErrorCause {
-    case UNDEFINED;
-    case Routing;
-    case Resource;
-    case FileOperation;
+enum ErrorCause: int{
+    case UNDEFINED = 0;
+    case Routing = 1;
+    case Resource = 6;
+    case DB = 11;
+    case FileOperation = 12;
 }
 
 class Errorr extends Exception {
@@ -51,24 +52,6 @@ class Errorr extends Exception {
 
     public function getCause(): ErrorCause{
         return $this->cause;
-    }
-}
-
-class ErrorHandler {
-    static int $HandleMode = 1; //1 = debug, 11 = dev
-
-    public static function handleError(Errorr $err){
-        switch($err->getCause()){
-            case ErrorCause::Routing:
-                echo "router shits";
-                break;
-            case ErrorCause::FileOperation:
-                echo "shit file";
-                break;
-            case ErrorCause::UNDEFINED:
-                echo "unknown shit";
-                break;
-        }
     }
 }
 ?>

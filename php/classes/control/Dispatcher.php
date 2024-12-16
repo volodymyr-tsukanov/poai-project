@@ -18,7 +18,7 @@ namespace project_VT\control;
 
 
 class Dispatcher {
-    private function renderHead(){
+    protected function renderHead(){
         print('<!DOCTYPE html>
             <!--
             poai-project  Copyright  2024  volodymyr-tsukanov
@@ -42,10 +42,10 @@ class Dispatcher {
                 <title> Project VT </title>
                 
                 <!--Import-->
-                    <!--Scripts-->
-                <script src="'.AssetManager::getScriptPath('main').'"></script>
+                    <!--Scripts-->'
+                /*<script src="'.AssetManager::getScriptPath('main').'"></script>
                 <script src="'.AssetManager::getScriptPath('forms').'"></script>
-                <script src="'.AssetManager::getScriptPath('pure-slider').'"></script>
+                <script src="'.AssetManager::getScriptPath('pure-slider').'"></script>*/.'
                     <!--Styles-->
                 <link rel="stylesheet" type="text/css" href="'.AssetManager::getStylePath('styles').'">
                 <link rel="stylesheet" type="text/css" href="'.AssetManager::getStylePath('langs').'">
@@ -54,30 +54,11 @@ class Dispatcher {
                 <link rel="icon" type="image/x-icon" href="'.AssetManager::getIconPath('favicon.png').'">
         </head>');
     }
-    private function renderBody(){
-        print('<body>
-            <div id="cntnr">
-                <header>HeadeR</header>
-                <nav>NaV</nav>
-                <!--aside>AsidE</aside-->
-                <div id="mainBody">
-                    <div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>
-        ');
+    protected function renderBody(){
+        print('<body>');
     }
     protected function renderTail(){
-        print('</div>
-                <footer> by VT </footer>
-            </div>
-        </body></html>');
-    }
-
-    protected function render($block, array $data = []){
-        extract($data);
-
-        $this->renderHead();
-        $this->renderBody();
-        include AssetManager::getBlockPath($block);
-        $this->renderTail();
+        print('</body></html>');
     }
 }
 ?>

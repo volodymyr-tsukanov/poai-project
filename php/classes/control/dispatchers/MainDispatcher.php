@@ -17,11 +17,15 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
+use project_VT\control\AssetManager;
 
 
 class MainDispatcher extends Dispatcher {
     public function View(){
-        $this->render('main');
+        $this->renderHead();
+        $this->renderBody();
+        include AssetManager::getBlockPath('main');
+        $this->renderTail();
     }
 }
 

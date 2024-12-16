@@ -19,25 +19,28 @@ namespace project_VT\control;
 use project_VT\control\dispatchers\MainDispatcher;
 use project_VT\control\Errorr;
 use project_VT\control\Warden;
+use project_VT\interfaces\DTBase;
+use project_VT\data\User;
 
 
 enum RouterAction {
     case View;
 }
 
-
 class Router {
     protected $routes = [];
     private Warden $w;
+    private DTBase $db;
+    protected User $user;
 
 
     function __construct(){
         $this->w = new Warden();
+        $this->db = new DTBase('localhost','tester','pub0key','prai_project');
 
         // Main
         $this->addRoute('/', MainDispatcher::class,RouterAction::View,'GET');
         $this->addRoute('/index.php', MainDispatcher::class,RouterAction::View,'GET');
-        $this->addRoute('/pub/', MainDispatcher::class,RouterAction::View,'GET');
         
         //!DEBUG ONLY
         $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::View,'GET');
@@ -60,7 +63,7 @@ class Router {
             if(method_exists($dispatcher, $methodName)){
                 $dispatcher->$methodName();
             } else {
-                echo "Action $methodName does not supported in $dispatcherClass.";
+                throw new Errorr($this,ErrorCause::Routing,"Action $methodName does not supported in $dispatcherClass");
             }
         } else {
             $uri = $req['uri'];
