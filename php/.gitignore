@@ -1,11 +1,7 @@
-# Composer dependencies
-/vendor/
-
-# environment files
-.env
-
-# log files
+# Extensions
+*.env
 *.log
+*.ini
 
 # cache files
 /cache/*
@@ -25,4 +21,5 @@ Thumbs.db
 
 
 # Asset folder
-res/*
+res/assets/*
+res/css/*

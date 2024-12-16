@@ -25,11 +25,18 @@ enum WardenRizz {
 }
 
 class Warden {
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+
+
     private function alarm(string $msg){
 
     }
     protected function logActivity(WardenRizz $rizzon, string $msg){
-        
+        $logEntry = date(self::DATETIME_FORMAT) .': '. $rizzon->name .'=>'. $msg;
+
+        $fl = fopen('1.log','a');
+        fwrite($fl,$logEntry."\n");
+        fclose($fl);
     }
 
 
@@ -37,6 +44,14 @@ class Warden {
         $req = array();
         $req['uri'] = strtok($_SERVER['REQUEST_URI'], '?');
         $req['method'] =  $_SERVER['REQUEST_METHOD'];
+
+        if(strpos($req['uri'], '/data/') !== false){
+            $this->logActivity(WardenRizz::Route, 'Accessing data: '.$req['uri']);
+        }
+        if(strpos($req['uri'], '/res/') !== false){
+            $this->logActivity(WardenRizz::Route, 'Accessing res: '.$req['uri']);
+        }
+
         return $req;
     }
 
@@ -82,7 +97,7 @@ class Warden {
         return password_hash($password, $algorithm, $options);
     }
     public static function packTime(DateTime $dt): string{
-        return $dt->format('Y-m-d H:i:s');
+        return $dt->format(self::DATETIME_FORMAT);
     }
 }
 ?>

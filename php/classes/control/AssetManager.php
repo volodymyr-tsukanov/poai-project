@@ -18,7 +18,7 @@ namespace project_VT\control;
 
 
 class AssetManager {
-    const ASSET_PATH = '../res/';
+    const ASSET_PATH = 'res/';
 
     private Warden $w;
 
