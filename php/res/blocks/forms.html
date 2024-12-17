@@ -1,0 +1,60 @@
+<!--
+   poai-project  Copyright  2024  volodymyr-tsukanov
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<h1>
+	<div class="lang-en">Feedback</div>
+	<div class="lang-pl">Opinia</div>
+	<div class="lang-ua">Відгук</div>
+</h1>
+$SEP$
+<form action="#" onsubmit="return giveFeedback()" onreset="clearFields()" onchange="saveFields()">
+	<fieldset>
+		<legend>
+			<div class="lang-en">Give feedback</div>
+			<div class="lang-pl">Podzielić się swoją opinią</div>
+			<div class="lang-ua">Залишити відгук</div>
+		</legend>
+		
+		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>: </label><input id="name" type="text" required>
+		<span id="error_name" class="error"></span> <br>
+
+		<label for="sender">Email: </label><input id="sender" type="email" required>
+		<span id="error_sender" class="error"></span> <br>
+
+		<fieldset style="width:fit-content;">
+			<legend>
+				<div class="lang-en">Gender</div>
+				<div class="lang-pl">Plec</div>
+				<div class="lang-ua">Стать</div>
+			</legend>
+			<input name="gender" type="radio" value="ml"><label class="rdoA1"> <div class="lang-en">Male</div><div class="lang-pl">Męszczyzna</div><div class="lang-ua">Чоловіча</div></label>
+			<input name="gender" type="radio" value= "fl" checked><label class="rdoA1"> <div class="lang-en">Female</div><div class="lang-pl">Kobieta</div><div class="lang-ua">Жіноча</div></label>
+			<input name="gender" type="radio" value= "tr"><label class="rdoA1"> <div class="lang-en">Other</div><div class="lang-pl">Inne</div><div class="lang-ua">Інше</div></label>
+		</fieldset>
+
+		<label for="prjt"><div class="lang-en">Mail subject</div><div class="lang-pl">Nagłówek maila</div><div class="lang-ua">Тема повідомлення</div> </label><select id="prjt" name="project">
+			<option value="poai-project">This site</option>
+			<option value="pear">Pear</option>
+			<option value="telephone-book">Telephone book</option>
+			<option value="nspec" selected>NoThInG</option>
+		</select> <span id="error_project" class="error"></span> <br>
+		
+		<textarea id="cmnt" name="comment" rows="7" placeholder="Comment..." title="Comment" required></textarea> <br>
+		<span id="error_comment" class="error"></span>
+	</fieldset>
+	
+	<button type="submit" class="btnA1"><div class="lang-en">Send mail</div><div class="lang-pl">Wysłać maila</div><div class="lang-ua">Надіслати відгук</div></button>
+	<button type="reset" class="btnA1"><div class="lang-en">Reset</div><div class="lang-pl">Zresetować</div><div class="lang-ua">Скинути</div></button>
+</form>

@@ -19,11 +19,11 @@ namespace project_VT\control\dispatchers;
 use project_VT\control\Dispatcher;
 
 
-class SettingsDispatcher extends Dispatcher {
+class ContactsDispatcher extends Dispatcher {
     public function View(){
         header('Content-Type:application/json');
-        $data = $this->block('settings');
-        $data['content']['title'] = 'Settings';
+        $data = $this->block('contacts');
+        $data['content']['title'] = 'Contacts';
         echo json_encode($data);
     }
 }

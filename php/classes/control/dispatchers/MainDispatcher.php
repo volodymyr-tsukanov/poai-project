@@ -17,7 +17,6 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
-use project_VT\control\AssetManager;
 
 
 class MainDispatcher extends Dispatcher {
@@ -28,19 +27,9 @@ class MainDispatcher extends Dispatcher {
     
     public function View(){
         header('Content-Type:application/json');
-        $name = 'main';
-        $content = explode('$SEP$',AssetManager::getHTMLBlock($name));
-        $response = [
-            'status' => "success",
-            'name' => $name,
-            'v' => "0.1",
-            'content' => [
-                'title' => "Project VT",
-                'header' => $content[0],
-                'mainBody' => $content[1]
-            ]
-        ];
-        echo json_encode($response);
+        $data = $this->block('main');
+        $data['content']['title'] = 'Project VT';
+        echo json_encode($data);
     }
 }
 ?>

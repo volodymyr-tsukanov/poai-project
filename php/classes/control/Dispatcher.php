@@ -22,7 +22,7 @@ class Dispatcher {
         $html = AssetManager::getHTMLBlock('index');
         $css = AssetManager::getCSSContent('styles').
             AssetManager::getCSSContent('pure-slider').
-            '</style><style>'.AssetManager::getCSSContent('langs');
+            '</style><style>'.AssetManager::getCSSContent('langs'); //langs.css as second style
         $js = AssetManager::getJSContent('main').
             AssetManager::getJSContent('forms').
             AssetManager::getJSContent('pure-slider');
@@ -37,6 +37,20 @@ class Dispatcher {
         $html = str_replace(['$CSS$','$JS$'],[$css,$js], $html);
         $html = str_replace(['$Aicon$','$Ainfo$','$Aptfo$','$Acomm$','$Acnts$','$Asett$'],$assets, $html);
         return $html;
+    }
+
+    protected function block(string $blockName): array{
+        $content = explode('$SEP$',AssetManager::getHTMLBlock($blockName));
+        return [
+            'status' => "success",
+            'name' => $blockName,
+            'v' => "0.1",
+            'content' => [
+                'title' => "Project VT",
+                'header' => $content[0],
+                'mainBody' => $content[1]
+            ]
+        ];
     }
 }
 ?>

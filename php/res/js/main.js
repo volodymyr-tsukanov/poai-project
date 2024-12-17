@@ -58,7 +58,7 @@ class Settings {
 
 	applyLanguage(){
 		/* langs.css */
-		const styleshit = document.styleSheets[1];
+		const styleshit = document.styleSheets[1];	/*langs.css must be secont <style>*/
 		const ruleIndex = 3;
 		
 		styleshit.deleteRule(3);
