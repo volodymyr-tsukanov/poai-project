@@ -38,23 +38,24 @@ class Router {
 
     function __construct(){
         $this->w = new Warden();
-        $this->db = new DTBase('localhost','tester','pub0key','prai_project');
+        //$this->db = new DTBase('localhost','tester','pub0key','prai_project');
 
         // Init (main)
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/index.php', MainDispatcher::class,RouterAction::Init,'GET');
 
         // Main
-        $this->addRoute('/main', MainDispatcher::class,RouterAction::Init,'GET');
+        //$this->addRoute('/main', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::Init,'GET');
+        // Settings
+        //$this->addRoute('/settings', SettingsDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
         
         //!DEBUG ONLY
         $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
-        $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::Init,'GET');
+        //$this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/settings', MainDispatcher::class,RouterAction::Init,'GET');
+        //$this->addRoute('/php/poai-project/php/pub/settings', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
     }
 

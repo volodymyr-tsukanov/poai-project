@@ -65,6 +65,7 @@ class Warden {
             $this->logActivity(WardenRizz::Asset,$path);
             switch($pathStart){
                 case '../clas':
+                case '../res/':
                     break;
                 case '../data':
                     $this->alarm('UNWANTED ACCESS to ../data '.$msg);
@@ -73,6 +74,26 @@ class Warden {
                     break;
             }
             $path = AssetManager::ASSET_PATH.$path;
+        }
+    }
+    public function getRes(string& $path){
+        //Check if the path is not default asset path
+        if(!str_starts_with($path, AssetManager::RES_PATH)){
+            $pathStart = substr($path,0,7);
+            $msg = "as res at '$path'";
+            $this->logActivity(WardenRizz::Asset,$path);
+            switch($pathStart){
+                case 'asset/i':
+                    break;
+                case '../clas':
+                    break;
+                case '../data':
+                    $this->alarm('UNWANTED ACCESS to ../data '.$msg);
+                    break;
+                default:
+                    break;
+            }
+            $path = AssetManager::RES_PATH.$path;
         }
     }
 
@@ -98,6 +119,7 @@ class Warden {
         }
         return password_hash($password, $algorithm, $options);
     }
+
     public static function packTime(DateTime $dt): string{
         return $dt->format(self::DATETIME_FORMAT);
     }

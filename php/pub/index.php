@@ -24,7 +24,7 @@ use project_VT\control\Errorr;
 use project_VT\control\ErrorCause;
 
 
-setDebugMode(1);
+//setDebugMode(1);
 session_start();
 
 $router = new Router();
@@ -32,6 +32,7 @@ $router = new Router();
 try{
     $router->dispatch();
 } catch(Errorr $err){
+    echo "<h1>".$err."</h1>";
     switch($err->getCause()){
         case ErrorCause::Routing:
             echo "router shits";

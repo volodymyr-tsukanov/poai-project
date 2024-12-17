@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-// Classes
+/* Classes */
 class Settings {
 	constructor(){
 		let s = JSON.parse(localStorage.getItem('settings'));
@@ -51,18 +51,18 @@ class Settings {
 		this.save();
 	}
 	reset(){
-		this.lastPage = -1; //load settings page by default
+		this.lastPage = -1; /*load settings page by default*/
 		this.lang = 'en';
 		this.save();
 	}
 
 	applyLanguage(){
-		// langs.css
+		/* langs.css */
 		const styleshit = document.styleSheets[1];
 		const ruleIndex = 3;
 		
 		styleshit.deleteRule(3);
-		//console.log('before: ', styleshit);
+		/*console.log('before: ', styleshit);*/
 
 		switch(this.lang){
 			case "pl":
@@ -84,19 +84,19 @@ class Settings {
 }
 
 
-// Main
-	// Preload
-const host = 'http://localhost/php/poai-project/php/pub/';	//!default 'http://localhost/'
+/* Main */
+	/* Preload */
+const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://localhost/'*/
 const loadingHTML = '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>';
 
-if(window.location.href != host) window.location.replace(host);	//jump to init
+if(window.location.href != host) window.location.replace(host);	/*jump to init*/
 var settings = new Settings();
 
 
 document.addEventListener('DOMContentLoaded', () => {
 	const container = document.getElementById('cntnr');
 
-	// Awake
+	/* Awake */
 	loadPage(settings.lastPage, settings.lang);
 });
 
@@ -118,7 +118,7 @@ function loadPage(pageId, lang){
 	};
 
 	switch(pageId){
-		case -1: //settings
+		case -1: /* settings */
 			fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
 				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
@@ -126,23 +126,23 @@ function loadPage(pageId, lang){
 				loadSettings();
 			}).catch((e) => console.error('fetchPage: '+e));
 			break;
-		case 0: //main
+		case 0: /*main*/
 			fetch(host+'main',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
-		case 1: //projects
+		case 1: /*projects*/
 			fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
-		case 2: //forms
+		case 2: /*forms*/
 			fetch(host+'forms',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
 				loadFields();
 			}).catch((e) => console.error('fetchPage: '+e));;
 			break;
-		case 3: //contacts
+		case 3: /*contacts*/
 			fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
 			}).catch((e) => console.error('fetchPage: '+e));;
@@ -157,18 +157,9 @@ function loadPage(pageId, lang){
 function updatePage(jsonData){
 	document.querySelector('header').innerHTML = jsonData.content.header;
 	document.getElementById('mainBody').innerHTML = jsonData.content.mainBody;
-	
-	// Update URL and browser history
-	const name = jsonData.name;
-	const title = jsonData.content.title;
-	console.log(window.history.state);
-	if(name != 'settings'){
-		const state = window.history.state;
-		if(state === null || (state !== null && state.page != name))
-			window.history.pushState({ page: name }, title, host+name);
-	}
-	document.title = title;
+	document.title = jsonData.content.title;
 }
+
 
 async function reloadCSS(){
 	const lnks = document.getElementsByTagName('link');

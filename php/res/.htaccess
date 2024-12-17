@@ -1,11 +1,11 @@
 # allow
-<FilesMatch "\.(jpg|png|html|css)">
+<FilesMatch "\.(html|css|js)">
     Order Allow,Deny
     Allow from all
 </FilesMatch>
 
 # deny
-<FilesMatch "^(?!(.*\.(jpg|png|html|css)$)).*$">
+<FilesMatch "^(?!(.*\.(html|css|js)$)).*$">
     Order Deny,Allow
     Deny from all
 </FilesMatch>

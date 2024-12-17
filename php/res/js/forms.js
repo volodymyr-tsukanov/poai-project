@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-// Classes
+/* Classes */
 class Mail {
 	constructor(){
-		this.sender = 'AnOnYmOuS'
+		this.sender = 'AnOnYmOuS';
 		this.subject = 'NoTiTlE';
 		this.body = 'NoTeXt';
 		this.abd = this.getAdditionalBrowserData();
@@ -40,13 +40,13 @@ class Mail {
 		const errorProject = document.getElementById('error_project');
 		const errorComment = document.getElementById('error_comment');
 
-		//Reset errors
+		/*Reset errors*/
 		errorName.innerHTML = '';
 		errorSender.innerHTML = '';
 		errorProject.innerHTML = '';
 		errorComment.innerHTML = '';
 
-		//Sender
+		/*Sender*/
 		if(name.value == null){
 			result = false;
 			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">Поділіться іменем хочаб</div>.';
@@ -58,21 +58,21 @@ class Mail {
 			errorName.innerHTML = '<div class="lang-en">Entered name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
 		}
 
-		//Sender
+		/*Sender*/
 		this.sender = sender.value;
 		if(this.sender == null){
 			result = false;
 			errorSender.innerHTML = '<div class="lang-en">Email is needed</div><div class="lang-pl">Podanie emaila jest obowiązkowe</div><div class="lang-ua">Відкрийте мені цей секрет</div>.';
 		}
 
-		//Subject
+		/*Subject*/
 		this.subject = projects.value;
 		if(this.subject == null){
 			result = false;
 			errorProject.innerHTML = '<div class="lang-en">Subject is needed for mail</div><div class="lang-pl">Nagłówek maila jest wymagany</div><div class="lang-ua">Виберіть тему для повідомлення</div>.';
 		}
 
-		//Comment
+		/*Comment*/
 		this.body = comment.value;
 		if(this.body.length < 5){
 			result = false;
@@ -98,7 +98,7 @@ class Mail {
 }
 
 
-// Default methods
+/* Default methods */
 function setRadioIndex(name='', index=0){
 	document.getElementsByName(name)[index].checked = true;
 }
@@ -113,8 +113,8 @@ function getRadioIndex(name=''){
 }
 
 
-// Form methods
-	//Settings
+/* Form methods */
+	/*Settings*/
 function loadSettings(){
 	let index = 0;
 	switch(settings.lang){
@@ -149,7 +149,7 @@ function clearCashe(){
 	localStorage.removeItem('feedback');
 }
 
-	//Feedback
+	/*Feedback*/
 function loadFields(){
 	let fields = localStorage.getItem('feedback');
 	if(fields && confirm('Load last saved feedback data?')){

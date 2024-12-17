@@ -16,9 +16,12 @@
 */
 namespace project_VT\control;
 
+include_once '../../funcs.php';
+
 
 class AssetManager {
-    const ASSET_PATH = 'res/';
+    const ASSET_PATH = 'assets/';
+    const RES_PATH = '../res/';
 
     private Warden $w;
 
@@ -32,24 +35,36 @@ class AssetManager {
         $this->w->getAsset($path);
         if(file_exists($path)){
             return $path;
+        } else throw new Errorr($this,ErrorCause::Resource,"Not found asset: $path");
+    }
+    private function getRes(string $path): string{
+        $this->w->getRes($path);
+        if(file_exists($path)){
+            if(is_readable($path)) return file_get_contents($path);
+            else throw new Errorr($this,ErrorCause::FileOperation,"Not readable res: $path");
         } else throw new Errorr($this,ErrorCause::Resource,"Not found res: $path");
     }
 
 
-    public static function getStylePath(string $name): string{
-        $path = self::ASSET_PATH.'css/'.$name.'.css'; 
+    public static function getHTMLBlock(string $name): string{
+        $path = self::RES_PATH.'blocks/'.$name.'.html'; 
         $am = new AssetManager();
-        return $am->checkAsset($path);
+        return minifyHTML($am->getRes($path));
     }
-    public static function getScriptPath(string $name): string{
-        $path = self::ASSET_PATH.'js/'.$name.'.js'; 
+    public static function getCSSContent(string $name): string{
+        $path = self::RES_PATH.'css/'.$name.'.css'; 
         $am = new AssetManager();
-        return $am->checkAsset($path);
+        return minifyCSS($am->getRes($path));
+    }
+    public static function getJSContent(string $name): string{
+        $path = self::RES_PATH.'js/'.$name.'.js'; 
+        $am = new AssetManager();
+        return minifyJS($am->getRes($path));
     }
     public static function getIconPath(string $name): string{
-        $path = self::ASSET_PATH.'assets/icons/'.$name; 
+        $path = self::ASSET_PATH.'icons/'.$name; 
         $am = new AssetManager();
         return $am->checkAsset($path);
-    }
+    }  
 }
 ?>
