@@ -4,3 +4,7 @@
 
 # Extensions
 *.*swp
+
+
+# Colliding branches
+php/*

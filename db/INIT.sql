@@ -10,7 +10,10 @@ CREATE TABLE `users` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `login` VARCHAR(24) NOT NULL,
     `email` VARCHAR(254) NOT NULL,                 -- Max email length per RFC 5321
-    `pass` CHAR(60) NOT NULL,                      -- For BCrypt, Alt: CHAR(64) for SHA-256
+    `pass` VARCHAR(254) NOT NULL,
+    `status` TINYINT NOT NULL DEFAULT 1,
+    `reputation` TINYINT UNSIGNED NOT NULL DEFAULT 37,
+    `language` TINYINT UNSIGNED NOT NULL DEFAULT 0,
     `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -22,7 +25,7 @@ CREATE TABLE `users` (
 
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
-    `id` BINARY(16) NOT NULL,
+    `id` VARCHAR(254) NOT NULL,
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `expires` TIMESTAMP NOT NULL,                        -- Alt: DATETIME for timezone independence
     `last_activity` TIMESTAMP NULL DEFAULT NULL,
@@ -38,7 +41,7 @@ CREATE TABLE `sessions` (
 DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `subject` ENUM('*','other') NOT NULL DEFAULT 'other',
+    `subject` ENUM('project-VT','pear','telephone-book','sw-c','code-crypt','nspec') NOT NULL DEFAULT 'project-VT',
     `message` TEXT NOT NULL,                               -- Alt: MEDIUMTEXT for >16MB messages
     `status` ENUM('new','read','answered','important') NOT NULL DEFAULT 'new',
     `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
