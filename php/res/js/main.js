@@ -158,11 +158,11 @@ function loadPage(pageId, lang){
 		case 1: /*projects*/
 			if(cachedData.projects === undefined){
 				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
-					updatePage(jsonData,-1,'projects');
+					updatePage(jsonData,-randomInt(620,970),'projects');
 					cachedData.pureSlider = jsonData.content.extension;
 				}).catch((e) => console.error('loadPage: '+e));
 			} else{
-				updatePage(cachedData.projects,updateDelay);
+				updatePage(cachedData.projects);
 			}
 			break;
 		case 2: /*forms*/
@@ -174,7 +174,7 @@ function loadPage(pageId, lang){
 			break;
 		case 3: /*contacts*/
 			fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
-				updatePage(jsonData,-1);
+				updatePage(jsonData,-randomInt(340,530));
 			}).catch((e) => console.error('loadPage: '+e));
 			break;
 		default:
@@ -184,8 +184,8 @@ function loadPage(pageId, lang){
 }
 async function updatePage(jsonData,delay=0,cacheName=undefined){
 	const mainBody = document.getElementById('mainBody');
-	if(delay>0) await new Promise(wt => setTimeout(wt, delay));
-	else if(delay<0){	/*preload of images needed*/
+	if(delay!=0) await new Promise(wt => setTimeout(wt, Math.abs(delay)));
+	if(delay<0){	/*preload of images needed*/
 		const tempDiv = document.createElement('div');
 		const images = tempDiv.getElementsByTagName('img');
 		await checkAllImagesLoaded(images);
@@ -203,9 +203,7 @@ async function reloadPage(withDelay=true){
 		const delay = randomInt(790,1690);
 		await new Promise(wt => setTimeout(wt, delay));
 		blockUI();
-		console.log(0);
 	}
-	console.log(1);
 	location.reload();
 }
 

@@ -22,24 +22,24 @@ function openImageView(index=-1){
 
 	switch(index){
 		case 0:
-			setImageAttributes(slides[0].children[2], 'assets/icons/favicon.png', 'This site logo');
+			setImageAttributes(slides[0].children[2], 'assets/icons/favicon.png', 'This site logo', true);
 			removeAfter(pureSlider.children, 1);
 			break;
 		case 1:
-			setImageAttributes(slides[0].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true', 'Pear 7');
+			setImageAttributes(slides[0].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true', 'Pear 7', true);
 			setImageAttributes(slides[1].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/raw/main/work/r6/Relational.png', 'Pear database model');
 			setImageAttributes(slides[2].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-4.jpg?raw=true', 'Pear 4');
 			setImageAttributes(slides[3].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-3.jpg?raw=true', 'Pear 3');
 			setImageAttributes(slides[4].children[2], 'https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-8.jpg?raw=true', 'Pear 8');
 			break;
 		case 2:
-			setImageAttributes(slides[0].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true', 'Telephone book icon');
+			setImageAttributes(slides[0].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true', 'Telephone book icon', true);
 			setImageAttributes(slides[1].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true', 'Telephone book contact');
 			setImageAttributes(slides[2].children[2], 'https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true', 'Telephone book search');
 			removeAfter(pureSlider.children, 3);
 			break;
 		default:
-			setImageAttributes(slides[0].children[2], 'assets/icons/progress-chart.png', 'Upcoming updates');
+			setImageAttributes(slides[0].children[2], 'assets/icons/progress-chart.png', 'Upcoming updates', true);
 			setImageAttributes(slides[1].children[2], 'assets/icons/favicon.png', 'Icon');
 			removeAfter(pureSlider.children, 2);
 			break;
@@ -55,9 +55,10 @@ function closeImageView(){
 }
 
 
-function setImageAttributes(elem, src='', alt='Corrupted image'){
+function setImageAttributes(elem, src='', alt='Corrupted image', highPriority=false){
 	elem.setAttribute('src', src);
 	elem.setAttribute('alt', alt);
+	if(highPriority) elem.setAttribute('fetchpriority','high');
 }
 
 function removeAfter(elems, index=1){
