@@ -17,6 +17,7 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
+use project_VT\control\Warden;
 
 
 class MainDispatcher extends Dispatcher {
@@ -30,6 +31,26 @@ class MainDispatcher extends Dispatcher {
         $data = $this->block('main');
         $data['content']['title'] = 'Project VT';
         echo json_encode($data);
+    }
+
+    public function ResGet(){
+        header('Content-Type:text/html');
+        $type = Warden::gatherGETData('t');
+        $name = Warden::gatherGETData('n');
+        if($type == false || $name == false)
+            echo self::RESPONSE_WrEQEST;
+        else{
+            switch($type){
+                case 'bk':  //block
+                    $data = $this->blockRaw($name);
+                    if($data === false) echo self::RESPONSE_NeXIST;
+                    else echo $data;
+                    break;
+                default:
+                    echo self::RESPONSE_NeXIST;
+                    break;
+            }
+        }
     }
 }
 ?>

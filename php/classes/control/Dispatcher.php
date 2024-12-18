@@ -18,30 +18,32 @@ namespace project_VT\control;
 
 
 class Dispatcher {
+    const RESPONSE_GOOD = 'G', RESPONSE_NeXIST = 'E', RESPONSE_WrEQEST = 'R', RESPONSE_WaUTH = 'A';
+
+    
     protected function index(): string{
         $html = AssetManager::getHTMLBlock('index');
         $css = AssetManager::getCSSContent('styles').
             AssetManager::getCSSContent('pure-slider').
             '</style><style>'.AssetManager::getCSSContent('langs'); //langs.css as second style
-        $js = AssetManager::getJSContent('main').
-            AssetManager::getJSContent('forms').
-            AssetManager::getJSContent('pure-slider');
-        $assets = [
-            AssetManager::getIconPath('favicon.png'),
-            AssetManager::getIconPath('info.png'),
-            AssetManager::getIconPath('portfolio.png'),
-            AssetManager::getIconPath('comment.png'),
-            AssetManager::getIconPath('contacts.png'),
-            AssetManager::getIconPath('settings.png')
-        ];
+        $js = AssetManager::getJSContent('forms').
+            AssetManager::getJSContent('pure-slider').
+            AssetManager::getJSContent('main'); //main always last
         $html = str_replace(['$CSS$','$JS$'],[$css,$js], $html);
-        $html = str_replace(['$Aicon$','$Ainfo$','$Aptfo$','$Acomm$','$Acnts$','$Asett$'],$assets, $html);
         return $html;
     }
 
+    protected function blockRaw(string $blockName): string|bool{
+        try{
+            $data = AssetManager::getHTMLBlock($blockName);
+            return $data;
+        }catch(Errorr $err){
+            return false;
+        }
+    }
     protected function block(string $blockName): array{
         $content = explode('$SEP$',AssetManager::getHTMLBlock($blockName));
-        return [
+        $data = [
             'status' => "success",
             'name' => $blockName,
             'v' => "0.1",
@@ -51,6 +53,8 @@ class Dispatcher {
                 'mainBody' => $content[1]
             ]
         ];
+        if(count($content)>2) $data['content']['secondBody'] = $content[2];
+        return $data;
     }
 }
 ?>

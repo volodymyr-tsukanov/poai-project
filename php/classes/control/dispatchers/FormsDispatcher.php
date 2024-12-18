@@ -26,5 +26,10 @@ class FormsDispatcher extends Dispatcher {
         $data['content']['title'] = 'Forms';
         echo json_encode($data);
     }
+
+    public function Post(){
+        header('Content-Type:text/html');
+        echo self::RESPONSE_WaUTH;
+    }
 }
 ?>

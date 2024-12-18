@@ -30,6 +30,8 @@ use project_VT\data\User;
 enum RouterAction {
     case Init;
     case View;
+    case ResGet;
+    case Post;
 }
 
 class Router {
@@ -53,18 +55,25 @@ class Router {
         $this->addRoute('/projects', ProjectsDispatcher::class,RouterAction::View,'UPDATE');
         // Forms
         $this->addRoute('/forms', FormsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/forms', FormsDispatcher::class,RouterAction::Post,'POST');
         // Contacts
         $this->addRoute('/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
         // Settings
         $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
+
+        // Resources
+        $this->addRoute('/res', MainDispatcher::class,RouterAction::ResGet,'GET');
         
         //!DEBUG ONLY
         $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'UPDATE');
         $this->addRoute('/php/poai-project/php/pub/projects', ProjectsDispatcher::class,RouterAction::View,'UPDATE');
         $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::Post,'POST');
         $this->addRoute('/php/poai-project/php/pub/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
         $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/php/poai-project/php/pub/res', MainDispatcher::class,RouterAction::ResGet,'GET');
+
     }
 
 

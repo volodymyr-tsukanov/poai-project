@@ -85,18 +85,34 @@ class Settings {
 
 
 /* Main */
-	/* Preload */
+	/*Init*/
 const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://localhost/'*/
-const loadingHTML = '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>';
 
 if(window.location.href != host) window.location.replace(host);	/*jump to init*/
-var settings = new Settings();
+let settings = new Settings();
+let cachedData = { loading : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', secondBody : '' };
+
+	/*Preload*/
+/*loadResources();*/
 
 
 document.addEventListener('DOMContentLoaded', () => {
 	const container = document.getElementById('cntnr');
+	const navCBtn1 = document.getElementById('navCBtn1');
 
 	/* Awake */
+		/*Events - Navigation*/
+	navCBtn1.addEventListener('click', ()=> {
+		const btns = document.getElementById('navBtns');
+		if(btns.checkVisibility()){
+			btns.style.setProperty('display', 'none');
+			navCBtn1.innerHTML = '<div class="lang-en lang-pl">Menu</div><div class="lang-ua">Меню</div>';
+		} else{
+			btns.style.setProperty('display', 'block');
+			navCBtn1.innerHTML = '^^^';
+		}
+	});
+
 	loadPage(settings.lastPage, settings.lang);
 });
 
@@ -104,11 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadPage(pageId, lang){
 	const nav = document.querySelector('nav');
 	const mainBody = document.getElementById('mainBody');
+	const updateDelay = randomInt(200,800);
 
-	if(lang == undefined) lang = settings.lang;
+	if(lang === undefined) lang = settings.lang;
 	settings.applyLanguage();
 
-	mainBody.innerHTML = loadingHTML;
+	mainBody.innerHTML = cachedData.loading;
 	const requestData = {
 		method: 'UPDATE',
 		headers: {
@@ -119,46 +136,81 @@ function loadPage(pageId, lang){
 
 	switch(pageId){
 		case -1: /* settings */
-			fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
-				updatePage(jsonData);
-				document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
-				nav.style.display = 'none';
-				loadSettings();
-			}).catch((e) => console.error('fetchPage: '+e));
+			if(cachedData.settings === undefined){
+				fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
+					updatePage(jsonData,0,'settings');
+					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
+					nav.style.display = 'none';
+					loadSettings();
+				}).catch((e) => console.error('loadPage: '+e));
+			} else{
+				updatePage(cachedData.settings,updateDelay);
+			}
 			break;
 		case 0: /*main*/
-			fetch(host+'main',requestData).then(response => response.json()).then((jsonData) => {
-				updatePage(jsonData);
-			}).catch((e) => console.error('fetchPage: '+e));;
+			if(cachedData.main === undefined){
+				fetch(host+'main',requestData).then(response => response.json()).then((jsonData) => {
+					updatePage(jsonData,0,'main');
+				}).catch((e) => console.error('loadPage: '+e));
+			} else{
+				updatePage(cachedData.main,updateDelay);
+			}
 			break;
 		case 1: /*projects*/
-			fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
-				updatePage(jsonData);
-			}).catch((e) => console.error('fetchPage: '+e));;
+			if(cachedData.projects === undefined){
+				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
+					updatePage(jsonData,0,'projects');
+					document.getElementById('imgView').innerHTML = jsonData.content.extension;
+				}).catch((e) => console.error('loadPage: '+e));
+			} else{
+				updatePage(cachedData.projects,updateDelay);
+			}
 			break;
 		case 2: /*forms*/
 			fetch(host+'forms',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
+				cachedData.secondBody = jsonData.content.secondBody;
 				loadFields();
-			}).catch((e) => console.error('fetchPage: '+e));;
+			}).catch((e) => console.error('loadPage: '+e));
 			break;
 		case 3: /*contacts*/
 			fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
-			}).catch((e) => console.error('fetchPage: '+e));;
+			}).catch((e) => console.error('loadPage: '+e));
 			break;
 		default:
 			break;
 	}
-
 	if(pageId >= 0) settings.set(pageId);
 }
 
-function updatePage(jsonData){
+async function updatePage(jsonData,delay=0,cacheName=undefined){
+	if(delay>0) await new Promise(wt => setTimeout(wt, delay));
 	document.querySelector('header').innerHTML = jsonData.content.header;
 	document.getElementById('mainBody').innerHTML = jsonData.content.mainBody;
 	document.title = jsonData.content.title;
+	if(cacheName) cachedData[cacheName] = jsonData;
 }
+
+
+/*async function loadResource(resArgs, type='text/html'){
+	const requestData = {
+		method: 'GET',
+		headers: {
+			'Content-Type': type,
+			'Authorization': "Bearer token"
+		}
+	};
+	const response = await fetch(host+'res?'+resArgs, requestData);
+	if(!response.ok){
+		throw new Error(`HTTP error ${response.status}`);
+	}
+	return await response.text();
+}
+async function loadResources(){
+	cachedData.loading = await loadResource('t=bk&n=loading');
+	pureSliderHTML = await loadResource('t=bk&n=pure-slider');
+}*/
 
 
 async function reloadCSS(){
@@ -170,4 +222,9 @@ async function reloadCSS(){
 		}
 	}
 	await new Promise(wt => setTimeout(wt, 2500));
+}
+
+
+function randomInt(min=0,max=100){
+	return min+Math.floor(Math.random() * (max-min+1));
 }

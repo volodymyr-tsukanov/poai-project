@@ -88,7 +88,6 @@ class Mail {
 		if(result){
 			clearFields();
 		}
-
 		return result;
 	}
 
@@ -130,7 +129,7 @@ function loadSettings(){
 function saveSettings(){
 	settings.save();
 
-	document.getElementById('mainBody').innerHTML = loadingHTML;
+	document.getElementById('mainBody').innerHTML = cachedData.loading;
 	/*reloadCSS().then(()=>loadPage(0)).catch(e=>{
 		console.log('Error CSS reset: ' + e);
 		loadPage(0);
@@ -139,7 +138,7 @@ function saveSettings(){
 function resetSettings(){
 	settings.reset();
 
-	document.getElementById('mainBody').innerHTML = loadingHTML;
+	document.getElementById('mainBody').innerHTML = cachedData.loading;
 	reloadCSS().then(()=>loadPage(0)).catch(e=>{
 		console.log('Error CSS reset: ' + e);
 		loadPage(0);
@@ -190,8 +189,24 @@ function resetFields(){
 function giveFeedback(){
 	let mail = new Mail();
 	if(mail.gather()){
-		window.open(mail.format(), '_blank');
-		return false;
+		const requestData = {
+			method: 'POST',
+			headers: {
+				'Content-Type': "application/json",
+				'Authorization': "Bearer token"
+			}
+		};
+		fetch(host+'forms',requestData).then(response => response.text()).then((data) =>{
+			const mainBody = document.getElementById('mainBody');
+			if(data == 'G'){	/*swap to secondBody*/
+				const holder = mainBody.innerHTML;
+				mainBody.innerHTML = cachedData.secondBody;
+				cachedData.secondBody = holder;
+
+			} else {
+				alert('Feedback sent not properly. Refresh the page and try again');
+			}
+		}).catch((e) => console.error('sendFeedback: '+e));
 	}
-	else return false;
+	return false;
 }

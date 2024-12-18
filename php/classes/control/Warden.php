@@ -23,6 +23,7 @@ enum WardenRizz {
     case Debug;
     case Route;
     case Asset;
+    case GET;
 }
 
 class Warden {
@@ -122,6 +123,17 @@ class Warden {
 
     public static function packTime(DateTime $dt): string{
         return $dt->format(self::DATETIME_FORMAT);
+    }
+
+    public static function gatherGETData(string $name): string|bool{
+        $data = filter_input(INPUT_GET,$name,FILTER_DEFAULT);
+        if($data === null) return false;
+        if($data === false){
+            $w = new Warden();
+            $w->logActivity(WardenRizz::GET,$name);
+            return false;
+        }
+        return $data;
     }
 }
 ?>

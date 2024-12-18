@@ -27,10 +27,10 @@ $SEP$
 			<div class="lang-ua">Залишити відгук</div>
 		</legend>
 		
-		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>: </label><input id="name" type="text" required>
+		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>: </label><input name="name" id="name" type="text" required>
 		<span id="error_name" class="error"></span> <br>
 
-		<label for="sender">Email: </label><input id="sender" type="email" required>
+		<label for="sender">Email: </label><input name="sender" id="sender" type="email" required>
 		<span id="error_sender" class="error"></span> <br>
 
 		<fieldset style="width:fit-content;">
@@ -44,17 +44,19 @@ $SEP$
 			<input name="gender" type="radio" value= "tr"><label class="rdoA1"> <div class="lang-en">Other</div><div class="lang-pl">Inne</div><div class="lang-ua">Інше</div></label>
 		</fieldset>
 
-		<label for="prjt"><div class="lang-en">Mail subject</div><div class="lang-pl">Nagłówek maila</div><div class="lang-ua">Тема повідомлення</div> </label><select id="prjt" name="project">
-			<option value="poai-project">This site</option>
+		<label for="prjt"><div class="lang-en">Mail subject</div><div class="lang-pl">Nagłówek maila</div><div class="lang-ua">Тема повідомлення</div> </label><select name="project" id="prjt">
+			<option value="project-VT" selected>This site</option>
 			<option value="pear">Pear</option>
-			<option value="telephone-book">Telephone book</option>
-			<option value="nspec" selected>NoThInG</option>
+			<option value="telephone-book">Telephone Book</option>
+			<option value="nspec">NoThInG</option>
 		</select> <span id="error_project" class="error"></span> <br>
 		
-		<textarea id="cmnt" name="comment" rows="7" placeholder="Comment..." title="Comment" required></textarea> <br>
+		<textarea name="comment" id="cmnt" rows="7" placeholder="Comment..." title="Comment" required></textarea> <br>
 		<span id="error_comment" class="error"></span>
 	</fieldset>
 	
 	<button type="submit" class="btnA1"><div class="lang-en">Send mail</div><div class="lang-pl">Wysłać maila</div><div class="lang-ua">Надіслати відгук</div></button>
 	<button type="reset" class="btnA1"><div class="lang-en">Reset</div><div class="lang-pl">Zresetować</div><div class="lang-ua">Скинути</div></button>
 </form>
+$SEP$
+<h3>Test</h3>

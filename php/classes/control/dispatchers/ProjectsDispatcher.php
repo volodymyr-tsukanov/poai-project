@@ -24,6 +24,7 @@ class ProjectsDispatcher extends Dispatcher {
         header('Content-Type:application/json');
         $data = $this->block('projects');
         $data['content']['title'] = 'Projects';
+        $data['content']['extension'] = $this->blockRaw('pure-slider');
         echo json_encode($data);
     }
 }
