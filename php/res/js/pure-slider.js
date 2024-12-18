@@ -1,8 +1,17 @@
-function openImageView(index=-1){
-	/*if(!pureSliderHTML || pureSliderHTML == 'u') throw new Error('resource not loaded: pure-slider');*/
+/*
+Copyright (c) 2024 by Ruediger Stursberg (https://codepen.io/stursberg/pen/PoezjG)
+Fork of an original work Pure CSS Featured Image Slider (https://codepen.io/joshnh/pen/kOWrXk
+edited by volodymyr-tsukanov  2024
 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+function openImageView(index=-1){
 	const imgView = document.getElementById('imgView');
-	/*imgView.innerHTML = pureSliderHTML;*/
+	imgView.innerHTML = cachedData.pureSlider;
 	
 	const projects = document.getElementsByClassName('project');
 	const pureSlider = imgView.children[1];
@@ -52,14 +61,14 @@ function setImageAttributes(elem, src='', alt='Corrupted image'){
 }
 
 function removeAfter(elems, index=1){
-	for(let i = elems.length; i > index; i--) elems[index].remove();
+	for(let i = elems.length; i > index; i--){ elems[index].remove();}
 }
 
 function hideAllExcept(elems, index=0){
 	let i = 0;
-	for(i; i < index; i++) elems[i].style.display = 'none';
+	for(i; i<index; i++){ elems[i].style.display = 'none';}
 	elems[index].style.filter = 'blur(3px)';
-	for(i=i+1; i < elems.length; i++) elems[i].style.display = 'none';
+	for(i=i+1; i < elems.length; i++){ elems[i].style.display = 'none';}
 }
 function showAll(elems){
 	for(let i = 0; i < elems.length; i++){

@@ -25,6 +25,7 @@ class Dispatcher {
         $html = AssetManager::getHTMLBlock('index');
         $css = AssetManager::getCSSContent('styles').
             AssetManager::getCSSContent('pure-slider').
+            AssetManager::getCSSContent('loader').
             '</style><style>'.AssetManager::getCSSContent('langs'); //langs.css as second style
         $js = AssetManager::getJSContent('forms').
             AssetManager::getJSContent('pure-slider').

@@ -93,7 +93,7 @@ let settings = new Settings();
 let cachedData = { loading : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', secondBody : '' };
 
 	/*Preload*/
-/*loadResources();*/
+loadResources();
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -160,7 +160,7 @@ function loadPage(pageId, lang){
 			if(cachedData.projects === undefined){
 				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
 					updatePage(jsonData,0,'projects');
-					document.getElementById('imgView').innerHTML = jsonData.content.extension;
+					cachedData.pureSlider = jsonData.content.extension;
 				}).catch((e) => console.error('loadPage: '+e));
 			} else{
 				updatePage(cachedData.projects,updateDelay);
@@ -193,7 +193,7 @@ async function updatePage(jsonData,delay=0,cacheName=undefined){
 }
 
 
-/*async function loadResource(resArgs, type='text/html'){
+async function loadResource(resArgs, type='text/html'){
 	const requestData = {
 		method: 'GET',
 		headers: {
@@ -208,9 +208,9 @@ async function updatePage(jsonData,delay=0,cacheName=undefined){
 	return await response.text();
 }
 async function loadResources(){
-	cachedData.loading = await loadResource('t=bk&n=loading');
-	pureSliderHTML = await loadResource('t=bk&n=pure-slider');
-}*/
+	const htmlData = await loadResource('t=bk&n=loader');
+	if(htmlData && htmlData.length > 9) cachedData.loading = htmlData;
+}
 
 
 async function reloadCSS(){
