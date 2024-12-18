@@ -1,5 +1,5 @@
-## css/
+## res/css/
   - pure-slider.css
 
-## blocks/
+## res/blocks/
   - pure-slider.html
