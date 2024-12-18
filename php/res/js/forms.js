@@ -30,7 +30,7 @@ class Mail {
 
 	gather(){
 		let result = true;
-		let regexName = /^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ-])*$/;
+		let regexName = /^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ-\s])*$/;
 		const name = document.getElementById('name');
 		const sender = document.getElementById('sender');
 		const projects = document.getElementById('prjt');
@@ -127,25 +127,20 @@ function loadSettings(){
 	setRadioIndex('langs', index);
 }
 function saveSettings(){
+	settings.set(0);
 	settings.save();
-
-	document.getElementById('mainBody').innerHTML = cachedData.loading;
-	/*reloadCSS().then(()=>loadPage(0)).catch(e=>{
-		console.log('Error CSS reset: ' + e);
-		loadPage(0);
-	});*/
+	reloadPage();
 }
 function resetSettings(){
+	settings.set(0);
 	settings.reset();
-
-	document.getElementById('mainBody').innerHTML = cachedData.loading;
-	reloadCSS().then(()=>loadPage(0)).catch(e=>{
-		console.log('Error CSS reset: ' + e);
-		loadPage(0);
-	});
+	reloadPage();
 }
-function clearCashe(){
+function clearCache(){
 	localStorage.removeItem('feedback');
+	sessionStorage.clear();
+	cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>' };
+	showToast('Cache cleared!',4250);
 }
 
 	/*Feedback*/

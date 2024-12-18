@@ -24,18 +24,18 @@ $SEP$
             <div class="lang-pl">Wybranie języka</div>
             <div class="lang-ua">Виберіть мову</div>
         </legend>
-        <input class="rdoA1" type="radio" name="langs" value="en" checked onchange="settings.preview()"><label class="rdoA1"> English</label> <br>
-        <input class="rdoA1" type="radio" name="langs" value="pl" onchange="settings.preview()"><label class="rdoA1"> Polski</label> <br>
-        <input class="rdoA1" type="radio" name="langs" value="ua" onchange="settings.preview()"><label class="rdoA1"> Українська</label> <br>
+        <input class="rdoA1" type="radio" id="len" name="langs" value="en" checked onchange="settings.preview()"><label for="len" class="rdoA1"> English</label> <br>
+        <input class="rdoA1" type="radio" id="lpl" name="langs" value="pl" onchange="settings.preview()"><label for="lpl" class="rdoA1"> Polski</label> <br>
+        <input class="rdoA1" type="radio" id="lua" name="langs" value="ua" onchange="settings.preview()"><label for="lua" class="rdoA1"> Українська</label> <br>
         <span id="error_langs" class="error"></span>
     </fieldset>
     <fieldset>
         <legend>
-            <div class="lang-en">Cashed data</div>
+            <div class="lang-en">Cached data</div>
             <div class="lang-pl">Kaszowane dane</div>
             <div class="lang-ua">Данні кеш</div>
         </legend>
-        <button type="button" class="btnA1" onclick="clearCashe()"><div class="lang-en">Clear</div><div class="lang-pl">Wyczyścić</div><div class="lang-ua">Видалити</div></button>
+        <button type="button" class="btnA1" onclick="clearCache()"><div class="lang-en">Clear</div><div class="lang-pl">Wyczyścić</div><div class="lang-ua">Видалити</div></button>
     </fieldset>
     
     <button type="submit" class="btnA1"><div class="lang-en">Apply</div><div class="lang-pl">Zapisać</div><div class="lang-ua">Зберегти</div></button>

@@ -90,7 +90,7 @@ const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://lo
 
 if(window.location.href != host) window.location.replace(host);	/*jump to init*/
 let settings = new Settings();
-let cachedData = { loading : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', secondBody : '' };
+let cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>' };
 
 	/*Preload*/
 loadResources();
@@ -116,16 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	loadPage(settings.lastPage, settings.lang);
 });
 
-
+	/* Pages */
 function loadPage(pageId, lang){
-	const nav = document.querySelector('nav');
 	const mainBody = document.getElementById('mainBody');
 	const updateDelay = randomInt(200,800);
 
 	if(lang === undefined) lang = settings.lang;
 	settings.applyLanguage();
 
-	mainBody.innerHTML = cachedData.loading;
+	mainBody.innerHTML = cachedData.loader;
 	const requestData = {
 		method: 'UPDATE',
 		headers: {
@@ -140,8 +139,8 @@ function loadPage(pageId, lang){
 				fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
 					updatePage(jsonData,0,'settings');
 					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
-					nav.style.display = 'none';
 					loadSettings();
+					blockUI();
 				}).catch((e) => console.error('loadPage: '+e));
 			} else{
 				updatePage(cachedData.settings,updateDelay);
@@ -153,13 +152,13 @@ function loadPage(pageId, lang){
 					updatePage(jsonData,0,'main');
 				}).catch((e) => console.error('loadPage: '+e));
 			} else{
-				updatePage(cachedData.main,updateDelay);
+				updatePage(cachedData.main);
 			}
 			break;
 		case 1: /*projects*/
 			if(cachedData.projects === undefined){
 				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
-					updatePage(jsonData,0,'projects');
+					updatePage(jsonData,-1,'projects');
 					cachedData.pureSlider = jsonData.content.extension;
 				}).catch((e) => console.error('loadPage: '+e));
 			} else{
@@ -175,7 +174,7 @@ function loadPage(pageId, lang){
 			break;
 		case 3: /*contacts*/
 			fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
-				updatePage(jsonData);
+				updatePage(jsonData,-1);
 			}).catch((e) => console.error('loadPage: '+e));
 			break;
 		default:
@@ -183,16 +182,34 @@ function loadPage(pageId, lang){
 	}
 	if(pageId >= 0) settings.set(pageId);
 }
-
 async function updatePage(jsonData,delay=0,cacheName=undefined){
+	const mainBody = document.getElementById('mainBody');
 	if(delay>0) await new Promise(wt => setTimeout(wt, delay));
+	else if(delay<0){	/*preload of images needed*/
+		const tempDiv = document.createElement('div');
+		const images = tempDiv.getElementsByTagName('img');
+		await checkAllImagesLoaded(images);
+		mainBody.innerHTML = tempDiv.innerHTML;
+		tempDiv.remove();
+	}
 	document.querySelector('header').innerHTML = jsonData.content.header;
-	document.getElementById('mainBody').innerHTML = jsonData.content.mainBody;
+	mainBody.innerHTML = jsonData.content.mainBody;
 	document.title = jsonData.content.title;
 	if(cacheName) cachedData[cacheName] = jsonData;
 }
+async function reloadPage(withDelay=true){
+	document.getElementById('mainBody').innerHTML = cachedData.loader;
+	if(withDelay){
+		const delay = randomInt(790,1690);
+		await new Promise(wt => setTimeout(wt, delay));
+		blockUI();
+		console.log(0);
+	}
+	console.log(1);
+	location.reload();
+}
 
-
+	/* Resources */
 async function loadResource(resArgs, type='text/html'){
 	const requestData = {
 		method: 'GET',
@@ -209,22 +226,55 @@ async function loadResource(resArgs, type='text/html'){
 }
 async function loadResources(){
 	const htmlData = await loadResource('t=bk&n=loader');
-	if(htmlData && htmlData.length > 9) cachedData.loading = htmlData;
+	if(htmlData && htmlData.length > 9) cachedData.loader = htmlData;
 }
 
 
-async function reloadCSS(){
-	const lnks = document.getElementsByTagName('link');
-	for(let i = 0; i < lnks.length; i++){
-		if (lnks[i].rel === "stylesheet"){
-			var href = lnks[i].href.split("?")[0];
-			lnks[i].href = href + "?rnd=" + new Date().getMilliseconds();
-		}
-	}
-	await new Promise(wt => setTimeout(wt, 2500));
-}
-
-
+	/* Default methods */
 function randomInt(min=0,max=100){
 	return min+Math.floor(Math.random() * (max-min+1));
+}
+
+function blockUI(){
+	const nav = document.querySelector('nav');
+	nav.style.display = 'none';
+}
+
+function checkAllImagesLoaded(images){
+	return new Promise((resolve) =>{
+		let loaded = 0;
+		const total = images.length;
+		for(let i=0; i<total; i++){
+            const image = images[i];
+			if(image.complete) {
+				loaded++;
+			} else{
+				image.onload = () =>{
+					loaded++;
+					if(loaded === total){
+						resolve();
+					}
+				};
+				image.onerror = () =>{
+					loadedImages++;
+					if (loaded === total) {
+						resolve();
+					}
+				};
+			}
+		}
+		/*if all images are already loaded*/
+		if(loaded === total){
+			resolve();
+		}
+	});
+}
+
+function showToast(msg='Lets toast!',duration=1000){
+	const toast = document.getElementById('toast');
+	toast.innerText = msg;
+	toast.style.visibility = 'visible';
+	setTimeout(() => {
+		toast.style.visibility = 'hidden';
+	},duration);
 }

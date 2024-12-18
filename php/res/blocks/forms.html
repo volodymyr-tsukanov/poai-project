@@ -27,10 +27,10 @@ $SEP$
 			<div class="lang-ua">Залишити відгук</div>
 		</legend>
 		
-		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>: </label><input name="name" id="name" type="text" required>
+		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>:</label><input name="name" id="name" type="text" autocomplete="name" required>
 		<span id="error_name" class="error"></span> <br>
 
-		<label for="sender">Email: </label><input name="sender" id="sender" type="email" required>
+		<label for="sender">Email:</label><input name="sender" id="sender" type="email" autocomplete="email" required>
 		<span id="error_sender" class="error"></span> <br>
 
 		<fieldset style="width:fit-content;">
@@ -39,12 +39,12 @@ $SEP$
 				<div class="lang-pl">Plec</div>
 				<div class="lang-ua">Стать</div>
 			</legend>
-			<input name="gender" type="radio" value="ml"><label class="rdoA1"> <div class="lang-en">Male</div><div class="lang-pl">Męszczyzna</div><div class="lang-ua">Чоловіча</div></label>
-			<input name="gender" type="radio" value= "fl" checked><label class="rdoA1"> <div class="lang-en">Female</div><div class="lang-pl">Kobieta</div><div class="lang-ua">Жіноча</div></label>
-			<input name="gender" type="radio" value= "tr"><label class="rdoA1"> <div class="lang-en">Other</div><div class="lang-pl">Inne</div><div class="lang-ua">Інше</div></label>
+			<input type="radio" id="gml" name="gender" value="ml"><label for="gml" class="rdoA1"><div class="lang-en">Male</div><div class="lang-pl">Męszczyzna</div><div class="lang-ua">Чоловіча</div></label>
+			<input type="radio" id="gfl" name="gender" value= "fl" checked><label for="gfl" class="rdoA1"><div class="lang-en">Female</div><div class="lang-pl">Kobieta</div><div class="lang-ua">Жіноча</div></label>
+			<input type="radio" id="gtr" name="gender" value= "tr"><label for="gtr" class="rdoA1"><div class="lang-en">Other</div><div class="lang-pl">Inne</div><div class="lang-ua">Інше</div></label>
 		</fieldset>
 
-		<label for="prjt"><div class="lang-en">Mail subject</div><div class="lang-pl">Nagłówek maila</div><div class="lang-ua">Тема повідомлення</div> </label><select name="project" id="prjt">
+		<label for="prjt"><div class="lang-en">Mail subject</div><div class="lang-pl">Nagłówek maila</div><div class="lang-ua">Тема повідомлення</div></label>:<select name="project" id="prjt">
 			<option value="project-VT" selected>This site</option>
 			<option value="pear">Pear</option>
 			<option value="telephone-book">Telephone Book</option>
