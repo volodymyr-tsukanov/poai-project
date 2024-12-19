@@ -25,11 +25,9 @@ use project_VT\control\ErrorCause;
 
 
 //setDebugMode(1);
-session_start();
-
-$router = new Router();
 
 try{
+    $router = new Router();
     $router->dispatch();
 } catch(Errorr $err){
     echo "<h1>".$err."</h1>";
@@ -44,5 +42,7 @@ try{
             echo "unknown shit";
             break;
     }
+} catch (\Error $e){
+    echo "<h2>".$e."</h2>";
 }
 ?>

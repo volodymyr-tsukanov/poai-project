@@ -30,6 +30,13 @@ function setDebugMode($mode){
 }
 
 
+// Basic
+function redirect($location){
+    header("location:$location");
+    exit;
+}
+
+
 // Data formatting
 function minifyHTML(string $html): string{
     // Remove comments
@@ -79,8 +86,47 @@ function sessionDestroy(){
     $_SESSION = array();
 }
 
-function redirect($location){
-    header("location:$location");
-    exit;
+
+// Special
+function touchWord(string &$virgin){
+    for($u=0; $u<strlen($virgin); $u++){
+        $chance = random_int(0,100);
+        if($chance > 70){   //30%
+            $virgin[$u] = strtolower($virgin[$u]);
+        } else if($chance > 45){    //25%
+            switch($virgin[$u]){
+                case 'O':
+                    $virgin[$u] = '0';
+                    break;
+                case 'B':
+                    $virgin[$u] = 'G';
+                    break;
+                case 'I':
+                    $virgin[$u] = 'l';
+                    break;
+                case 'J':
+                    $virgin[$u] = 'I';
+                    break;
+                case 'Q':
+                    $virgin[$u] = 'O';
+                    break;
+                case 'V':
+                    $virgin[$u] = 'W';
+                    break;
+            }
+        }   //skip 45%
+    }
+}
+function makeMagicWord(array $magicPower, int $amount=2, bool $isSeparated=false): string{
+    if(empty($magicPower)) $magicPower = ['DRAGON','POWDER','BUSSIN','IGOR','NUGGET','COOK','CROOK'];
+    if(count($magicPower) < $amount || $amount < 1) $amount = count($magicPower);
+    $res = '';
+    shuffle($magicPower);
+    for($i=0; $i<$amount; $i++){
+        touchWord($magicPower[$i]);
+        $res .= $magicPower[$i];
+        if($isSeparated) $res .= strval(random_int(0,9));
+    }
+    return $res;
 }
 ?>

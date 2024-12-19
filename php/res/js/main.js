@@ -14,14 +14,11 @@
    limitations under the License.
 */
 /* Classes */
-class Settings {
+class User {
 	constructor(){
-		let s = JSON.parse(localStorage.getItem('settings'));
-		if(s == null || s == undefined) this.reset();
-		else{
-			this.lang = s.lang;
-			this.lastPage = s.lastPage;
-		}
+		let u = JSON.parse(localStorage.getItem('user'));
+		if(!u) this.reset();
+		else this.load(u);
 	}
 
 	preview(){
@@ -46,12 +43,12 @@ class Settings {
 		this.save();
 	}
 	set(pageId, lang){
-		if(pageId != undefined) this.lastPage = pageId;
-		if(lang != undefined) this.lang = lang;
+		if(pageId !== undefined) this.lastPage = pageId;
+		if(lang !== undefined) this.lang = lang;
 		this.save();
 	}
 	reset(){
-		this.lastPage = -1; /*load settings page by default*/
+		this.lastPage = 0; /*load Main page by default*/
 		this.lang = 'en';
 		this.save();
 	}
@@ -79,7 +76,11 @@ class Settings {
 
 	save(){
 		const jsonData = { lang : this.lang, lastPage : this.lastPage };
-		localStorage.setItem('settings', JSON.stringify(jsonData));
+		localStorage.setItem('user', JSON.stringify(jsonData));
+	}
+	load(jsonData){
+		this.lang = jsonData.lang;
+		this.lastPage = jsonData.lastPage;
 	}
 }
 
@@ -89,8 +90,8 @@ class Settings {
 const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://localhost/'*/
 
 if(window.location.href != host) window.location.replace(host);	/*jump to init*/
-let settings = new Settings();
-let cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>' };
+let user = new User();
+let cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', magicWord : '$SESSIONAME$' };
 
 	/*Preload*/
 loadResources();
@@ -113,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	loadPage(settings.lastPage, settings.lang);
+	loadPage(user.lastPage, user.lang);
 });
 
 	/* Pages */
@@ -121,24 +122,25 @@ function loadPage(pageId, lang){
 	const mainBody = document.getElementById('mainBody');
 	const updateDelay = randomInt(200,800);
 
-	if(lang === undefined) lang = settings.lang;
-	settings.applyLanguage();
+	if(lang === undefined) lang = user.lang;
+	user.applyLanguage();
 
-	mainBody.innerHTML = cachedData.loader;
+	displayLoader();
+
 	const requestData = {
 		method: 'UPDATE',
 		headers: {
 			'Content-Type': "application/json",
-			'Authorization': "Bearer token"
+			'Authorization': "Bearer token",
+			'MagicWord': cachedData.magicWord
 		}
 	};
-
 	switch(pageId){
 		case -1: /* settings */
 			if(cachedData.settings === undefined){
 				fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
 					updatePage(jsonData,0,'settings');
-					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + settings.lang;
+					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + user.lang;
 					loadSettings();
 					blockUI();
 				}).catch((e) => console.error('loadPage: '+e));
@@ -180,7 +182,7 @@ function loadPage(pageId, lang){
 		default:
 			break;
 	}
-	if(pageId >= 0) settings.set(pageId);
+	if(pageId >= 0) user.set(pageId);
 }
 async function updatePage(jsonData,delay=0,cacheName=undefined){
 	const mainBody = document.getElementById('mainBody');
@@ -196,9 +198,10 @@ async function updatePage(jsonData,delay=0,cacheName=undefined){
 	mainBody.innerHTML = jsonData.content.mainBody;
 	document.title = jsonData.content.title;
 	if(cacheName) cachedData[cacheName] = jsonData;
+	document.body.style.cursor = 'default';
 }
 async function reloadPage(withDelay=true){
-	document.getElementById('mainBody').innerHTML = cachedData.loader;
+	displayLoader(mainBody);
 	if(withDelay){
 		const delay = randomInt(790,1690);
 		await new Promise(wt => setTimeout(wt, delay));
@@ -213,7 +216,8 @@ async function loadResource(resArgs, type='text/html'){
 		method: 'GET',
 		headers: {
 			'Content-Type': type,
-			'Authorization': "Bearer token"
+			'Authorization': "Bearer token",
+			'MagicWord': cachedData.magicWord
 		}
 	};
 	const response = await fetch(host+'res?'+resArgs, requestData);
@@ -236,6 +240,12 @@ function randomInt(min=0,max=100){
 function blockUI(){
 	const nav = document.querySelector('nav');
 	nav.style.display = 'none';
+}
+
+function displayLoader(targetElem=false){
+	if(!targetElem) targetElem = document.getElementById('mainBody');
+	targetElem.innerHTML = cachedData.loader;
+	document.body.style.cursor = 'wait';
 }
 
 function checkAllImagesLoaded(images){

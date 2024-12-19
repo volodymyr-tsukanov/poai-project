@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	--pure-slider-left: 4em;
 }
 
+
 .pure-slider {
 	position: absolute;
 	z-index: 11;
@@ -146,6 +147,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /* Buttons */
 .pure-slider-button {
 	z-index: 19;
+	cursor: pointer;
 }
 
 /* Screen size */

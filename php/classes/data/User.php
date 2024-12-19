@@ -20,6 +20,7 @@ use stdClass;
 use DateTime;
 use project_VT\control\Warden;
 
+
 enum UserStatus: int {
     case Shepherd = 1;
 }
@@ -31,7 +32,7 @@ enum UserLanguage: int{
 
 
 class User {
-    const REPUTATION_DEFAULT = 20;
+    public const REPUTATION_DEFAULT = 20;
 
     protected string $username;
     protected string $email;

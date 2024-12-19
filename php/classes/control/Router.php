@@ -43,7 +43,7 @@ class Router {
 
     function __construct(){
         $this->w = new Warden();
-        //$this->db = new DTBase('localhost','tester','pub0key','prai_project');
+        $this->db = new DTBase($this->w);
 
         // Init (main)
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');
@@ -99,6 +99,11 @@ class Router {
             $uri = $req['uri'];
             throw new Errorr($this,ErrorCause::Routing,"not found URI: $uri");
         }
+    }
+
+
+    public static function isDefaultRoute(string $route): bool{
+        return $route == '/' || $route == '/php/poai-project/php/pub/';
     }
 }
 ?>

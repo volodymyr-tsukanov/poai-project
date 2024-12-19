@@ -18,7 +18,7 @@ namespace project_VT\control;
 
 
 class Dispatcher {
-    const RESPONSE_GOOD = 'G', RESPONSE_NeXIST = 'E', RESPONSE_WrEQEST = 'R', RESPONSE_WaUTH = 'A';
+    public const RESPONSE_GOOD = 'G', RESPONSE_NeXIST = 'E', RESPONSE_WrEQEST = 'R', RESPONSE_WaUTH = 'A';
 
     
     protected function index(): string{

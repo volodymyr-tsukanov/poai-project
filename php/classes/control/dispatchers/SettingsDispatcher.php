@@ -17,13 +17,16 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
-
+use project_VT\control\Warden;
 
 class SettingsDispatcher extends Dispatcher {
     public function View(){
         header('Content-Type:application/json');
         $data = $this->block('settings');
         $data['content']['title'] = 'Settings';
+
+        $w = new Warden();
+        $data['content']['mainBody'] = str_replace('$CSRF$',$w->getCSRFinjection(), $data['content']['mainBody']);
         echo json_encode($data);
     }
 }

@@ -23,7 +23,10 @@ use project_VT\control\Warden;
 class MainDispatcher extends Dispatcher {
     public function Init(){
         header('Content-Type:text/html');
-        echo $this->index();
+        $html = $this->index();
+        $w = new Warden();
+        $w->reviseInit($html);
+        echo $html;
     }
     
     public function View(){
@@ -34,9 +37,11 @@ class MainDispatcher extends Dispatcher {
     }
 
     public function ResGet(){
+        $w = new Warden();
+        
         header('Content-Type:text/html');
-        $type = Warden::gatherGETData('t');
-        $name = Warden::gatherGETData('n');
+        $type = $w->gatherGETData('t');
+        $name = $w->gatherGETData('n');
         if($type == false || $name == false)
             echo self::RESPONSE_WrEQEST;
         else{

@@ -28,7 +28,7 @@ enum ErrorCause: int{
 }
 
 class Errorr extends Exception {
-    const DESCRIPTION_DEFAULT = 'NO DESCRIPTION';
+    public const DESCRIPTION_DEFAULT = 'NO DESCRIPTION';
 
     private $caller;
     protected ErrorCause $cause;

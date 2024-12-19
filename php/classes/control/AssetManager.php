@@ -20,8 +20,7 @@ include_once '../../funcs.php';
 
 
 class AssetManager {
-    const ASSET_PATH = 'assets/';
-    const RES_PATH = '../res/';
+    public const ASSET_PATH = 'assets/', RES_PATH = '../res/';
 
     private Warden $w;
 

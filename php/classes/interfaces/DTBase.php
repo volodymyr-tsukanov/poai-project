@@ -26,19 +26,24 @@ class DTBase {
     private const PARAMS = ['server'=>'localhost','user'=>'root','pass'=>''];
 
     private mysqli $mysqli;
+    private Warden $w;
 
 
-    public function __construct(string $server, string $user, string $pass, string $db_name){
-        $this->mysqli = new mysqli($server, $user, $pass, $db_name);
+    public function __construct(Warden &$w){
+        $this->w = $w;
+        $db_params = $this->w->getDBparams();
+        if($db_params === false) throw new Errorr($this,ErrorCause::DB,'no ini');
+        
+        $this->mysqli = new mysqli($db_params['hostname'],$db_params['username'],$db_params['password'],$db_params['database']);
         //test connection
         if($this->mysqli->connect_errno){
-            $this->mysqli = new mysqli(self::PARAMS['server'],self::PARAMS['user'],self::PARAMS['pass'], $db_name);   //try with default params
+            $this->mysqli = new mysqli(self::PARAMS['server'],self::PARAMS['user'],self::PARAMS['pass'], $db_params['name']);   //try with default params
             if($errn = $this->mysqli->connect_errno){
                 throw new Errorr($this,ErrorCause::DB,$errn);
             }
         }
-        //set utf8 encoding
-        if(!$this->mysqli->set_charset("utf8")){
+        //set encoding
+        if(!$this->mysqli->set_charset($db_params['charset'])){
             throw new Errorr($this,ErrorCause::DB,'set utf8');
         }
     }
@@ -51,8 +56,9 @@ class DTBase {
 
 
     public function insertUser(array $userData){
+        $passHash = $this->w->protectPasswd($userData['passwd']);
         $stmt = $this->mysqli->prepare("INSERT INTO `users`(username,email,passwd,reputation,language) VALUES (?,?,?,?,?)");
-        $stmt->bind_param('sssii', $userData['username'], $userData['email'], Warden::protectPasswd($userData['passwd']), $userData['reputation'], $userData['language']);
+        $stmt->bind_param('sssii', $userData['username'], $userData['email'], $passHash, $userData['reputation'], $userData['language']);
         $res = $stmt->execute();
         $stmt->close();
     }

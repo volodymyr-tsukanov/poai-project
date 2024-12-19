@@ -37,6 +37,7 @@
 	/* - Containers */
 body {
 	background: black;
+	cursor: default;
 }
 
 header {
@@ -51,6 +52,7 @@ header {
 	font-family: "Courier New", Courier, monospace;
 	font-weight: bold;
 	font-size: 210%;
+	cursor: default;
 }
 
 nav {
@@ -100,6 +102,7 @@ footer {
 	font-family: "Courier New", Courier, monospace;
 	font-style: normal;
 	font-size: 140%;
+	cursor: default;
 }
 
 	/*  - Basic */

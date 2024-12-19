@@ -17,16 +17,16 @@
 <div class="lang-pl">Ustawienia</div>
 <div class="lang-ua">Налаштування</div>
 $SEP$
-<form action="#" onsubmit="return saveSettings()" onreset="resetSettings()">
+<form action="#" onsubmit="return saveSettings('$CSRF$')" onreset="resetSettings()">
     <fieldset>
         <legend>
             <div class="lang-en">Select language</div>
             <div class="lang-pl">Wybranie języka</div>
             <div class="lang-ua">Виберіть мову</div>
         </legend>
-        <input class="rdoA1" type="radio" id="len" name="langs" value="en" checked onchange="settings.preview()"><label for="len" class="rdoA1"> English</label> <br>
-        <input class="rdoA1" type="radio" id="lpl" name="langs" value="pl" onchange="settings.preview()"><label for="lpl" class="rdoA1"> Polski</label> <br>
-        <input class="rdoA1" type="radio" id="lua" name="langs" value="ua" onchange="settings.preview()"><label for="lua" class="rdoA1"> Українська</label> <br>
+        <input class="rdoA1" type="radio" id="len" name="langs" value="en" checked onchange="user.preview()"><label for="len" class="rdoA1"> English</label> <br>
+        <input class="rdoA1" type="radio" id="lpl" name="langs" value="pl" onchange="user.preview()"><label for="lpl" class="rdoA1"> Polski</label> <br>
+        <input class="rdoA1" type="radio" id="lua" name="langs" value="ua" onchange="user.preview()"><label for="lua" class="rdoA1"> Українська</label> <br>
         <span id="error_langs" class="error"></span>
     </fieldset>
     <fieldset>

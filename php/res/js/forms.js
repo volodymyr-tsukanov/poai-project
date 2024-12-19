@@ -116,7 +116,7 @@ function getRadioIndex(name=''){
 	/*Settings*/
 function loadSettings(){
 	let index = 0;
-	switch(settings.lang){
+	switch(user.lang){
 		case 'pl':
 			index = 1;
 			break;
@@ -126,14 +126,15 @@ function loadSettings(){
 	}
 	setRadioIndex('langs', index);
 }
-function saveSettings(){
-	settings.set(0);
-	settings.save();
+function saveSettings(secret){
+	console.log(secret);
+	user.set(0);
+	user.save();
 	reloadPage();
 }
 function resetSettings(){
-	settings.set(0);
-	settings.reset();
+	user.set(0);
+	user.reset();
 	reloadPage();
 }
 function clearCache(){
