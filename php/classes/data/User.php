@@ -23,6 +23,8 @@ use project_VT\control\Warden;
 
 enum UserStatus: int {
     case Shepherd = 1;
+    case Knight = 11;
+    case Governor = 111;
 }
 enum UserLanguage: int{
     case English = 0;

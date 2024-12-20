@@ -36,6 +36,12 @@ function redirect($location){
     exit;
 }
 
+function getJsonBody(): array{
+    $rawData = file_get_contents('php://input');
+    $data = json_decode($rawData,true);
+    return $data;
+}
+
 
 // Data formatting
 function minifyHTML(string $html): string{
@@ -76,17 +82,6 @@ function minifyJS(string $js): string {
 }
 
 
-// Session
-function sessionDestroy(){
-    if (isset($_COOKIE[session_name()])) {
-        setcookie(session_name(), '', time() - 3600, '/');
-    }
-    session_destroy();
-    session_unset();
-    $_SESSION = array();
-}
-
-
 // Special
 function touchWord(string &$virgin){
     for($u=0; $u<strlen($virgin); $u++){
@@ -113,19 +108,24 @@ function touchWord(string &$virgin){
                 case 'V':
                     $virgin[$u] = 'W';
                     break;
+                case 'R':
+                    $virgin[$u] = 'J';
+                    break;
+                case 'T':
+                    $virgin[$u] = 'N';
+                    break;
             }
         }   //skip 45%
     }
 }
-function makeMagicWord(array $magicPower, int $amount=2, bool $isSeparated=false): string{
+function makeMagicWord(array $magicPower, int $amount=2, bool $isVariated=true): string{
     if(empty($magicPower)) $magicPower = ['DRAGON','POWDER','BUSSIN','IGOR','NUGGET','COOK','CROOK'];
     if(count($magicPower) < $amount || $amount < 1) $amount = count($magicPower);
     $res = '';
     shuffle($magicPower);
     for($i=0; $i<$amount; $i++){
-        touchWord($magicPower[$i]);
+        if($isVariated) touchWord($magicPower[$i]);
         $res .= $magicPower[$i];
-        if($isSeparated) $res .= strval(random_int(0,9));
     }
     return $res;
 }

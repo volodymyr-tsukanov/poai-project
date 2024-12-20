@@ -22,6 +22,7 @@ use Exception;
 enum ErrorCause: int{
     case UNDEFINED = 0;
     case Routing = 1;
+    case RateLimiter = 2;
     case Resource = 6;
     case DB = 11;
     case FileOperation = 12;
@@ -35,6 +36,7 @@ class Errorr extends Exception {
     protected string $description;
 
 
+    /** Pass $this as caller */
     function __construct($caller, ErrorCause $cause, ?string $description){
         $this->caller = $caller;
         $this->cause = $cause;

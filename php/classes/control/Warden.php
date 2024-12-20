@@ -21,10 +21,11 @@ use DateTime;
 
 enum WardenRizz {
     case Debug;
+    case Shared;
     case Route;
     case Asset;
     case Session;
-    case GET;
+    case GatherData;
 }
 
 class Warden {
@@ -64,25 +65,14 @@ class Warden {
         fwrite($fl,$logEntry."\n");
         fclose($fl);
     }
+    /** Pass $this as caller */
+    public function logShared($caller, string $msg){
+        $this->logActivity(WardenRizz::Shared,$caller::class.'::'.$msg);
+    }
 
     protected function makeCSRF(): string{
         $B = random_bytes($this->config['csrf-length']);
-        return bin2hex($B); //alternative: base64_encode
-    }
-    protected function validateCSRF(?string $csrfToken): int{
-        if(empty($_SESSION['csrf']) || empty($csrfToken)){
-            $this->logActivity(WardenRizz::Session,'no CSRF');
-            return 0;
-        }
-        if(time() - $_SESSION['csrf']['time'] > $this->config['csrf-expire']){
-            $this->logActivity(WardenRizz::Session,'expired CSRF');
-            return 0;
-        }
-        // timing-safe comparison
-        $res = hash_equals($_SESSION['csrf']['token'],$csrfToken);
-        unset($_SESSION['csrf']);
-        if($res) return 1;  //good
-        return -1;  //bad
+        return base64_encode($B); //alternative: base64_encode
     }
 
     protected function secureHeaders(){
@@ -97,6 +87,10 @@ class Warden {
     }
 
 
+    /**
+     * Call in Router->dispatch()
+     * returns request params for routing
+     */
     public function dispatch(): array{
         $req = array();
         $req['uri'] = strtok($_SERVER['REQUEST_URI'], '?');
@@ -112,7 +106,7 @@ class Warden {
             $req['uri'] = '/';
         }
 
-        // Session
+        // Session main
             // Secure cookie parameters
         $cookieParams = session_get_cookie_params();
         session_set_cookie_params([
@@ -123,35 +117,17 @@ class Warden {
             //'httponly' => true,    //requires htpps
             'samesite' => 'Strict'
         ]);
-            // Name
-        if($this->config['session-name-variator'] == 1){
-            $magicWord = getallheaders()['MagicWord'];
-            if(!isset($magicWord) || strlen($magicWord)>18)
-                session_name(makeMagicWord(explode('_',$this->config['magic-words'])));
-            else session_name(htmlspecialchars($magicWord));
-        } else session_name('SSID');
-        session_start();
-    // Regenerate ID TODO use db here
-/*if (!isset($_SESSION['last_regeneration'])){
-    session_regenerate_id(true);
-    $_SESSION['last_regeneration'] = time();
-} else if (time() - $_SESSION['last_regeneration'] ?? 0 > $this->config['session-expire']) {
-    session_regenerate_id(true);
-    $_SESSION['last_regeneration'] = time();
-}*/
-            //UserAgent
-        if($this->config['ua'] == 1){
-            if(!isset($_SESSION['user_agent'])){
-                $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-            } else if($_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']){
-                sessionDestroy();
-                $this->logActivity(WardenRizz::Session,'hijacker on '.$_SERVER['HTTP_USER_AGENT']);
-            }
-        }
+        SessionManager::start($this->config['session-main-name']);
+            // Regenerate ID
+        SessionManager::regenerateId($this->config['session-main-expire']);
 
         return $req;
     }
 
+    /**
+     * Revise every GET asset(located in pub/) request
+     * alters requested path
+     */
     public function getAsset(string& $path){
         //Check if the path is not default asset path
         if(!str_starts_with($path, AssetManager::ASSET_PATH)){
@@ -171,6 +147,10 @@ class Warden {
             $path = AssetManager::ASSET_PATH.$path;
         }
     }
+    /**
+     * Revise every GET resource(located in res/) request
+     * alters requested path
+     */
     public function getRes(string& $path){
         //Check if the path is not default asset path
         if(!str_starts_with($path, AssetManager::RES_PATH)){
@@ -191,6 +171,10 @@ class Warden {
             $path = AssetManager::RES_PATH.$path;
         }
     }
+    /**
+     * Call in DTBase->__construct
+     * returns db configuration as associative array
+     */
     public function getDBparams(): array|false{
         $ini = parse_ini_file('../data/cnf.ini',true);
         if($ini !== false){
@@ -198,17 +182,34 @@ class Warden {
         }
         return false;
     }
+    /**
+     * Call in Limiter->__construct
+     * returns Limiter configuration as associative array
+     */
+    public function getRLparams(): array|false{
+        $ini = parse_ini_file('../data/cnf.ini',true);
+        if($ini !== false){
+            return $ini['token-bucket'];
+        }
+        return false;
+    }
 
+    /**
+     * Filters data from $_GET
+     */
     public function gatherGETData(string $name): string|bool{
         $data = filter_input(INPUT_GET,$name,FILTER_DEFAULT);
         if($data === null) return false;
         if($data === false){
-            $this->logActivity(WardenRizz::GET,$name);
+            $this->logActivity(WardenRizz::GatherData,'GET::'.$name);
             return false;
         }
         return $data;
     }
 
+    /**
+     * Hashes password using options from data/cnf.ini
+     */
     public function protectPasswd(string $password): string{
         $options = [];
         $algorithm = $this->config['pass-algorithm'];
@@ -233,38 +234,43 @@ class Warden {
     }
 
     public function getCSRFinjection(): string{
+        $csrfName = 'csrf';
         $csrfToken = $this->makeCSRF();
-        switch($this->config['csrf']){
-            case '1':
-                $_SESSION['csrf'] = [
-                    'token'=>$csrfToken,
-                    'time'=>time()
-                ];
-                break;
-        }
-        return $csrfToken;
+        if($this->config['csrf'] == 2)
+            $csrfName = makeMagicWord(explode('_',$this->config['magic-words']),4);
+        SessionManager::CSRF($csrfName,$csrfToken);
+        return "$csrfName $csrfToken";
     }
-    public function checkCSRFinjected(?string $csrfToken){
-        switch($this->validateCSRF($csrfToken)){
-            case 0: //neutral
-                $this->logActivity(WardenRizz::Debug,'csrf N');
-                break;
-            case 1: //good
-                $this->logActivity(WardenRizz::Debug,'csrf G');
-                break;
-            default:    //bad
-                $this->logActivity(WardenRizz::Debug,'csrf B');
-                break;
+    public function checkCSRFinjected(): bool{
+        $csrf = SessionManager::CSRF();
+        $data = getJsonBody();
+        $token = filter_var($data[$csrf['name']],FILTER_DEFAULT);
+        $status = $this->config['csrf'];
+        if(empty($csrf) && $status == 0) return true;
+        if(empty($csrf) && $status > 0){
+            $this->logActivity(WardenRizz::Session,'no CSRF on check');
+            return false;
         }
+        if($token === false || empty($token)){   //no right token in the request
+            $this->logActivity(WardenRizz::Session,'CSRF no name='.$csrf['name']);
+            return false;
+        }
+        if(time() - $csrf['time'] > $this->config['csrf-expire']){
+            $this->logActivity(WardenRizz::Session,'expired CSRF');
+            return false;
+        }
+        // timing-safe comparison
+        $res = hash_equals($csrf['token'],$token);
+        if(!$res){
+            $this->logActivity(WardenRizz::Session,'wrong CSRF');
+        }
+        return $res;
     }
 
-    public function reviseInit(string &$html){
-        if($this->config['session-name-variator'] == 1){
-            $html = str_replace('$SESSIONAME$',session_name(),$html);
-        }
-    }
 
-
+    /**
+     * Standartize timestamp format as string
+     */
     public static function packTime(DateTime $dt): string{
         return $dt->format(self::DATETIME_FORMAT);
     }

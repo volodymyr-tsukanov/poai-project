@@ -37,12 +37,21 @@ enum RouterAction {
 class Router {
     protected $routes = [];
     private Warden $w;
+    private Limiter $l;
     private DTBase $db;
     protected User $user;
 
 
     function __construct(){
         $this->w = new Warden();
+        $this->l = new Limiter($this->w);
+
+        if(!$this->l->checkLimit()){
+            header('HTTP/1.1 429 Too Many Requests');
+            header('Retry-After: ' . (60 - time() % 60));
+            exit;
+        }
+
         $this->db = new DTBase($this->w);
 
         // Init (main)

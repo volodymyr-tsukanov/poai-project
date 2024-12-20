@@ -23,7 +23,11 @@ use project_VT\control\Warden;
 
 
 class DTBase {
-    private const PARAMS = ['server'=>'localhost','user'=>'root','pass'=>''];
+    private const PARAMS = [
+        'server'=>'localhost',
+        'user'=>'root',
+        'pass'=>''
+    ];
 
     private mysqli $mysqli;
     private Warden $w;

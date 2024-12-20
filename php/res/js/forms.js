@@ -14,11 +14,11 @@
    limitations under the License.
 */
 /* Classes */
-class Mail {
+class Letter {
 	constructor(){
 		this.sender = 'AnOnYmOuS';
 		this.subject = 'NoTiTlE';
-		this.body = 'NoTeXt';
+		this.message = 'NoTeXt';
 		this.abd = this.getAdditionalBrowserData();
 	}
 
@@ -73,15 +73,15 @@ class Mail {
 		}
 
 		/*Comment*/
-		this.body = comment.value;
-		if(this.body.length < 5){
+		this.message = comment.value;
+		if(this.message.length < 5){
 			result = false;
 			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed</div><div class="lang-pl">Komentarz jest za mały. Trzeba dodać jeszcze trochę</div><div class="lang-ua">Невже? І це все? Я думав що зможете більше</div>.';
-		} else if(this.body.length > 300 && comment.value.length < 800){
+		} else if(this.message.length > 300 && comment.value.length < 800){
 			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now</div><div class="lang-pl">Komentarz jest wystarczająco długi i może być wysłany</div><div class="lang-ua">Добре, цього досить</div>.';
-		} else if(this.body.length > 800 && comment.value.length < 1000){
+		} else if(this.message.length > 800 && comment.value.length < 1000){
 			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped</div><div class="lang-pl">Komentarz jest za długi. On może zostać zignorowany</div><div class="lang-ua">Правда вже достатньо</div>.';
-		} else if(this.body.length > 1900){
+		} else if(this.message.length > 1900){
 			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment</div><div class="lang-pl">Ja nie będę tego czytał</div><div class="lang-ua">Я не читаю баллади</div>&hellip;';
 		}
 
@@ -92,7 +92,11 @@ class Mail {
 	}
 
 	format(){
-		return new URL('mailto:volodymyr.tsukanov.23@gmail.com?cc=' + this.sender + '&subject=' + this.subject + '&body=' + this.body + '...SpEcIaL...' + this.abd);
+		const jsonData = {'subject':this.subject,'message':this.message,'abd':this.abd};
+		return JSON.stringify(jsonData);
+	}
+	load(jsonData){
+
 	}
 }
 
@@ -127,7 +131,6 @@ function loadSettings(){
 	setRadioIndex('langs', index);
 }
 function saveSettings(secret){
-	console.log(secret);
 	user.set(0);
 	user.save();
 	reloadPage();
@@ -182,15 +185,21 @@ function resetFields(){
 		clearFields();
 	}
 }
-function giveFeedback(){
-	let mail = new Mail();
-	if(mail.gather()){
+function giveFeedback(secret){
+	let letter = new Letter();
+	if(letter.gather()){
+		let sArr = secret.split(" ");
+		if (sArr.length !== 2) sArr = ['noS', '-'];
 		const requestData = {
 			method: 'POST',
 			headers: {
 				'Content-Type': "application/json",
 				'Authorization': "Bearer token"
-			}
+			},
+			body: JSON.stringify({
+				'mail': letter.format(),
+				[sArr[0]]: sArr[1]
+			})
 		};
 		fetch(host+'forms',requestData).then(response => response.text()).then((data) =>{
 			const mainBody = document.getElementById('mainBody');
@@ -200,7 +209,9 @@ function giveFeedback(){
 				cachedData.secondBody = holder;
 
 			} else {
+				console.warn('status: '+data);
 				alert('Feedback sent not properly. Refresh the page and try again');
+				reloadPage(false);
 			}
 		}).catch((e) => console.error('sendFeedback: '+e));
 	}

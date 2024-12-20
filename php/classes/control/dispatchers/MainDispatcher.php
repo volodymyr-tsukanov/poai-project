@@ -23,10 +23,8 @@ use project_VT\control\Warden;
 class MainDispatcher extends Dispatcher {
     public function Init(){
         header('Content-Type:text/html');
-        $html = $this->index();
-        $w = new Warden();
-        $w->reviseInit($html);
-        echo $html;
+        $data = $this->index();
+        echo $data;
     }
     
     public function View(){
