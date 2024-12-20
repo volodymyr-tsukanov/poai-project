@@ -6,20 +6,31 @@ password = **** ; although
 charset = utf8mb4
 
 
-[warden-rules]
-session-expire = 2000       ; in seconds
-session-name-variator = 1   ; dynamic session_name
+[token-bucket]
+capacity = 10       ; tokens
+refil-rate = 0.25   ; token/s
+time-window = 60    ; in seconds
+penalty = -10
 
-csrf = 1
-csrf-length = 24        ; 16B min, 32B optimal
-csrf-expire = 800       ; in seconds
+
+[warden-rules]
+session-main-name = SSID
+session-main-expire = 500           ; in seconds
+
+session-spec-name = BEARERtOKEN
+session-spec-expire = 100
+session-name-variator = 1           ; dynamic spec session_name
+
+csrf = 2                            ; 0 = off, 1 = basic (fixed name), 2 = improved (dynamic name)
+csrf-length = 24                    ; 16B min, 32B optimal
+csrf-expire = 800                   ; in seconds
 
 ua = 1
 
 pass-algorithm = argon2i
 pass-bcrypt-cost = 12
-pass-argon-memory_cost = 49152  ; 48MB
-pass-argon-time_cost = 4        ; iterations
-pass-argon-threads = 3          ; parallel threads
+pass-argon-memory_cost = 49152      ; 48MB
+pass-argon-time_cost = 4            ; iterations
+pass-argon-threads = 3              ; parallel threads
 
-magic-words = DRAGON_FIRE_BOAT_NORD_PING_DARN_KOALA_BEACH_FROG_LAZY_RIVER_CAT_DOG_RIZZ_CHAD_SIGMA_BRAIN_ROT_TOILET_SKIBIDI_UPSET_TYPING_NONSENCE_JOKE_BELLS_DUCK_SPELLS_DING_HONK_JUNK_WRONG_HUGE_TEAR_THOR_ROOT_YAPPING_MONKEY_YETTI_WET_BEAR_PINK_HORSE_INK_ARSE
+magic-words = DRAGON_FIRE_BOAT_NORD_PING_DARN_KOALA_BEACH_FROG_LAZY_RIVER_CAT_DOG_RIZZ_CHAD_SIGMA_BRAIN_ROT_TOILET_SKIBIDI_UPSET_TYPING_NONSENCE_JOKE_BELLS_DUCK_SPELLS_DING_HONK_JUNK_WRONG_HUGE_TEAR_THOR_ROOT_YAPPING_MONKEY_YETTI_WET_BEAR_PINK_HORSE_INK_ARSE_PORK_BIRD_RED_ALPHA

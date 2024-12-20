@@ -88,6 +88,32 @@ class Warden {
 
 
     /**
+     * Initializes session
+     * Call after Limiter initialization before DTBase
+     */
+    public function awakeSession(Limiter &$l){
+        // Secure cookie parameters
+        $cookieParams = session_get_cookie_params();
+        session_set_cookie_params([
+            'lifetime' => $cookieParams['lifetime'],
+            'path' => '/',
+            'domain' => $_SERVER['HTTP_HOST'],
+            'secure' => true,
+            //'httponly' => true,    //requires htpps
+            'samesite' => 'Strict'
+        ]);
+        SessionManager::start($this->config['session-main-name']);
+        // Regenerate ID
+        SessionManager::regenerateId($this->config['session-main-expire']);
+        // Rate limits
+        if(!$l->checkLimit()){
+            header('HTTP/1.1 429 Too Many Requests');
+            header('Retry-After: ' . (60 - time() % 60));
+            exit;
+        }
+    }
+
+    /**
      * Call in Router->dispatch()
      * returns request params for routing
      */
@@ -105,21 +131,6 @@ class Warden {
             $this->logActivity(WardenRizz::Route,'Accessing: '.$req['method'].'::'.$req['uri']);
             $req['uri'] = '/';
         }
-
-        // Session main
-            // Secure cookie parameters
-        $cookieParams = session_get_cookie_params();
-        session_set_cookie_params([
-            'lifetime' => $cookieParams['lifetime'],
-            'path' => '/',
-            'domain' => $_SERVER['HTTP_HOST'],
-            'secure' => true,
-            //'httponly' => true,    //requires htpps
-            'samesite' => 'Strict'
-        ]);
-        SessionManager::start($this->config['session-main-name']);
-            // Regenerate ID
-        SessionManager::regenerateId($this->config['session-main-expire']);
 
         return $req;
     }

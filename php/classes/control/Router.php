@@ -45,13 +45,8 @@ class Router {
     function __construct(){
         $this->w = new Warden();
         $this->l = new Limiter($this->w);
-
-        if(!$this->l->checkLimit()){
-            header('HTTP/1.1 429 Too Many Requests');
-            header('Retry-After: ' . (60 - time() % 60));
-            exit;
-        }
-
+        $this->w->awakeSession($this->l);
+        
         $this->db = new DTBase($this->w);
 
         // Init (main)
