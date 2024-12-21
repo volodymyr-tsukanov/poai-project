@@ -5,7 +5,12 @@ ALTER DATABASE `prai_project`
 
 
 -- TABLES
+  -- DROP
+DROP TABLE IF EXISTS `naughtyList`;
+DROP TABLE IF EXISTS `contacts`;
 DROP TABLE IF EXISTS `users`;
+
+  -- CREATE
 CREATE TABLE `users` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `login` VARCHAR(24) NOT NULL,
@@ -23,22 +28,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `sessions`;
-CREATE TABLE `sessions` (
-    `id` VARCHAR(254) NOT NULL,
-    `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `expires` TIMESTAMP NOT NULL,                        -- Alt: DATETIME for timezone independence
-    `last_activity` TIMESTAMP NULL DEFAULT NULL,
-    `user_id` INT UNSIGNED NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `idx_user_sessions` (`user_id`, `created`),   -- !USE ON LOOKUP
-    CONSTRAINT `fk_session_user`
-        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-        ON DELETE RESTRICT                                 -- delete user only when no sessions left
-) ENGINE=MEMORY
-  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `subject` ENUM('project-VT','pear','telephone-book','sw-c','code-crypt','nspec') NOT NULL DEFAULT 'project-VT',
@@ -52,4 +41,15 @@ CREATE TABLE `contacts` (
         FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
         ON DELETE SET NULL
 ) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `naughtyList` (
+    `id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ip_start` BINARY(16) NOT NULL,
+    `ip_end` BINARY(16) NOT NULL,                     -- to cover entire range using one entry
+    `reason` TINYINT UNSIGNED NOT NULL,
+    `abd` TEXT NOT NULL,                          -- additional browser data, type=JSON
+    `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=Aria     -- faster reads, no CONSTRAINTs
   DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
