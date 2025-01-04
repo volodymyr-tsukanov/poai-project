@@ -18,8 +18,6 @@ namespace project_VT\control;
 
 use project_VT\control\dispatchers\ContactsDispatcher;
 use project_VT\control\dispatchers\FormsDispatcher;
-use project_VT\control\Errorr;
-use project_VT\control\Warden;
 use project_VT\control\dispatchers\MainDispatcher;
 use project_VT\control\dispatchers\ProjectsDispatcher;
 use project_VT\control\dispatchers\SettingsDispatcher;
@@ -37,17 +35,15 @@ enum RouterAction {
 class Router {
     protected $routes = [];
     private Warden $w;
-    private Limiter $l;
     private DTBase $db;
     protected User $user;
 
 
     function __construct(){
         $this->w = new Warden();
-        $this->l = new Limiter($this->w);
-        $this->w->awakeSession($this->l);
-        
         $this->db = new DTBase($this->w);
+        $this->w->awakeSession($this->db);
+        $this->db->enable();
 
         // Init (main)
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');

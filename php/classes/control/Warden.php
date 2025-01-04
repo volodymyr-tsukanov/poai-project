@@ -17,6 +17,7 @@
 namespace project_VT\control;
 
 use DateTime;
+use project_VT\interfaces\DTBase;
 
 
 enum WardenRizz {
@@ -75,15 +76,8 @@ class Warden {
         return base64_encode($B); //alternative: base64_encode
     }
 
-    protected function secureHeaders(){
-        header("X-Frame-Options: DENY");
-        header("X-XSS-Protection: 1; mode=block");
-        header("X-Content-Type-Options: nosniff");
-
-        ini_set('session.cookie_httponly', '1'); // Prevent JS access
-        //ini_set('session.cookie_secure', '1');   // Require HTTPS
-        ini_set('session.use_only_cookies', '1'); // No URL-based sessions
-        ini_set('session.cookie_samesite', 'Strict'); // Prevent CSRF
+    protected function getBrowserFootprint(): string{
+        return '';
     }
 
 
@@ -91,7 +85,19 @@ class Warden {
      * Initializes session
      * Call after Limiter initialization before DTBase
      */
-    public function awakeSession(Limiter &$l){
+    public function awakeSession(DTBase &$db){
+        // Secure headers
+        if($this->config['headers-secure'] != 0){
+            header("X-Frame-Options: DENY");
+            header("X-XSS-Protection: 1; mode=block");
+            header("X-Content-Type-Options: nosniff");
+
+            ini_set('session.cookie_httponly', '1'); // Prevent JS access
+            //ini_set('session.cookie_secure', '1');   // Require HTTPS
+            ini_set('session.use_only_cookies', '1'); // No URL-based sessions
+            ini_set('session.cookie_samesite', 'Strict'); // Prevent CSRF
+        }
+
         // Secure cookie parameters
         $cookieParams = session_get_cookie_params();
         session_set_cookie_params([
@@ -105,11 +111,48 @@ class Warden {
         SessionManager::start($this->config['session-main-name']);
         // Regenerate ID
         SessionManager::regenerateId($this->config['session-main-expire']);
+        
         // Rate limits
-        if(!$l->checkLimit()){
-            header('HTTP/1.1 429 Too Many Requests');
-            header('Retry-After: ' . (60 - time() % 60));
-            exit;
+        if($this->config['limiter'] != 0){
+            if($this->config['limiter-naughtyList'] != 0){
+                $reqIp = inet_pton($_SERVER['REMOTE_ADDR']);
+                $db->enable();
+                $ipData = $db->selectNaughtyList($reqIp);
+                if($ipData !== null){
+                    header('HTTP/1.0 403 Forbidden');
+                    echo "NAUGHTY";
+                    exit();
+                }
+            }
+            $l = new Limiter($this);
+            $l_result = $l->checkLimit();
+            switch($l_result['res']){
+                case LimitResult::BlockIP:
+                    if($this->config['limiter-naughtyList'] != 0){
+                        if($ipData === null){   //not in list => insert
+                            $ipData = [
+                                'ip'=>$reqIp,
+                                'reason'=>(int)LimitReason::RateLimit,
+                                'abd'=>$this->getBrowserFootprint()
+                            ];
+                            $db->insertNaughtyList($ipData);
+                        } else{ //already in list => update range
+                            echo "Blocked";
+                        }
+                    }
+                    header('HTTP/1.0 403 Forbidden');
+                    echo "In naughty list: ".(int)$l_result['riz'];
+                    //TODO contact mail for recovery
+                    exit();
+                case LimitResult::BucketFailure:
+                case LimitResult::TooManyRequests:
+                    header('HTTP/1.1 429 Too Many Requests');
+                    header('Retry-After: ' . (60-time()%60));
+                    echo $l->getRemainingTokens();
+                    exit();
+                case LimitResult::Ok;
+                    break;
+            }
         }
     }
 

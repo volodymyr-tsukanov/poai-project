@@ -24,7 +24,7 @@ use project_VT\control\Errorr;
 use project_VT\control\ErrorCause;
 
 
-//setDebugMode(1);
+setDebugMode(0);
 
 try{
     $router = new Router();

@@ -17,6 +17,21 @@
 namespace project_VT\control;
 
 
+enum LimitResult: int{
+    case Ok = 0;
+    case TooManyRequests = 1;
+    case BlockIP = 9;
+    case BucketFailure = 11;
+}
+enum LimitReason: int{
+    case NONE = 0;
+    case RateLimit = 1;
+    case RateLimitTokenManipulation = 2;
+    case RateLimitRefilManipulation = 3;
+    case SessionSwitching = 11;
+    case UAswitching = 12;
+}
+
 class Limiter {
     private int $capacity;
     private float $refillRate;
@@ -42,16 +57,13 @@ class Limiter {
             return false;
         if(!isset($state['tokens']) || !isset($state['refilled']) || !isset($state['updated']) || !isset($state['penalties']))
             return false;
-        if(!is_int($state['tokens']) || !is_int($state['refilled']) || !is_int($state['updated']) || !is_int($state['updated']))
+        if(!is_int($state['tokens']) || !is_int($state['refilled']) || !is_int($state['updated']) || !is_int($state['penalties']))
             return false;
-        if($state['tokens'] > $this->capacity){
-            $this->w->logShared($this,"having more tokens");
-            return false;
-        }
-        if($state['refilled'] > time()+60){
-            $this->w->logShared($this,"state->refilled from future");
-            return false;
-        }
+        if($state['tokens'] > $this->capacity)  //having more tokens
+            throw new Errorr($this,ErrorCause::RateLimiter,'TM');
+        if($state['refilled'] > time()+60) //refilled from future
+            throw new Errorr($this,ErrorCause::RateLimiter,'RM');
+
         return true;
     }
     private function getDefaultState(): array{
@@ -77,13 +89,14 @@ class Limiter {
     }
 
 
-    public function checkLimit(): bool{
+    public function checkLimit(): array{
         try{
+            $res = ['res'=>LimitResult::Ok,'riz'=>LimitReason::NONE];
             $state = $this->readBucketState();
             $t = time();
             
             // Reset tokens if time window has passed
-            if(($t - $state['refilled']) > $this->timeWindow){
+            if(($t - $state['refilled'] && $state['tokens'] > 0) > $this->timeWindow){
                 $state = $this->getDefaultState();
             } else{
                 // Calculate tokens to add within the current window
@@ -97,25 +110,37 @@ class Limiter {
 
             if($state['tokens'] > $this->penalty){
                 $state['tokens']--;
-            } else{ //TODO ban by IP
-                $this->w->logShared($this,'scraper!');
-                sleep(5);
+                if($state['tokens'] < 0){
+                    $res['res'] = LimitResult::TooManyRequests;
+                    $res['riz'] = LimitReason::RateLimit;
+                }
+            } else{
+                $this->w->logShared($this,'scraper! ban');
+                $res['res'] = LimitResult::BlockIP;
+                $res['riz'] = LimitReason::RateLimit;
             }
             $this->writeBucketState($state);
-            return $state['tokens'] > 0;
+            return $res;
         } catch(Errorr $e){
-            $this->w->logShared($this,$e);
-            return false;
+            switch($e->getDescription()){
+                case 'TM':
+                    return ['res'=>LimitResult::BlockIP,'riz'=>LimitReason::RateLimitTokenManipulation];
+                case 'RM':
+                    return ['res'=>LimitResult::BlockIP,'riz'=>LimitReason::RateLimitRefilManipulation];
+                default:
+                    $this->w->logShared($this,$e);
+                    return ['res'=>LimitResult::BucketFailure,'riz'=>LimitReason::NONE];
+            }
         }
     }
 
     public function getRemainingTokens(): int{
         try{
             $state = $this->readBucketState();
-            return max(0,$state['tokens']);
+            return $state['tokens']; //max(0,$state['tokens']);
         } catch(Errorr $e){
             $this->w->logShared($this,$e);
-            return $this->capacity;
+            return 0;
         }
     }
 }

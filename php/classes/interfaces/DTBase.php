@@ -23,7 +23,7 @@ use project_VT\control\Warden;
 
 
 class DTBase {
-    private const PARAMS = [
+    private const PARAMS_DEFAULT = [
         'server'=>'localhost',
         'user'=>'root',
         'pass'=>''
@@ -33,23 +33,9 @@ class DTBase {
     private Warden $w;
 
 
-    public function __construct(Warden &$w){
+    function __construct(Warden &$w, bool $connect=false){
         $this->w = $w;
-        $db_params = $this->w->getDBparams();
-        if($db_params === false) throw new Errorr($this,ErrorCause::DB,'no ini');
-        
-        $this->mysqli = new mysqli($db_params['hostname'],$db_params['username'],$db_params['password'],$db_params['database']);
-        //test connection
-        if($this->mysqli->connect_errno){
-            $this->mysqli = new mysqli(self::PARAMS['server'],self::PARAMS['user'],self::PARAMS['pass'], $db_params['name']);   //try with default params
-            if($errn = $this->mysqli->connect_errno){
-                throw new Errorr($this,ErrorCause::DB,$errn);
-            }
-        }
-        //set encoding
-        if(!$this->mysqli->set_charset($db_params['charset'])){
-            throw new Errorr($this,ErrorCause::DB,'set utf8');
-        }
+        if($connect) $this->connect();
     }
     function __destruct(){
         if(isset($this->mysqli)){
@@ -59,7 +45,60 @@ class DTBase {
     }
 
 
+    private function connect(){
+        $db_params = $this->w->getDBparams();
+        if($db_params === false) throw new Errorr($this,ErrorCause::DB,'no ini');
+
+        $this->mysqli = new mysqli($db_params['hostname'],$db_params['username'],$db_params['password'],$db_params['database']);
+        //test connection
+        if($this->mysqli->connect_errno){
+            $this->mysqli = new mysqli(self::PARAMS_DEFAULT['server'],self::PARAMS_DEFAULT['user'],self::PARAMS_DEFAULT['pass'], $db_params['name']);   //try with default params
+            if($errn = $this->mysqli->connect_errno){
+                throw new Errorr($this,ErrorCause::DB,$errn);
+            }
+        }
+        //set encoding
+        if(!$this->mysqli->set_charset($db_params['charset'])){
+            throw new Errorr($this,ErrorCause::DB,'set charset');
+        }
+    }
+
+
+    public function isEnabled(): bool{
+        return isset($this->mysqli);
+    }
+    /** Connect to db */
+    public function enable(){
+        if(!$this->isEnabled()) $this->connect();
+    }
+
+    /** Returns naughtyList entry as array if ip in range */
+    public function selectNaughtyList($ip): array|null{
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'sNL:not enabled');
+        $stmt = $this->mysqli->prepare('SELECT `id`,`ip_start`,`ip_end`,`abd` FROM `naughtyList` WHERE `ip_start` <= ? AND `ip_end` >= ?');
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed prepare');
+        $stmt->bind_param('bb', $ip,$ip);
+        if($stmt->execute() === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt execute');
+        $result = $stmt->get_result();
+        $arr = $result->fetch_assoc();
+        $stmt->close();
+        if($arr === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt result->fetch');
+        return $arr;
+    }
+    /** Inserts new entry to naughtyList
+     * $ipData - array with fields: (bin)ip, (int)reason, (string)abd
+     */
+    public function insertNaughtyList(array $ipData){
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'iNL:not enabled');
+        $stmt = $this->mysqli->prepare('INSERT INTO `naughtyList`(`ip_start`,`ip_end`,`reason`,`abd`) VALUES (?,?,?,?)');
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'iNL:failed prepare');
+        $stmt->bind_param('bbis', $ipData['ip'],$ipData['ip'],$ipData['reason'],$ipData['abd']);
+        if($stmt->execute() === false) throw new Errorr($this,ErrorCause::DB,'iNL:failed stmt execute');
+        $stmt->close();
+    }
+
     public function insertUser(array $userData){
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
         $passHash = $this->w->protectPasswd($userData['passwd']);
         $stmt = $this->mysqli->prepare("INSERT INTO `users`(username,email,passwd,reputation,language) VALUES (?,?,?,?,?)");
         $stmt->bind_param('sssii', $userData['username'], $userData['email'], $passHash, $userData['reputation'], $userData['language']);
@@ -68,7 +107,7 @@ class DTBase {
     }
 
     protected function selectUser(string $username, string $password){
-
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
     }
     protected function deleteUser(string $username, string $password){
         $stmt = $this->mysqli->prepare("SELECT passwd FROM `users` WHERE username = ?");

@@ -55,5 +55,8 @@ class Errorr extends Exception {
     public function getCause(): ErrorCause{
         return $this->cause;
     }
+    public function getDescription(): string{
+        return $this->description;
+    }
 }
 ?>
