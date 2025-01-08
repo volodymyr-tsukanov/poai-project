@@ -17,7 +17,6 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
-use project_VT\control\Warden;
 
 
 class MainDispatcher extends Dispatcher {
@@ -35,11 +34,9 @@ class MainDispatcher extends Dispatcher {
     }
 
     public function ResGet(){
-        $w = new Warden();
-        
         header('Content-Type:text/html');
-        $type = $w->gatherGETData('t');
-        $name = $w->gatherGETData('n');
+        $type = $this->w->gatherGETData('t');
+        $name = $this->w->gatherGETData('n');
         if($type == false || $name == false)
             echo self::RESPONSE_WrEQEST;
         else{

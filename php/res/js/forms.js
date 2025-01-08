@@ -115,6 +115,13 @@ function getRadioIndex(name=''){
 	return index;
 }
 
+function proccessSecret(secret){
+	if(!secret) return ['noS', '-'];
+	let sArr = secret.split(" ");
+	if(sArr.length !== 2) sArr = ['noS', '-'];
+	return sArr;
+}
+
 
 /* Form methods */
 	/*Settings*/
@@ -145,6 +152,36 @@ function clearCache(){
 	sessionStorage.clear();
 	cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>' };
 	showToast('Cache cleared!',4250);
+}
+function signUpForm(){
+	document.getElementById('mainBody').innerHTML = cachedData.signupForm;
+}
+function signUp(secret){
+	let sArr = proccessSecret(secret);
+	const requestData = {
+		method: 'POST',
+		headers: {
+			'Content-Type': "application/json"
+		},
+		body: JSON.stringify({
+			'acc': "0",
+			[sArr[0]]: sArr[1]
+		})
+	};
+	fetch(host+'settings',requestData).then(response => response.text()).then((data) =>{
+		if(data == 'L'){
+			showToast('Logged in!',1080);
+			loadPage(-1);
+		} else if(data == 'R'){
+			showToast('Registered!',1080);
+			loadPage(-1);
+		} else{
+			console.warn('status: '+data);
+			showToast('Feedback sent not properly. Refresh the page and try again',1918);
+			/*reloadPage(false);*/
+		}
+	}).catch((e) => console.error('sendFeedback: '+e));
+	return false;
 }
 
 	/*Feedback*/
@@ -188,13 +225,11 @@ function resetFields(){
 function giveFeedback(secret){
 	let letter = new Letter();
 	if(letter.gather()){
-		let sArr = secret.split(" ");
-		if (sArr.length !== 2) sArr = ['noS', '-'];
+		let sArr = proccessSecret(secret);
 		const requestData = {
 			method: 'POST',
 			headers: {
-				'Content-Type': "application/json",
-				'Authorization': "Bearer token"
+				'Content-Type': "application/json"
 			},
 			body: JSON.stringify({
 				'mail': letter.format(),
@@ -207,10 +242,10 @@ function giveFeedback(secret){
 				const holder = mainBody.innerHTML;
 				mainBody.innerHTML = cachedData.secondBody;
 				cachedData.secondBody = holder;
-
-			} else {
+				showToast('Letter sent!',2030);
+			} else{
 				console.warn('status: '+data);
-				alert('Feedback sent not properly. Refresh the page and try again');
+				showToast('Feedback sent not properly. Refresh the page and try again',1918);
 				reloadPage(false);
 			}
 		}).catch((e) => console.error('sendFeedback: '+e));

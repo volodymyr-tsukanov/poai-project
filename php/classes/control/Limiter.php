@@ -79,7 +79,7 @@ class Limiter {
     private function readBucketState(): array{
         $state = $_SESSION['limiter'];
         if(!$this->isValidState($state)){
-            $this->w->logShared($this,"Invalid state found, resetting to default");
+            //$this->w->logShared($this,"Invalid state found, resetting to default");   //floods log
             return $this->getDefaultState();
         }
         return $state;

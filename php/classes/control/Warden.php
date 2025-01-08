@@ -73,7 +73,11 @@ class Warden {
 
     protected function makeCSRF(): string{
         $B = random_bytes($this->config['csrf-length']);
-        return base64_encode($B); //alternative: base64_encode
+        return base64_encode($B);
+    }
+    protected function makeUToken(): string{
+        $B = random_bytes($this->config['user-token-length']);
+        return bin2hex($B);
     }
 
     protected function getBrowserFootprint(): string{
@@ -108,9 +112,21 @@ class Warden {
             //'httponly' => true,    //requires htpps
             'samesite' => 'Strict'
         ]);
-        SessionManager::start($this->config['session-main-name']);
+        // Name
+        $sn = $this->config['session-name'];
+        if($this->config['session-name-variator'] == 1){
+            $magicWord = getallheaders()['MagicWord'];
+            if(!isset($magicWord)){
+                $sn = makeMagicWord(explode('_',$this->config['magic-words']));
+            } else if(strlen($magicWord)<18) $sn = htmlspecialchars($magicWord);
+            else{   //TODO log behaviour
+                echo "!MGWORD suspicious";
+                exit();
+            }
+        }
+        SessionManager::start($sn);
         // Regenerate ID
-        SessionManager::regenerateId($this->config['session-main-expire']);
+        SessionManager::regenerateId($this->config['session-expire']);
         
         // Rate limits
         if($this->config['limiter'] != 0){
@@ -154,6 +170,17 @@ class Warden {
                     break;
             }
         }
+
+        //UserAgent
+        if($this->config['ua'] == 1){
+            $userAgent = SessionManager::userAgent();
+            if(empty($userAgent)){
+                SessionManager::userAgent($_SERVER['HTTP_USER_AGENT']);
+            } else if($userAgent !== $_SERVER['HTTP_USER_AGENT']){
+                SessionManager::destroy();
+                $this->logActivity(WardenRizz::Session,'hijacker on '.$_SERVER['HTTP_USER_AGENT']);
+            }
+        }
     }
 
     /**
@@ -164,6 +191,16 @@ class Warden {
         $req = array();
         $req['uri'] = strtok($_SERVER['REQUEST_URI'], '?');
         $req['method'] =  $_SERVER['REQUEST_METHOD'];
+
+        if($this->config['session-name-variator'] == 1){
+            if(!SessionManager::isSigned() && !Router::isDefaultRoute($req['uri'])){
+                $this->logActivity(WardenRizz::Session,"wrong name");
+                $req['uri'] = '/';  //TODO fix multi session
+                SessionManager::sign();
+            } else{
+                SessionManager::sign();
+            }
+        }
 
         // Routing
         if(strpos($req['uri'],'/data/') !== false || strpos($req['uri'],'.ini') !== false){
@@ -261,9 +298,7 @@ class Warden {
         return $data;
     }
 
-    /**
-     * Hashes password using options from data/cnf.ini
-     */
+    /** Hashes password using options from data/cnf.ini */
     public function protectPasswd(string $password): string{
         $options = [];
         $algorithm = $this->config['pass-algorithm'];
@@ -317,6 +352,46 @@ class Warden {
         $res = hash_equals($csrf['token'],$token);
         if(!$res){
             $this->logActivity(WardenRizz::Session,'wrong CSRF');
+        }
+        return $res;
+    }
+
+    public function getMGWorldInjection(): string|bool{
+        if($this->config['session-name-variator'] == 1) return session_name();
+        else return false;
+    }
+
+    private function getSessionUser(): array|bool{
+        $user = SessionManager::user();
+        if(empty($user)) return false;
+        if(time() - $user['t'] > $this->config['user-expire']){
+            SessionManager::user(-1);   //unset
+            return false;
+        }
+        return $user;
+    }
+    public function getUTokenInjection(): string|bool{
+        $user = $this->getSessionUser();
+        if($user === false) return false;
+        $uToken = $this->makeUToken();
+        $user['token'] = $uToken;
+        SessionManager::user(null,$uToken);
+        return $uToken;
+    }
+    public function checkUTokenInjected(): bool{
+        $user = $this->getSessionUser();
+        if($user === false) return false;
+        $uToken = filter_input(INPUT_POST,'utoken',FILTER_DEFAULT);
+        if(!isset($uToken)){
+            return false;
+        }
+        if($uToken === false){
+            return false;
+        }
+        // timing-safe comparison
+        $res = hash_equals($user['token'],$uToken);
+        if(!$res){
+            $this->logActivity(WardenRizz::Session,'wrong uToken');
         }
         return $res;
     }

@@ -16,6 +16,7 @@
 */
 namespace project_VT\control\dispatchers;
 
+use project_VT\control\AssetManager;
 use project_VT\control\Dispatcher;
 
 
@@ -24,7 +25,7 @@ class ProjectsDispatcher extends Dispatcher {
         header('Content-Type:application/json');
         $data = $this->block('projects');
         $data['content']['title'] = 'Projects';
-        $data['content']['extension'] = $this->blockRaw('pure-slider');
+        $data['content']['extension'] = ['html'=>$this->blockRaw('pure-slider'), 'css'=>AssetManager::getCSSContent('pure-slider')];
         echo json_encode($data);
     }
 }

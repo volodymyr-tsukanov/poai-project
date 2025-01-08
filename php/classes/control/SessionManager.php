@@ -33,6 +33,13 @@ class SessionManager {
         session_unset();    //cleanup
         session_destroy();
     }
+    public static function sign(){
+        $_SESSION['v'] = '0.1';
+    }
+    public static function isSigned(): bool{
+        if(session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['v'])) return true;
+        return false;
+    }
 
     public static function regenerateId(int $expire){
         if(empty($expire)) $expire = 0;
@@ -61,6 +68,18 @@ class SessionManager {
                 'time'=>time()
             ];
         }
+        return $oldVal;
+    }
+    /** put no params to get. put -1 as param to unset */
+    public static function user(?int $id=null, ?string $token=null): ?array{
+        $oldVal = $_SESSION['user'];
+        if(!empty($id)){
+            if($id === -1) unset($_SESSION['user']);
+            else $_SESSION['user'] = [
+                    'id'=>$id,
+                    't'=>time()
+                ];
+        } else if(!empty($token)) $_SESSION['user']['token'] = $token;
         return $oldVal;
     }
 }

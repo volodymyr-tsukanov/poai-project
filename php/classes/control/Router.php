@@ -60,6 +60,7 @@ class Router {
         $this->addRoute('/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
         // Settings
         $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::Post,'POST');
 
         // Resources
         $this->addRoute('/res', MainDispatcher::class,RouterAction::ResGet,'GET');
@@ -72,8 +73,8 @@ class Router {
         $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::Post,'POST');
         $this->addRoute('/php/poai-project/php/pub/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
         $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::Post,'POST');
         $this->addRoute('/php/poai-project/php/pub/res', MainDispatcher::class,RouterAction::ResGet,'GET');
-
     }
 
 
@@ -89,7 +90,7 @@ class Router {
             $dispatcherClass = $this->routes[$req['method']][$req['uri']]['controller'];
             $methodName = $this->routes[$req['method']][$req['uri']]['action']->name;
             
-            $dispatcher = new $dispatcherClass();
+            $dispatcher = new $dispatcherClass($this->w);
             if(method_exists($dispatcher, $methodName)){
                 $dispatcher->$methodName();
             } else {
@@ -103,7 +104,7 @@ class Router {
 
 
     public static function isDefaultRoute(string $route): bool{
-        return $route == '/' || $route == '/php/poai-project/php/pub/';
+        return $route == '/' || $route == '/php/poai-project/php/pub/'; //DEBUG
     }
 }
 ?>

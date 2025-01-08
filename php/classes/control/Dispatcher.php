@@ -18,18 +18,26 @@ namespace project_VT\control;
 
 
 class Dispatcher {
-    public const RESPONSE_GOOD = 'G', RESPONSE_NeXIST = 'E', RESPONSE_WrEQEST = 'R', RESPONSE_WaUTH = 'A';
+    public const RESPONSE_GOOD = 'G', RESPONSE_GlOGIN = 'L',RESPONSE_GrEGISTER = 'R', RESPONSE_NeXIST = 'X', RESPONSE_WrEQEST = 'E', RESPONSE_WaUTH = 'A';
+
+    protected Warden $w;
+
+
+    function __construct(Warden& $w){
+        $this->w = $w;
+    }
 
     
     protected function index(): string{
         $html = AssetManager::getHTMLBlock('index');
         $css = AssetManager::getCSSContent('styles').
-            AssetManager::getCSSContent('pure-slider').
             AssetManager::getCSSContent('loader').
             '</style><style>'.AssetManager::getCSSContent('langs'); //langs.css as second style
         $js = AssetManager::getJSContent('forms').
-            AssetManager::getJSContent('pure-slider').
-            AssetManager::getJSContent('main'); //main always last
+            AssetManager::getJSContent('pure-slider');
+        $magickWord = $this->w->getMGWorldInjection();
+        if($magickWord !== false) $js .= str_replace('*MGWORD*',$magickWord, AssetManager::getJSContent('main'));
+        else $js .= AssetManager::getJSContent('main');
         $html = str_replace(['$CSS$','$JS$'],[$css,$js], $html);
         return $html;
     }

@@ -55,7 +55,7 @@ class User {
 
 	applyLanguage(){
 		/* langs.css */
-		const styleshit = document.styleSheets[1];	/*langs.css must be secont <style>*/
+		const styleshit = document.styleSheets[1];	/*langs must be secont style*/
 		const ruleIndex = 3;
 		
 		styleshit.deleteRule(3);
@@ -91,10 +91,10 @@ const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://lo
 
 if(window.location.href != host) window.location.replace(host);	/*jump to init*/
 let user = new User();
-let cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', magicWord : '$SESSIONAME$' };
+let cachedData = {loader:'<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', magicWord:'*MGWORD*'};
 
 	/*Preload*/
-loadResources();
+loadSetupResources();
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -131,28 +131,34 @@ function loadPage(pageId, lang){
 		method: 'UPDATE',
 		headers: {
 			'Content-Type': "application/json",
-			'Authorization': "Bearer token",
 			'MagicWord': cachedData.magicWord
 		}
 	};
 	switch(pageId){
 		case -1: /* settings */
-			if(cachedData.settings === undefined){
-				fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
-					updatePage(jsonData,0,'settings');
+			fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
+				updatePage(jsonData,0);
+				if(jsonData.content.extension === undefined){	/*signed*/
 					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + user.lang;
 					loadSettings();
 					blockUI();
-				}).catch((e) => console.error('loadPage: '+e));
-			} else{
-				updatePage(cachedData.settings,updateDelay);
-			}
+				} else{
+					cachedData.signupForm = jsonData.content.extension.html;
+					document.getElementById('pageStyles').innerHTML = jsonData.content.extension.css;
+				}
+			}).catch((e) => {
+				console.error('loadPage: '+e);
+				/*reloadPage(false);*/
+			});
 			break;
 		case 0: /*main*/
 			if(cachedData.main === undefined){
 				fetch(host+'main',requestData).then(response => response.json()).then((jsonData) => {
 					updatePage(jsonData,0,'main');
-				}).catch((e) => console.error('loadPage: '+e));
+				}).catch((e) => {
+					console.error('loadPage: '+e);
+					reloadPage(false);
+				});
 			} else{
 				updatePage(cachedData.main);
 			}
@@ -161,8 +167,12 @@ function loadPage(pageId, lang){
 			if(cachedData.projects === undefined){
 				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
 					updatePage(jsonData,-randomInt(620,970),'projects');
-					cachedData.pureSlider = jsonData.content.extension;
-				}).catch((e) => console.error('loadPage: '+e));
+					cachedData.pureSlider = jsonData.content.extension.html;
+					document.getElementById('pageStyles').innerHTML = jsonData.content.extension.css;
+				}).catch((e) => {
+					console.error('loadPage: '+e);
+					reloadPage(false);
+				});
 			} else{
 				updatePage(cachedData.projects);
 			}
@@ -172,12 +182,22 @@ function loadPage(pageId, lang){
 				updatePage(jsonData);
 				cachedData.secondBody = jsonData.content.secondBody;
 				loadFields();
-			}).catch((e) => console.error('loadPage: '+e));
+			}).catch((e) => {
+				console.error('loadPage: '+e);
+				reloadPage(false);
+			});
 			break;
 		case 3: /*contacts*/
-			fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
-				updatePage(jsonData,-randomInt(340,530));
-			}).catch((e) => console.error('loadPage: '+e));
+			if(cachedData.contacts === undefined){
+				fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
+					updatePage(jsonData,-randomInt(340,530),'contacts');
+				}).catch((e) => {
+					console.error('loadPage: '+e);
+					reloadPage(false);
+				});
+			} else{
+				updatePage(cachedData.contacts);
+			}
 			break;
 		default:
 			break;
@@ -226,7 +246,7 @@ async function loadResource(resArgs, type='text/html'){
 	}
 	return await response.text();
 }
-async function loadResources(){
+async function loadSetupResources(){
 	const htmlData = await loadResource('t=bk&n=loader');
 	if(htmlData && htmlData.length > 9) cachedData.loader = htmlData;
 }

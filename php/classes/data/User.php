@@ -98,11 +98,11 @@ class User {
     }
 
 
-    public function show(){
+    public function show(){ //DEBUG
         printf('User: %s %s status=%d %s', $this->username,$this->email,$this->status,Warden::packTime($this->updated));
     }
 
-    public function toArray(): array {
+    protected function toArray(): array{
         return [
             "username" => $this->username,
             "email" => $this->email,

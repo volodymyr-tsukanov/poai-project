@@ -17,7 +17,6 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
-use project_VT\control\Warden;
 
 
 class FormsDispatcher extends Dispatcher {
@@ -25,16 +24,14 @@ class FormsDispatcher extends Dispatcher {
         header('Content-Type:application/json');
         $data = $this->block('forms');
         $data['content']['title'] = 'Forms';
-        
-        $w = new Warden();
-        $data['content']['mainBody'] = str_replace('$CSRF$',$w->getCSRFinjection(), $data['content']['mainBody']);
+
+        $data['content']['mainBody'] = str_replace('*CSRF*',$this->w->getCSRFinjection(), $data['content']['mainBody']);
         echo json_encode($data);
     }
 
-    public function Post(){
+    public function Post(){ //TODO proc form
         header('Content-Type:text/html');
-        $w = new Warden();
-        if($w->checkCSRFinjected()) echo self::RESPONSE_GOOD;
+        if($this->w->checkCSRFinjected()) echo self::RESPONSE_GOOD;
         else echo self::RESPONSE_WaUTH;
     }
 }

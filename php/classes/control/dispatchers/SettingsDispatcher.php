@@ -16,8 +16,8 @@
 */
 namespace project_VT\control\dispatchers;
 
+use project_VT\control\AssetManager;
 use project_VT\control\Dispatcher;
-use project_VT\control\Warden;
 
 
 class SettingsDispatcher extends Dispatcher {
@@ -26,9 +26,22 @@ class SettingsDispatcher extends Dispatcher {
         $data = $this->block('settings');
         $data['content']['title'] = 'Settings';
 
-        $w = new Warden();
-        $data['content']['mainBody'] = str_replace('$CSRF$',$w->getCSRFinjection(), $data['content']['mainBody']);
+        $uToken = $this->w->getUTokenInjection();
+        if($uToken !== false){
+            $data['content']['mainBody'] = $data['content']['secondBody'];
+            $data['content']['mainBody'] = str_replace('*UTOKEN*',$uToken, $data['content']['mainBody']);
+        } else{
+            $block = str_replace('*SEC*',$this->w->getCSRFinjection(), $this->blockRaw('signup-form'));
+            $data['content']['extension'] = ['html'=>$block, 'css'=>AssetManager::getCSSContent('signup-form')];
+        }
+        unset($data['content']['secondBody']);
         echo json_encode($data);
+    }
+
+    public function Post(){
+        header('Content-Type:text/html');
+        if($this->w->checkCSRFinjected()) echo self::RESPONSE_GlOGIN;
+        else echo self::RESPONSE_WaUTH;
     }
 }
 ?>

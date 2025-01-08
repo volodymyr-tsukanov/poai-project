@@ -114,6 +114,9 @@ function touchWord(string &$virgin){
                 case 'T':
                     $virgin[$u] = 'N';
                     break;
+                case 'D':
+                    $virgin[$u] = 'F';
+                    break;
             }
         }   //skip 45%
     }
