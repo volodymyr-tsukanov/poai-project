@@ -18,6 +18,8 @@ Thumbs.db
 # backup files
 *~
 
+# IDE
+.idea
 
 # Asset folder
 res/assets/*

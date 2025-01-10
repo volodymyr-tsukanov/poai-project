@@ -87,9 +87,9 @@ class User {
 
 /* Main */
 	/*Init*/
-const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://localhost/'*/
+const host = 'http://localhost/gl15/poai-project/php/pub/';	/*!default 'http://localhost/'*/
 
-if(window.location.href != host) window.location.replace(host);	/*jump to init*/
+if(window.location.href !== host) window.location.replace(host);	/*jump to init*/
 let user = new User();
 let cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', magicWord : '$SESSIONAME$' };
 
@@ -128,7 +128,7 @@ function loadPage(pageId, lang){
 	displayLoader();
 
 	const requestData = {
-		method: 'UPDATE',
+		method: 'GET',
 		headers: {
 			'Content-Type': "application/json",
 			'Authorization': "Bearer token",

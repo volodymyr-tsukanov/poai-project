@@ -24,9 +24,9 @@ use project_VT\control\Warden;
 
 class DTBase {
     private const PARAMS = [
-        'server'=>'localhost',
-        'user'=>'root',
-        'pass'=>''
+        'host'=>'localhost',
+        'username'=>'root',
+        'password'=>''
     ];
 
     private mysqli $mysqli;
@@ -38,10 +38,10 @@ class DTBase {
         $db_params = $this->w->getDBparams();
         if($db_params === false) throw new Errorr($this,ErrorCause::DB,'no ini');
         
-        $this->mysqli = new mysqli($db_params['hostname'],$db_params['username'],$db_params['password'],$db_params['database']);
+        $this->mysqli = new mysqli($db_params['host'],$db_params['username'],$db_params['password'],$db_params['name']);
         //test connection
         if($this->mysqli->connect_errno){
-            $this->mysqli = new mysqli(self::PARAMS['server'],self::PARAMS['user'],self::PARAMS['pass'], $db_params['name']);   //try with default params
+            $this->mysqli = new mysqli(self::PARAMS['host'],self::PARAMS['username'],self::PARAMS['password'], $db_params['name']);   //try with default params
             if($errn = $this->mysqli->connect_errno){
                 throw new Errorr($this,ErrorCause::DB,$errn);
             }

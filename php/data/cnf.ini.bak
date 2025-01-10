@@ -1,15 +1,15 @@
 [db]
 host = localhost
 name = prai_project
-username = **** ; no leaks here
-password = **** ; although
+username = ****						; no leaks here
+password = **** 					; although
 charset = utf8mb4
 
 
 [token-bucket]
-capacity = 10       ; tokens
-refil-rate = 0.25   ; token/s
-time-window = 60    ; in seconds
+capacity = 10       				; tokens
+refil-rate = 0.25   				; token/s
+time-window = 60    				; in seconds
 penalty = -10
 
 

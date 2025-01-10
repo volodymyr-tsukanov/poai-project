@@ -49,34 +49,34 @@ class Router {
         
         $this->db = new DTBase($this->w);
 
-        // Init (main)
+        // Init (main)  WARNING mapped for debug do NOT merge
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/index.php', MainDispatcher::class,RouterAction::Init,'GET');
 
         // Main
-        $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'GET');
         // Projects
-        $this->addRoute('/projects', ProjectsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/projects', ProjectsDispatcher::class,RouterAction::View,'GET');
         // Forms
-        $this->addRoute('/forms', FormsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/forms', FormsDispatcher::class,RouterAction::View,'GET');
         $this->addRoute('/forms', FormsDispatcher::class,RouterAction::Post,'POST');
         // Contacts
-        $this->addRoute('/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/contacts', ContactsDispatcher::class,RouterAction::View,'GET');
         // Settings
-        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'GET');
 
         // Resources
         $this->addRoute('/res', MainDispatcher::class,RouterAction::ResGet,'GET');
-        
+
         //!DEBUG ONLY
-        $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
-        $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/projects', ProjectsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::Post,'POST');
-        $this->addRoute('/php/poai-project/php/pub/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/res', MainDispatcher::class,RouterAction::ResGet,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/projects', ProjectsDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::Post,'POST');
+        $this->addRoute('/gl15/poai-project/php/pub/contacts', ContactsDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/gl15/poai-project/php/pub/res', MainDispatcher::class,RouterAction::ResGet,'GET');
 
     }
 
@@ -92,7 +92,7 @@ class Router {
         if(array_key_exists($req['uri'], $this->routes[$req['method']])){
             $dispatcherClass = $this->routes[$req['method']][$req['uri']]['controller'];
             $methodName = $this->routes[$req['method']][$req['uri']]['action']->name;
-            
+
             $dispatcher = new $dispatcherClass();
             if(method_exists($dispatcher, $methodName)){
                 $dispatcher->$methodName();
@@ -107,7 +107,7 @@ class Router {
 
 
     public static function isDefaultRoute(string $route): bool{
-        return $route == '/' || $route == '/php/poai-project/php/pub/';
+        return $route == '/' || $route == '/gl15/poai-project/php/pub/';
     }
 }
 ?>
