@@ -18,6 +18,8 @@ namespace project_VT\control;
 
 use project_VT\control\dispatchers\ContactsDispatcher;
 use project_VT\control\dispatchers\FormsDispatcher;
+use project_VT\control\Errorr;
+use project_VT\control\Warden;
 use project_VT\control\dispatchers\MainDispatcher;
 use project_VT\control\dispatchers\ProjectsDispatcher;
 use project_VT\control\dispatchers\SettingsDispatcher;
@@ -35,44 +37,45 @@ enum RouterAction {
 class Router {
     protected $routes = [];
     private Warden $w;
+    private Limiter $l;
     private DTBase $db;
     protected User $user;
 
 
     function __construct(){
         $this->w = new Warden();
+        $this->l = new Limiter($this->w);
+        $this->w->awakeSession($this->l);
+        
         $this->db = new DTBase($this->w);
-        $this->w->awakeSession($this->db);
-        $this->db->enable();
 
         // Init (main)
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');
         $this->addRoute('/index.php', MainDispatcher::class,RouterAction::Init,'GET');
 
         // Main
-        $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/main', MainDispatcher::class,RouterAction::View,'GET');
         // Projects
-        $this->addRoute('/projects', ProjectsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/projects', ProjectsDispatcher::class,RouterAction::View,'GET');
         // Forms
-        $this->addRoute('/forms', FormsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/forms', FormsDispatcher::class,RouterAction::View,'GET');
         $this->addRoute('/forms', FormsDispatcher::class,RouterAction::Post,'POST');
         // Contacts
-        $this->addRoute('/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/contacts', ContactsDispatcher::class,RouterAction::View,'GET');
         // Settings
-        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::Post,'POST');
+        $this->addRoute('/settings', SettingsDispatcher::class,RouterAction::View,'GET');
 
         // Resources
         $this->addRoute('/res', MainDispatcher::class,RouterAction::ResGet,'GET');
-        
+
         //!DEBUG ONLY
         $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
-        $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/projects', ProjectsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/php/poai-project/php/pub/main', MainDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/php/poai-project/php/pub/projects', ProjectsDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::View,'GET');
         $this->addRoute('/php/poai-project/php/pub/forms', FormsDispatcher::class,RouterAction::Post,'POST');
-        $this->addRoute('/php/poai-project/php/pub/contacts', ContactsDispatcher::class,RouterAction::View,'UPDATE');
-        $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'UPDATE');
+        $this->addRoute('/php/poai-project/php/pub/contacts', ContactsDispatcher::class,RouterAction::View,'GET');
+        $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'GET');
         $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::Post,'POST');
         $this->addRoute('/php/poai-project/php/pub/res', MainDispatcher::class,RouterAction::ResGet,'GET');
     }
