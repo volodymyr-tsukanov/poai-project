@@ -23,6 +23,7 @@ use project_VT\control\Warden;
 
 
 class DTBase {
+    private static ?DTBase $instance = null;
     private const PARAMS_DEFAULT = [
         'host'=>'localhost',
         'username'=>'root',
@@ -33,15 +34,22 @@ class DTBase {
     private Warden $w;
 
 
-    function __construct(Warden &$w, bool $connect=false){
-        $this->w = $w;
+    protected function __construct(bool $connect=false){
+        $this->w = Warden::getInstance();
+        self::$instance = $this;
         if($connect) $this->connect();
     }
     function __destruct(){
         if(isset($this->mysqli)){
             $this->mysqli->close();
             unset($this->mysqli);
+            self::$instance = null;
         }
+    }
+
+    public static function getInstance(): DTBase{
+        if(self::$instance === null) self::$instance = new DTBase();
+        return self::$instance;
     }
 
 

@@ -37,17 +37,14 @@ enum RouterAction {
 class Router {
     protected $routes = [];
     private Warden $w;
-    private Limiter $l;
     private DTBase $db;
     protected User $user;
 
 
     function __construct(){
-        $this->w = new Warden();
-        $this->l = new Limiter($this->w);
-        $this->w->awakeSession($this->l);
-        
-        $this->db = new DTBase($this->w);
+        $this->w = Warden::getInstance();
+        $this->db = DTBase::getInstance();
+        $this->w->awakeSession($this->db);
 
         // Init (main)
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');
@@ -93,7 +90,7 @@ class Router {
             $dispatcherClass = $this->routes[$req['method']][$req['uri']]['controller'];
             $methodName = $this->routes[$req['method']][$req['uri']]['action']->name;
             
-            $dispatcher = new $dispatcherClass($this->w);
+            $dispatcher = new $dispatcherClass();
             if(method_exists($dispatcher, $methodName)){
                 $dispatcher->$methodName();
             } else {

@@ -23,8 +23,8 @@ class Dispatcher {
     protected Warden $w;
 
 
-    function __construct(Warden& $w){
-        $this->w = $w;
+    function __construct(){
+        $this->w = Warden::getInstance();
     }
 
     

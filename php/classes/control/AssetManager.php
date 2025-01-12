@@ -26,7 +26,7 @@ class AssetManager {
 
 
     function __construct(){
-        $this->w = new Warden();
+        $this->w = Warden::getInstance();
     }
 
 

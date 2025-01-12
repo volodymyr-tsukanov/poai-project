@@ -138,13 +138,13 @@ function loadSettings(){
 	setRadioIndex('langs', index);
 }
 function saveSettings(secret){
-	user.set(0);
+	user.setPage(0);
 	user.save();
 	reloadPage();
 }
 function resetSettings(){
-	user.set(0);
-	user.reset();
+	user.setPage(0);
+	user.resetPage();
 	reloadPage();
 }
 function clearCache(){

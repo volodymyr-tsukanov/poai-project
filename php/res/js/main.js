@@ -17,11 +17,11 @@
 class User {
 	constructor(){
 		let u = JSON.parse(localStorage.getItem('user'));
-		if(!u) this.reset();
+		if(!u) this.resetPage();
 		else this.load(u);
 	}
 
-	preview(){
+	previewLang(){
 		const sl = document.getElementsByName('langs');
 		for(let i = 0; i < sl.length; i++){
 			if(sl[i].checked){
@@ -29,9 +29,9 @@ class User {
 				break;
 			}
 		}
-		this.applyLanguage();
+		this.applyLang();
 	}
-	update(){
+	updateLang(){
 		this.lastPage = 0;
 		const sl = document.getElementsByName('langs');
 		for(let i = 0; i < sl.length; i++){
@@ -42,18 +42,18 @@ class User {
 		}
 		this.save();
 	}
-	set(pageId, lang){
+	setPage(pageId, lang){
 		if(pageId !== undefined) this.lastPage = pageId;
 		if(lang !== undefined) this.lang = lang;
 		this.save();
 	}
-	reset(){
+	resetPage(){
 		this.lastPage = 0; /*load Main page by default*/
 		this.lang = 'en';
 		this.save();
 	}
 
-	applyLanguage(){
+	applyLang(){
 		/* langs.css */
 		const styleshit = document.styleSheets[1];	/*langs must be secont style*/
 		const ruleIndex = 3;
@@ -72,6 +72,30 @@ class User {
 				styleshit.insertRule('.lang-en{display:inline-block;}', 3);
 				break;
 		}
+	}
+
+	gather(){
+		let result = true;
+		let regexName = /^([A-Za-z])*$/;
+		const uname = document.getElementById('sf_uname');
+		const pass = document.getElementById('sf_pass');
+
+		/*Sender*/
+		if(uname.value === null){
+			result = false;
+			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">Поділіться іменем хочаб</div>.';
+		} else if(uname.value.length < 4 || uname.value.length > 30){
+			result = false;
+			errorName.innerHTML = '<div class="lang-en">Entered name has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone imię ma niepoprawną długość</div><div class="lang-ua">Або ваше ім\'я дійсно має стільки букв, або&hellip;</div>.';
+		} else if(!regexName.test(uname.value)){
+			result = false;
+			errorName.innerHTML = '<div class="lang-en">Entered name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
+		}
+
+		if(result){
+			clearFields();
+		}
+		return result;
 	}
 
 	save(){
@@ -123,12 +147,12 @@ function loadPage(pageId, lang){
 	const updateDelay = randomInt(200,800);
 
 	if(lang === undefined) lang = user.lang;
-	user.applyLanguage();
+	user.applyLang();
 
 	displayLoader();
 
 	const requestData = {
-		method: 'UPDATE',
+		method: 'GET',
 		headers: {
 			'Content-Type': "application/json",
 			'MagicWord': cachedData.magicWord
@@ -202,7 +226,7 @@ function loadPage(pageId, lang){
 		default:
 			break;
 	}
-	if(pageId >= 0) user.set(pageId);
+	if(pageId >= 0) user.setPage(pageId);
 }
 async function updatePage(jsonData,delay=0,cacheName=undefined){
 	const mainBody = document.getElementById('mainBody');

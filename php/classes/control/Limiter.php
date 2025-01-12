@@ -40,8 +40,8 @@ class Limiter {
     private Warden $w;
 
 
-    function __construct(Warden &$w){
-        $this->w = $w;
+    function __construct(){
+        $this->w = Warden::getInstance();
         $rl_params = $this->w->getRLparams();
         if($rl_params === false) throw new Errorr($this,ErrorCause::RateLimiter,'no ini');
 

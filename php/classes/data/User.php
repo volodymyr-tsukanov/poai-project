@@ -62,9 +62,9 @@ class User {
     public static function fromStdClass(stdClass $object, string $passwd): User{
         return new self($object->username, $object->email, $passwd, $object->language);
     }
-    public static function fromJson(string $jsonData): User{
+    public static function fromJson(string $jsonData, string $passwd): User{
         $json = json_decode($jsonData);
-        return new self($json->username, $json->email, $json->passwd, $json->language);
+        return new self($json->username, $json->email, $passwd, $json->language);
     }
 
 
@@ -103,10 +103,11 @@ class User {
     }
 
     protected function toArray(): array{
+        $w = Warden::getInstance();
         return [
             "username" => $this->username,
             "email" => $this->email,
-            "passwd" => $this->passwd,
+            "passwd" => $w->protectPasswd($this->passwd),
             "updated" => Warden::packTime($this->updated),
             "status" => (int)$this->status,
             "language" => (int)$this->language

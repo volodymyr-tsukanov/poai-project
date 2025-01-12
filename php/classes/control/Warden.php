@@ -30,6 +30,8 @@ enum WardenRizz {
 }
 
 class Warden {
+    private static ?Warden $instance = null;
+
     public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     private array $config = [   //TODO update with cnf.ini
@@ -44,14 +46,20 @@ class Warden {
     ];
 
 
-    function __construct(){
+    protected function __construct(){
         $ini = parse_ini_file('../data/cnf.ini',true);
         if($ini !== false){
             foreach(array_keys($ini['warden-rules']) as $key){
                 $this->config[$key] = $ini['warden-rules'][$key];
             }
+            self::$instance = $this;
         }
         else $this->logActivity(WardenRizz::Debug,'no cnf.ini');
+    }
+
+    public static function getInstance(): Warden{
+        if(self::$instance === null) self::$instance = new Warden();
+        return self::$instance;
     }
 
 
@@ -89,7 +97,9 @@ class Warden {
      * Initializes session
      * Call after Limiter initialization before DTBase
      */
-    public function awakeSession(DTBase &$db){
+    public function awakeSession(){
+        $db = DTBase::getInstance();
+
         // Secure headers
         if($this->config['headers-secure'] != 0){
             header("X-Frame-Options: DENY");
@@ -140,7 +150,7 @@ class Warden {
                     exit();
                 }
             }
-            $l = new Limiter($this);
+            $l = new Limiter();
             $l_result = $l->checkLimit();
             switch($l_result['res']){
                 case LimitResult::BlockIP:
@@ -293,6 +303,49 @@ class Warden {
         if($data === null) return false;
         if($data === false){
             $this->logActivity(WardenRizz::GatherData,'GET::'.$name);
+            return false;
+        }
+        return $data;
+    }
+    public function gatherPOSTUserData(): array|bool{
+        $args = [
+            'uname' => [
+                'filter' => FILTER_VALIDATE_REGEXP,
+                'options' => ['regexp' => '/^[A-Z]{1}[a-ząęłńśćźżó-]{1,25}$/']
+            ],
+            'pass' => [
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => [
+                    'min_range' => 18, //pełnoletnie tylko
+                    'max_range' => 120 //ludzie tak długo nie żyją
+                ]
+            ],
+            'kraj' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'email' => [
+                'filter' => FILTER_VALIDATE_EMAIL
+            ],
+            'jezyki' => [
+                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+                'flags' => FILTER_REQUIRE_ARRAY
+            ]
+        ];
+        $data = filter_input_array(INPUT_POST, $args);
+
+        foreach($data as $key => $val){
+            if($val === null || $val === false){
+            }
+        }
+        
+        $uname = filter_input(INPUT_POST,'uname',FILTER_DEFAULT);
+        if($uname === null) return false;
+        if($uname === false){
+            $this->logActivity(WardenRizz::GatherData,'POST::UserData');
+            return false;
+        }
+        $pass = filter_input(INPUT_POST,'pass',FILTER_DEFAULT);
+        if($uname === null) return false;
+        if($uname === false){
+            $this->logActivity(WardenRizz::GatherData,'POST::UserData');
             return false;
         }
         return $data;
