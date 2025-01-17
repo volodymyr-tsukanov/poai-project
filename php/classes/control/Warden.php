@@ -18,6 +18,7 @@ namespace project_VT\control;
 
 use DateTime;
 use project_VT\interfaces\DTBase;
+use project_VT\control\dispatchers\SettingsDispatcher;
 
 
 enum WardenRizz {
@@ -295,6 +296,8 @@ class Warden {
         return false;
     }
 
+
+        // Data gathering
     /**
      * Filters data from $_GET
      */
@@ -307,52 +310,37 @@ class Warden {
         }
         return $data;
     }
-    public function gatherPOSTUserData(): array|bool{
+
+
+        // User actions
+    /** Processes login/register POST user data. Returns server text/html response */
+    public function greetUser(): string{
+        if(!$this->checkCSRFinjected()) return SettingsDispatcher::RESPONSE_WaUTH;
+
+        $isRegistering = filter_input(INPUT_POST,'isReg',FILTER_VALIDATE_BOOL);
         $args = [
             'uname' => [
                 'filter' => FILTER_VALIDATE_REGEXP,
-                'options' => ['regexp' => '/^[A-Z]{1}[a-ząęłńśćźżó-]{1,25}$/']
+                'options' => ['regexp' => '/^[0-9A-Za-z_-]{4,25}$/']
             ],
-            'pass' => [
-                'filter' => FILTER_VALIDATE_INT,
-                'options' => [
-                    'min_range' => 18, //pełnoletnie tylko
-                    'max_range' => 120 //ludzie tak długo nie żyją
-                ]
-            ],
-            'kraj' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'email' => [
-                'filter' => FILTER_VALIDATE_EMAIL
-            ],
-            'jezyki' => [
-                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-                'flags' => FILTER_REQUIRE_ARRAY
-            ]
+            'pass' => ['filter' => FILTER_DEFAULT]
         ];
-        $data = filter_input_array(INPUT_POST, $args);
+        if($isRegistering) $args['email'] = ['filter' => FILTER_VALIDATE_EMAIL];
+        $udata = filter_input_array(INPUT_POST,$args);
 
-        foreach($data as $key => $val){
+        foreach($udata as $key => $val){
             if($val === null || $val === false){
+                $this->logActivity(WardenRizz::GatherData,"signup wrong $key");
+                return SettingsDispatcher::RESPONSE_WuDATA;
             }
         }
-        
-        $uname = filter_input(INPUT_POST,'uname',FILTER_DEFAULT);
-        if($uname === null) return false;
-        if($uname === false){
-            $this->logActivity(WardenRizz::GatherData,'POST::UserData');
-            return false;
-        }
-        $pass = filter_input(INPUT_POST,'pass',FILTER_DEFAULT);
-        if($uname === null) return false;
-        if($uname === false){
-            $this->logActivity(WardenRizz::GatherData,'POST::UserData');
-            return false;
-        }
-        return $data;
+
+        if($isRegistering) return SettingsDispatcher::RESPONSE_GrEGISTER;
+        else return SettingsDispatcher::RESPONSE_GlOGIN;
     }
 
     /** Hashes password using options from data/cnf.ini */
-    public function protectPasswd(string $password): string{
+    public function protectSecret(string $password): string{
         $options = [];
         $algorithm = $this->config['pass-algorithm'];
         switch($algorithm){
@@ -375,6 +363,8 @@ class Warden {
         return password_hash($password, $algorithm, $options);
     }
 
+
+        // Injections
     public function getCSRFinjection(): string{
         $csrfName = 'csrf';
         $csrfToken = $this->makeCSRF();

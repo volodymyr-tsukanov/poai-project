@@ -107,7 +107,7 @@ class DTBase {
 
     public function insertUser(array $userData){
         if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
-        $passHash = $this->w->protectPasswd($userData['passwd']);
+        $passHash = $this->w->protectSecret($userData['passwd']);
         $stmt = $this->mysqli->prepare("INSERT INTO `users`(username,email,passwd,reputation,language) VALUES (?,?,?,?,?)");
         $stmt->bind_param('sssii', $userData['username'], $userData['email'], $passHash, $userData['reputation'], $userData['language']);
         $res = $stmt->execute();

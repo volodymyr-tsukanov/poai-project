@@ -30,6 +30,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
     margin: 2em;
     color: rgb(255, 255, 255);
     font-size: 190%;
+    text-shadow: 1px 1px 8px rgb(226,226,226);
 }
 
 .field {
@@ -93,11 +94,13 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
     outline: none;
     transition: .4s ease-in-out;
     background-color: #252525;
+    box-shadow: 0 2px 4px 0 rgba(199,197,197, 0.2);
     color: whitesmoke;
     font-size: 115%;
 }
 .button2:hover{
     background-color: black;
+    box-shadow: 0 9px 25px 0 rgba(159,159,159, 0.4);
     color: white;
     font-size: 120%;
     font-weight: 600;

@@ -13,102 +13,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-/* Classes */
-class User {
-	constructor(){
-		let u = JSON.parse(localStorage.getItem('user'));
-		if(!u) this.resetPage();
-		else this.load(u);
-	}
-
-	previewLang(){
-		const sl = document.getElementsByName('langs');
-		for(let i = 0; i < sl.length; i++){
-			if(sl[i].checked){
-				this.lang = sl[i].value;
-				break;
-			}
-		}
-		this.applyLang();
-	}
-	updateLang(){
-		this.lastPage = 0;
-		const sl = document.getElementsByName('langs');
-		for(let i = 0; i < sl.length; i++){
-			if(sl[i].checked){
-				this.lang = sl[i].value;
-				break;
-			}
-		}
-		this.save();
-	}
-	setPage(pageId, lang){
-		if(pageId !== undefined) this.lastPage = pageId;
-		if(lang !== undefined) this.lang = lang;
-		this.save();
-	}
-	resetPage(){
-		this.lastPage = 0; /*load Main page by default*/
-		this.lang = 'en';
-		this.save();
-	}
-
-	applyLang(){
-		/* langs.css */
-		const styleshit = document.styleSheets[1];	/*langs must be secont style*/
-		const ruleIndex = 3;
-		
-		styleshit.deleteRule(3);
-		/*console.log('before: ', styleshit);*/
-
-		switch(this.lang){
-			case "pl":
-				styleshit.insertRule('.lang-pl{display:inline-block;}', 3);
-				break;
-			case "ua":
-				styleshit.insertRule('.lang-ua{display:inline-block;}', 3);
-				break;
-			default:
-				styleshit.insertRule('.lang-en{display:inline-block;}', 3);
-				break;
-		}
-	}
-
-	gather(){
-		let result = true;
-		let regexName = /^([A-Za-z])*$/;
-		const uname = document.getElementById('sf_uname');
-		const pass = document.getElementById('sf_pass');
-
-		/*Sender*/
-		if(uname.value === null){
-			result = false;
-			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">Поділіться іменем хочаб</div>.';
-		} else if(uname.value.length < 4 || uname.value.length > 30){
-			result = false;
-			errorName.innerHTML = '<div class="lang-en">Entered name has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone imię ma niepoprawną długość</div><div class="lang-ua">Або ваше ім\'я дійсно має стільки букв, або&hellip;</div>.';
-		} else if(!regexName.test(uname.value)){
-			result = false;
-			errorName.innerHTML = '<div class="lang-en">Entered name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
-		}
-
-		if(result){
-			clearFields();
-		}
-		return result;
-	}
-
-	save(){
-		const jsonData = { lang : this.lang, lastPage : this.lastPage };
-		localStorage.setItem('user', JSON.stringify(jsonData));
-	}
-	load(jsonData){
-		this.lang = jsonData.lang;
-		this.lastPage = jsonData.lastPage;
-	}
-}
-
-
 /* Main */
 	/*Init*/
 const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://localhost/'*/
@@ -168,7 +72,7 @@ function loadPage(pageId, lang){
 					blockUI();
 				} else{
 					cachedData.signupForm = jsonData.content.extension.html;
-					document.getElementById('pageStyles').innerHTML = jsonData.content.extension.css;
+					document.getElementById('page_css').innerHTML = jsonData.content.extension.css;
 				}
 			}).catch((e) => {
 				console.error('loadPage: '+e);
@@ -192,7 +96,8 @@ function loadPage(pageId, lang){
 				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
 					updatePage(jsonData,-randomInt(620,970),'projects');
 					cachedData.pureSlider = jsonData.content.extension.html;
-					document.getElementById('pageStyles').innerHTML = jsonData.content.extension.css;
+					document.getElementById('page_css').innerHTML = jsonData.content.extension.css;
+					document.getElementById('page_js').innerHTML = jsonData.content.extension.js;
 				}).catch((e) => {
 					console.error('loadPage: '+e);
 					reloadPage(false);
@@ -255,11 +160,11 @@ async function reloadPage(withDelay=true){
 }
 
 	/* Resources */
-async function loadResource(resArgs, type='text/html'){
+async function loadResource(resArgs){
 	const requestData = {
 		method: 'GET',
 		headers: {
-			'Content-Type': type,
+			'Content-Type': 'application/json',
 			'Authorization': "Bearer token",
 			'MagicWord': cachedData.magicWord
 		}
@@ -268,11 +173,17 @@ async function loadResource(resArgs, type='text/html'){
 	if(!response.ok){
 		throw new Error(`HTTP error ${response.status}`);
 	}
-	return await response.text();
+	return await response.json();
 }
 async function loadSetupResources(){
-	const htmlData = await loadResource('t=bk&n=loader');
-	if(htmlData && htmlData.length > 9) cachedData.loader = htmlData;
+	const jsonData = await loadResource('t=hc&n=loader');
+	if(jsonData){
+		var loaderStyle = document.createElement('style');
+		loaderStyle.setAttribute('id','ext_loader_css');
+		loaderStyle.innerHTML = jsonData.css;
+		document.head.appendChild(loaderStyle);
+		cachedData.loader = jsonData.html;
+	}
 }
 
 

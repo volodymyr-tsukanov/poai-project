@@ -13,94 +13,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-/* Classes */
-class Letter {
-	constructor(){
-		this.sender = 'AnOnYmOuS';
-		this.subject = 'NoTiTlE';
-		this.message = 'NoTeXt';
-		this.abd = this.getAdditionalBrowserData();
-	}
-
-	getAdditionalBrowserData(){
-		let data = {UA:navigator.userAgent, app:{name:navigator.appName,buildID:navigator.buildID,platform:navigator.platform,productSub:navigator.productSub}, language:navigator.language, plugins:navigator.plugins, screen:{width:screen.width,height:screen.height,ratio:window.devicePixelRatio}};
-		return JSON.stringify(data);
-	}
-
-
-	gather(){
-		let result = true;
-		let regexName = /^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ-\s])*$/;
-		const name = document.getElementById('name');
-		const sender = document.getElementById('sender');
-		const projects = document.getElementById('prjt');
-		const comment = document.getElementById('cmnt');
-		const errorName = document.getElementById('error_name');
-		const errorSender = document.getElementById('error_sender');
-		const errorProject = document.getElementById('error_project');
-		const errorComment = document.getElementById('error_comment');
-
-		/*Reset errors*/
-		errorName.innerHTML = '';
-		errorSender.innerHTML = '';
-		errorProject.innerHTML = '';
-		errorComment.innerHTML = '';
-
-		/*Sender*/
-		if(name.value == null){
-			result = false;
-			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">Поділіться іменем хочаб</div>.';
-		} else if(name.value.length < 4 || name.value.length > 30){
-			result = false;
-			errorName.innerHTML = '<div class="lang-en">Entered name has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone imię ma niepoprawną długość</div><div class="lang-ua">Або ваше ім\'я дійсно має стільки букв, або&hellip;</div>.';
-		} else if(!regexName.test(name.value)){
-			result = false;
-			errorName.innerHTML = '<div class="lang-en">Entered name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
-		}
-
-		/*Sender*/
-		this.sender = sender.value;
-		if(this.sender == null){
-			result = false;
-			errorSender.innerHTML = '<div class="lang-en">Email is needed</div><div class="lang-pl">Podanie emaila jest obowiązkowe</div><div class="lang-ua">Відкрийте мені цей секрет</div>.';
-		}
-
-		/*Subject*/
-		this.subject = projects.value;
-		if(this.subject == null){
-			result = false;
-			errorProject.innerHTML = '<div class="lang-en">Subject is needed for mail</div><div class="lang-pl">Nagłówek maila jest wymagany</div><div class="lang-ua">Виберіть тему для повідомлення</div>.';
-		}
-
-		/*Comment*/
-		this.message = comment.value;
-		if(this.message.length < 5){
-			result = false;
-			errorComment.innerHTML = '<div class="lang-en">Comment is too short. A little more text is needed</div><div class="lang-pl">Komentarz jest za mały. Trzeba dodać jeszcze trochę</div><div class="lang-ua">Невже? І це все? Я думав що зможете більше</div>.';
-		} else if(this.message.length > 300 && comment.value.length < 800){
-			errorComment.innerHTML = '<div class="lang-en">Comment is long enough. It can be sent now</div><div class="lang-pl">Komentarz jest wystarczająco długi i może być wysłany</div><div class="lang-ua">Добре, цього досить</div>.';
-		} else if(this.message.length > 800 && comment.value.length < 1000){
-			errorComment.innerHTML = '<div class="lang-en">Comment is too long. It is possible that this commend will be skipped</div><div class="lang-pl">Komentarz jest za długi. On może zostać zignorowany</div><div class="lang-ua">Правда вже достатньо</div>.';
-		} else if(this.message.length > 1900){
-			errorComment.innerHTML = '<div class="lang-en">I won`t read this comment</div><div class="lang-pl">Ja nie będę tego czytał</div><div class="lang-ua">Я не читаю баллади</div>&hellip;';
-		}
-
-		if(result){
-			clearFields();
-		}
-		return result;
-	}
-
-	format(){
-		const jsonData = {'subject':this.subject,'message':this.message,'abd':this.abd};
-		return JSON.stringify(jsonData);
-	}
-	load(jsonData){
-
-	}
-}
-
-
 /* Default methods */
 function setRadioIndex(name='', index=0){
 	document.getElementsByName(name)[index].checked = true;
@@ -153,34 +65,39 @@ function clearCache(){
 	cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>' };
 	showToast('Cache cleared!',4250);
 }
-function signUpForm(){
-	document.getElementById('mainBody').innerHTML = cachedData.signupForm;
+
+function signUpForm(isRegistering=false){
+	if(isRegistering) document.getElementById('mainBody').innerHTML = cachedData.signupForm[1];
+	else document.getElementById('mainBody').innerHTML = cachedData.signupForm[0];
 }
-function signUp(secret){
-	let sArr = proccessSecret(secret);
-	const requestData = {
-		method: 'POST',
-		headers: {
-			'Content-Type': "application/json"
-		},
-		body: JSON.stringify({
-			'acc': "0",
-			[sArr[0]]: sArr[1]
-		})
-	};
-	fetch(host+'settings',requestData).then(response => response.text()).then((data) =>{
-		if(data == 'L'){
-			showToast('Logged in!',1080);
-			loadPage(-1);
-		} else if(data == 'R'){
-			showToast('Registered!',1080);
-			loadPage(-1);
-		} else{
-			console.warn('status: '+data);
-			showToast('Feedback sent not properly. Refresh the page and try again',1918);
-			/*reloadPage(false);*/
-		}
-	}).catch((e) => console.error('sendFeedback: '+e));
+function signUp(secret, isRegistering=false){
+	if(user.gather()){
+		let sArr = proccessSecret(secret);
+		const requestData = {
+			method: 'POST',
+			headers: {
+				'Content-Type': "application/json"
+			},
+			body: JSON.stringify({
+				'user': user.format(),
+				'isReg': isRegistering,
+				[sArr[0]]: sArr[1]
+			})
+		};
+		fetch(host+'settings',requestData).then(response => response.text()).then((data) =>{
+			if(data == 'L'){
+				showToast('Logged in!',1080);
+				/*loadPage(-1);*/
+			} else if(data == 'R'){
+				showToast('Registered!',1080);
+				/*loadPage(-1);*/
+			} else{
+				console.warn('status: '+data);
+				showToast('Feedback sent not properly. Refresh the page and try again',1918);
+				/*reloadPage(false);*/
+			}
+		}).catch((e) => console.error('sendFeedback: '+e));
+	}
 	return false;
 }
 

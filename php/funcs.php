@@ -23,7 +23,7 @@ function setDebugMode($mode){
     if($mode == 1){
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
-    } else {
+    } else{
         error_reporting(0);
         ini_set('display_errors', 0);
     }
@@ -55,7 +55,7 @@ function minifyHTML(string $html): string{
     $html = trim($html);
     return $html;
 }
-function minifyCSS(string $css): string {
+function minifyCSS(string $css): string{
     // Remove comments
     $css = preg_replace('/\/\*.*?\*\//s', '', $css);
     // Remove extra spaces, tabs, and newlines
@@ -68,7 +68,7 @@ function minifyCSS(string $css): string {
     $css = trim($css);
     return $css;
 }
-function minifyJS(string $js): string {
+function minifyJS(string $js): string{
     // Remove comments
     $js = preg_replace('/\/\*.*?\*\//s', '', $js);  // block comments
     //$js = preg_replace('/\/\/.*?[\r\n]/', '', $js); // line comments

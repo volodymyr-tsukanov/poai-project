@@ -18,7 +18,7 @@ namespace project_VT\control;
 
 
 class Dispatcher {
-    public const RESPONSE_GOOD = 'G', RESPONSE_GlOGIN = 'L',RESPONSE_GrEGISTER = 'R', RESPONSE_NeXIST = 'X', RESPONSE_WrEQEST = 'E', RESPONSE_WaUTH = 'A';
+    public const RESPONSE_GOOD='G', RESPONSE_NeXIST='X', RESPONSE_WrEQEST='E', RESPONSE_WaUTH='A';
 
     protected Warden $w;
 
@@ -30,21 +30,38 @@ class Dispatcher {
     
     protected function index(): string{
         $html = AssetManager::getHTMLBlock('index');
-        $css = AssetManager::getCSSContent('styles').
-            AssetManager::getCSSContent('loader').
-            '</style><style>'.AssetManager::getCSSContent('langs'); //langs.css as second style
-        $js = AssetManager::getJSContent('forms').
-            AssetManager::getJSContent('pure-slider');
+
+        $css = AssetManager::getCSSContent('styles');
+        $cssl = AssetManager::getCSSContent('langs');
+        $jsh = AssetManager::getJSContent('classes');
+        $jsb = AssetManager::getJSContent('forms');
         $magickWord = $this->w->getMGWorldInjection();
-        if($magickWord !== false) $js .= str_replace('*MGWORD*',$magickWord, AssetManager::getJSContent('main'));
-        else $js .= AssetManager::getJSContent('main');
-        $html = str_replace(['$CSS$','$JS$'],[$css,$js], $html);
+        if($magickWord !== false) $jsb .= str_replace('*MGWORD*',$magickWord, AssetManager::getJSContent('main'));
+        else $jsb .= AssetManager::getJSContent('main');
+
+        $html = str_replace(['$CSS$','$CSSl$','$JSh$','$JSb$'],[$css,$cssl,$jsh,$jsb], $html);
         return $html;
     }
 
-    protected function blockRaw(string $blockName): string|bool{
+    protected function htmlRaw(string $blockName): string|bool{
         try{
             $data = AssetManager::getHTMLBlock($blockName);
+            return $data;
+        }catch(Errorr $err){
+            return false;
+        }
+    }
+    protected function cssRaw(string $cssName): string|bool{
+        try{
+            $data = AssetManager::getCSSContent($cssName);
+            return $data;
+        }catch(Errorr $err){
+            return false;
+        }
+    }
+    protected function jsRaw(string $jsName): string|bool{
+        try{
+            $data = AssetManager::getJSContent($jsName);
             return $data;
         }catch(Errorr $err){
             return false;

@@ -37,19 +37,52 @@ class MainDispatcher extends Dispatcher {
         header('Content-Type:text/html');
         $type = $this->w->gatherGETData('t');
         $name = $this->w->gatherGETData('n');
-        if($type == false || $name == false)
+        if($type == false || $name == false){
             echo self::RESPONSE_WrEQEST;
-        else{
+            exit();
+        } else{
+            $data = [];
             switch($type){
-                case 'bk':  //block
-                    $data = $this->blockRaw($name);
-                    if($data === false) echo self::RESPONSE_NeXIST;
-                    else echo $data;
+                case 'bk':  //block = html+css+js
+                    break;
+                case 'hl':  //html
+                    $data['html'] = $this->htmlRaw($name);
+                    if($data['html'] === false){
+                        echo self::RESPONSE_NeXIST;
+                        exit();
+                    }
+                    break;
+                case 'cs':  //css
+                    $data['css'] = $this->cssRaw($name);
+                    if($data['css'] === false){
+                        echo self::RESPONSE_NeXIST;
+                        exit();
+                    }
+                    break;
+                case 'js':  //js
+                    $data['js'] = $this->jsRaw($name);
+                    if($data['js'] === false){
+                        echo self::RESPONSE_NeXIST;
+                        exit();
+                    }
+                    break;
+                case 'hc':  //html+css
+                    $data['html'] = $this->htmlRaw($name);
+                    if($data['html'] === false){
+                        echo self::RESPONSE_NeXIST;
+                        exit();
+                    }
+                    $data['css'] = $this->cssRaw($name);
+                    if($data['css'] === false){
+                        echo self::RESPONSE_NeXIST;
+                        exit();
+                    }
                     break;
                 default:
                     echo self::RESPONSE_NeXIST;
-                    break;
+                    exit();
             }
+            echo json_encode($data);
         }
     }
 }

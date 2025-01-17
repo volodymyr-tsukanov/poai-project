@@ -107,7 +107,7 @@ class User {
         return [
             "username" => $this->username,
             "email" => $this->email,
-            "passwd" => $w->protectPasswd($this->passwd),
+            "passwd" => $w->protectSecret($this->passwd),
             "updated" => Warden::packTime($this->updated),
             "status" => (int)$this->status,
             "language" => (int)$this->language
