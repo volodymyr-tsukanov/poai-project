@@ -70,6 +70,18 @@ function signUpForm(isRegistering=false){
 	if(isRegistering) document.getElementById('mainBody').innerHTML = cachedData.signupForm[1];
 	else document.getElementById('mainBody').innerHTML = cachedData.signupForm[0];
 }
+function clearSignupFields(){
+	document.getElementById('sf_uname').value = '';
+	document.getElementById('sf_pass').value = '';
+	document.getElementById('error_uname').innerHTML = '';
+	document.getElementById('error_pass').innerHTML = '';
+	const email_field = document.getElementById('sf_email');
+	if(email_field){
+		email_field.value = '';
+		document.getElementById('sf_pass2').value = '';
+		document.getElementById('error_email').innerHTML = '';
+	}
+}
 function signUp(secret, isRegistering=false){
 	if(user.gather()){
 		let sArr = proccessSecret(secret);
@@ -87,9 +99,11 @@ function signUp(secret, isRegistering=false){
 		fetch(host+'settings',requestData).then(response => response.text()).then((data) =>{
 			if(data == 'L'){
 				showToast('Logged in!',1080);
+				clearSignupFields();
 				/*loadPage(-1);*/
 			} else if(data == 'R'){
 				showToast('Registered!',1080);
+				clearSignupFields();
 				/*loadPage(-1);*/
 			} else{
 				console.warn('status: '+data);
@@ -102,7 +116,7 @@ function signUp(secret, isRegistering=false){
 }
 
 	/*Feedback*/
-function loadFields(){
+function loadFeedbackFields(){
 	let fields = localStorage.getItem('feedback');
 	if(fields && confirm('Load last saved feedback data?')){
 		fields = JSON.parse(fields);
@@ -113,7 +127,7 @@ function loadFields(){
 		setRadioIndex('gender', fields.gender);
 	} else console.log('no feedback data');
 }
-function saveFields(){
+function saveFeedbackFields(){
 	let fields = {};
 	fields.name = document.getElementById('name').value;
 	fields.sender = document.getElementById('sender').value;
@@ -122,9 +136,9 @@ function saveFields(){
 	fields.gender = getRadioIndex('gender');
 	localStorage.setItem('feedback', JSON.stringify(fields));
 }
-function clearFields(){
-	document.getElementById('name').value ='';
-	document.getElementById('sender').value ='';
+function clearFeedbackFields(){
+	document.getElementById('name').value = '';
+	document.getElementById('sender').value = '';
 	document.getElementById('prjt').value = 'nspec';
 	document.getElementById('cmnt').value = '';
 	setRadioIndex('gender', 1);
@@ -133,10 +147,10 @@ function clearFields(){
 	document.getElementById('error_project').innerHTML = '';
 	document.getElementById('error_comment').innerHTML = '';
 }
-function resetFields(){
+function resetFeedbackFields(){
 	if(confirm('Reset feedback?')){
 		localStorage.removeItem('feedback');
-		clearFields();
+		clearFeedbackFields();
 	}
 }
 function giveFeedback(secret){

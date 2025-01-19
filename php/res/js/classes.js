@@ -76,29 +76,76 @@ class User {
 	gather(){
 		let result = true;
 		let regexName = /^([A-Za-z])*$/;
+		let regexPass = /^([A-Za-z0-9\*\.\/\-\=\+\^\$\!\@\#\%\&\(\)\:])*$/;
 		const uname = document.getElementById('sf_uname');
 		const pass = document.getElementById('sf_pass');
+		const pass2 = document.getElementById('sf_pass2');
+		const email = document.getElementById('sf_email');
+		const errorUname = document.getElementById('error_uname');
+		const errorPass = document.getElementById('error_pass');
+		const errorEmail = document.getElementById('error_email');
 
-		/*Sender*/
+		/*Reset errors*/
+		errorUname.innerHTML = '';
+		errorPass.innerHTML = '';
+		if(errorEmail) errorEmail.innerHTML = '';
+		
+		/*Username*/
 		if(uname.value === null){
 			result = false;
-			errorName.innerHTML = '<div class="lang-en">Name is needed</div><div class="lang-pl">Podanie imienia jest obowiązkowe</div><div class="lang-ua">Поділіться іменем хочаб</div>.';
+			errorUname.innerHTML = '<div class="lang-en">userName is needed</div><div class="lang-pl">Podanie userName jest obowiązkowe</div><div class="lang-ua">Поділіться userName хочаб</div>.';
 		} else if(uname.value.length < 4 || uname.value.length > 30){
 			result = false;
-			errorName.innerHTML = '<div class="lang-en">Entered name has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone imię ma niepoprawną długość</div><div class="lang-ua">Або ваше ім\'я дійсно має стільки букв, або&hellip;</div>.';
+			errorUname.innerHTML = '<div class="lang-en">Entered userName has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzony userName ma niepoprawną długość</div><div class="lang-ua">Або ваш userName дійсно має стільки букв, або&hellip;</div>.';
 		} else if(!regexName.test(uname.value)){
 			result = false;
-			errorName.innerHTML = '<div class="lang-en">Entered name unsupported. Try to follow next rules: only letters</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
+			errorUname.innerHTML = '<div class="lang-en">Entered userName unsupported. Try to follow next rules: only letters A-Z</div><div class="lang-pl">UserName wprowadzono niepoprawnie</div><div class="lang-ua">?</div>.';
+		}
+
+		/*Password*/
+		if(pass.value === null){
+			result = false;
+			errorPass.innerHTML = '<div class="lang-en">C\'mon password is needed</div><div class="lang-pl">Podanie hasła jest obowiązkowe</div><div class="lang-ua">?</div>.';
+		} else if(pass.value.length < 8 || pass.value.length > 30){
+			result = false;
+			errorPass.innerHTML = '<div class="lang-en">Entered password has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone hasło ma niepoprawną długość</div><div class="lang-ua">?</div>.';
+		} else if(!regexPass.test(pass.value)){
+			result = false;
+			errorPass.innerHTML = '<div class="lang-en">Entered password unsupported. Try to follow next rules: letters, digits, symbols #$!@%^&*/-+</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
+		}
+		if(pass2){
+			if(pass.value !== pass2.value){
+				result = false;
+				errorPass.innerHTML = '<div class="lang-en">Passwords don\'t match</div><div class="lang-pl">Wprowadzone hasła są różne</div><div class="lang-ua">?</div>.';
+			}
+		}
+
+		/*Email*/
+		if(email){
+			if(email.value === null){
+				result = false;
+				errorEmail.innerHTML = '<div class="lang-en">C\'mon password is needed</div><div class="lang-pl">Podanie hasła jest obowiązkowe</div><div class="lang-ua">?</div>.';
+			} else if(email.value.length < 5 || email.value.length > 254){
+				result = false;
+				errorEmail.innerHTML = '<div class="lang-en">Entered password has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone hasło ma niepoprawną długość</div><div class="lang-ua">?</div>.';
+			}/* else if(!regexEmail.test(email.value)){
+				result = false;
+				errorEmail.innerHTML = '<div class="lang-en">Entered password unsupported. Try to follow next rules: letters, digits, symbols #$!@%^&/*-+</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
+			}*/
 		}
 
 		if(result){
-			clearFields();
+			this.uname = uname.value;
+			this.pass = pass.value;
+			if(email) this.email = email.value;
+			this.save();
 		}
 		return result;
 	}
 
     format(){
-        const jsonData = {};
+        const jsonData = {username:this.uname, pass:this.pass};
+		if(this.email) jsonData.email = this.email;
         return JSON.stringify(jsonData);
     }
 	save(){
@@ -184,7 +231,7 @@ class Letter {
 		}
 
 		if(result){
-			clearFields();
+			clearFeedbackFields();
 		}
 		return result;
 	}

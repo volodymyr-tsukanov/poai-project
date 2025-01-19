@@ -44,7 +44,7 @@ class Router {
     function __construct(){
         $this->w = Warden::getInstance();
         $this->db = DTBase::getInstance();
-        $this->w->awakeSession($this->db);
+        $this->w->awakeSession();
 
         // Init (main)
         $this->addRoute('/', MainDispatcher::class,RouterAction::Init,'GET');

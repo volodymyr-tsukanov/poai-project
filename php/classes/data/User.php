@@ -19,7 +19,7 @@ namespace project_VT\data;
 use stdClass;
 use DateTime;
 use project_VT\control\Warden;
-
+use project_VT\interfaces\DTBase;
 
 enum UserStatus: int {
     case Shepherd = 1;
@@ -45,13 +45,13 @@ class User {
     protected UserLanguage $language;
 
 
-    function __construct(string $username, string $email, string $passwd, UserLanguage $language=UserLanguage::English){
+    function __construct(string $username, string $email, string $passwd, int $reputation = self::REPUTATION_DEFAULT, UserStatus $status, UserLanguage $language=UserLanguage::English){
         $this->username = $username;
         $this->email = $email;
         $this->passwd = $passwd;
-        $this->reputation = self::REPUTATION_DEFAULT;
+        $this->reputation = $reputation;
         $this->updated = new DateTime('now');
-        $this->status = UserStatus::Shepherd;
+        $this->status = $status;
         $this->language = $language;
     }
     function __destruct(){
@@ -60,11 +60,16 @@ class User {
     }
 
     public static function fromStdClass(stdClass $object, string $passwd): User{
-        return new self($object->username, $object->email, $passwd, $object->language);
+        return new self($object->username, $object->email, $passwd, $object->reputation, $object->status, $object->language);
     }
     public static function fromJson(string $jsonData, string $passwd): User{
         $json = json_decode($jsonData);
-        return new self($json->username, $json->email, $passwd, $json->language);
+        return new self($json->username, $json->email, $passwd, $json->reputation, $json->status, $json->language);
+    }
+    public static function fromDB(int $id, string $passwd): User|bool{
+        $userObject = DTBase::getInstance()->getUserByID($id,$passwd);
+        if($userObject !== false) return self::fromStdClass($userObject,$passwd);
+        else return false;
     }
 
 
@@ -102,7 +107,7 @@ class User {
         printf('User: %s %s status=%d %s', $this->username,$this->email,$this->status,Warden::packTime($this->updated));
     }
 
-    protected function toArray(): array{
+    public function toArray(): array{
         $w = Warden::getInstance();
         return [
             "username" => $this->username,

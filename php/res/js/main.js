@@ -110,7 +110,7 @@ function loadPage(pageId, lang){
 			fetch(host+'forms',requestData).then(response => response.json()).then((jsonData) => {
 				updatePage(jsonData);
 				cachedData.secondBody = jsonData.content.secondBody;
-				loadFields();
+				loadFeedbackFields();
 			}).catch((e) => {
 				console.error('loadPage: '+e);
 				reloadPage(false);

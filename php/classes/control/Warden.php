@@ -18,7 +18,6 @@ namespace project_VT\control;
 
 use DateTime;
 use project_VT\interfaces\DTBase;
-use project_VT\control\dispatchers\SettingsDispatcher;
 
 
 enum WardenRizz {
@@ -27,6 +26,7 @@ enum WardenRizz {
     case Route;
     case Asset;
     case Session;
+    case User;
     case GatherData;
 }
 
@@ -315,28 +315,56 @@ class Warden {
         // User actions
     /** Processes login/register POST user data. Returns server text/html response */
     public function greetUser(): string{
-        if(!$this->checkCSRFinjected()) return SettingsDispatcher::RESPONSE_WaUTH;
+        if(!$this->checkCSRFinjected()) return Dispatcher::RESPONSE_WaUTH;
 
-        $isRegistering = filter_input(INPUT_POST,'isReg',FILTER_VALIDATE_BOOL);
+        $data = getJsonBody();
+        $isRegistering = filter_var($data['isReg'],FILTER_VALIDATE_BOOL);
         $args = [
-            'uname' => [
+            'username' => [
                 'filter' => FILTER_VALIDATE_REGEXP,
                 'options' => ['regexp' => '/^[0-9A-Za-z_-]{4,25}$/']
             ],
             'pass' => ['filter' => FILTER_DEFAULT]
         ];
         if($isRegistering) $args['email'] = ['filter' => FILTER_VALIDATE_EMAIL];
-        $udata = filter_input_array(INPUT_POST,$args);
+        $udata = filter_var_array(json_decode($data['user'],true),$args);
 
         foreach($udata as $key => $val){
             if($val === null || $val === false){
-                $this->logActivity(WardenRizz::GatherData,"signup wrong $key");
-                return SettingsDispatcher::RESPONSE_WuDATA;
+                //$this->logActivity(WardenRizz::GatherData,"signup wrong $key");
+                return Dispatcher::RESPONSE_WuDATA;
             }
         }
 
-        if($isRegistering) return SettingsDispatcher::RESPONSE_GrEGISTER;
-        else return SettingsDispatcher::RESPONSE_GlOGIN;
+        $db = DTBase::getInstance();
+        $db->enable();
+        try{
+            $userObject = $db->selectUserByUsername($udata['username'],$udata['pass']);
+            SessionManager::user($userObject->id);
+            return Dispatcher::RESPONSE_GlOGIN;
+        } catch(Errorr $e){
+            $descr = $e->getDescription();
+            switch($descr){
+                case Dispatcher::RESPONSE_NeXIST:
+                    if($isRegistering){ //register new user
+                        try{
+                            $db->insertUser($udata);
+                            return Dispatcher::RESPONSE_GrEGISTER;
+                        } catch(Errorr $e){
+                            $this->logActivity(WardenRizz::User,$descr);
+                            return Dispatcher::RESPONSE_BAD;
+                        }
+                    }
+                    break;
+                case Dispatcher::RESPONSE_WpASS:
+                    $this->logActivity(WardenRizz::User, $udata['username'].': wrong pass');
+                    break;
+                default:
+                    $this->logActivity(WardenRizz::User,$descr);
+                    return Dispatcher::RESPONSE_BAD;
+            }
+            return $descr;
+        }
     }
 
     /** Hashes password using options from data/cnf.ini */

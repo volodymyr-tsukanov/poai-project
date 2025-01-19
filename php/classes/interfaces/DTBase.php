@@ -16,7 +16,9 @@
 */
 namespace project_VT\interfaces;
 
+use stdClass;
 use mysqli;
+use project_VT\control\Dispatcher;
 use project_VT\control\ErrorCause;
 use project_VT\control\Errorr;
 use project_VT\control\Warden;
@@ -25,7 +27,7 @@ use project_VT\control\Warden;
 class DTBase {
     private static ?DTBase $instance = null;
     private const PARAMS_DEFAULT = [
-        'host'=>'localhost',
+        'hostname'=>'localhost',
         'username'=>'root',
         'password'=>''
     ];
@@ -57,10 +59,10 @@ class DTBase {
         $db_params = $this->w->getDBparams();
         if($db_params === false) throw new Errorr($this,ErrorCause::DB,'no ini');
 
-        $this->mysqli = new mysqli($db_params['host'],$db_params['username'],$db_params['password'],$db_params['name']);
+        $this->mysqli = new mysqli($db_params['hostname'],$db_params['username'],$db_params['password'],$db_params['database']);
         //test connection
         if($this->mysqli->connect_errno){
-            $this->mysqli = new mysqli(self::PARAMS_DEFAULT['host'],self::PARAMS_DEFAULT['username'],self::PARAMS_DEFAULT['password'], $db_params['name']);   //try with default params
+            $this->mysqli = new mysqli(self::PARAMS_DEFAULT['hostname'],self::PARAMS_DEFAULT['username'],self::PARAMS_DEFAULT['password'], $db_params['database']);   //try with default params
             if($errn = $this->mysqli->connect_errno){
                 throw new Errorr($this,ErrorCause::DB,$errn);
             }
@@ -86,7 +88,10 @@ class DTBase {
         $stmt = $this->mysqli->prepare('SELECT `id`,`ip_start`,`ip_end`,`abd` FROM `naughtyList` WHERE `ip_start` <= ? AND `ip_end` >= ?');
         if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed prepare');
         $stmt->bind_param('bb', $ip,$ip);
-        if($stmt->execute() === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt execute');
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt execute');
+        }
         $result = $stmt->get_result();
         $arr = $result->fetch_assoc();
         $stmt->close();
@@ -105,29 +110,57 @@ class DTBase {
         $stmt->close();
     }
 
-    public function insertUser(array $userData){
+    /** Gets user id by username if password matches */
+    public function selectUserByUsername(string $username, string $password): stdClass{
         if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
-        $passHash = $this->w->protectSecret($userData['passwd']);
-        $stmt = $this->mysqli->prepare("INSERT INTO `users`(username,email,passwd,reputation,language) VALUES (?,?,?,?,?)");
-        $stmt->bind_param('sssii', $userData['username'], $userData['email'], $passHash, $userData['reputation'], $userData['language']);
-        $res = $stmt->execute();
-        $stmt->close();
-    }
-
-    protected function selectUser(string $username, string $password){
-        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
-    }
-    protected function deleteUser(string $username, string $password){
-        $stmt = $this->mysqli->prepare("SELECT passwd FROM `users` WHERE username = ?");
+        $stmt = $this->mysqli->prepare("SELECT id, pass FROM `users` WHERE username = ?");
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sUbU:failed prepare');
         $stmt->bind_param('s', $username);
-        $stmt->execute();
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sUbU:failed stmt execute');
+        }
         $result = $stmt->get_result();
-        if($user = $result->fetch_assoc()){
-            if(password_verify($password,$user['passwd'])){
-
+        $user = $result->fetch_object();
+        $stmt->close();
+        if(isset($user) && $user !== false){
+            if(!password_verify($password,$user->pass)){
+                throw new Errorr($this,ErrorCause::DB, Dispatcher::RESPONSE_WpASS);
             }
-        } else {
-            echo "No user found.";
+        } else throw new Errorr($this,ErrorCause::DB, Dispatcher::RESPONSE_NeXIST);
+        return $user;
+    }
+    /** Gets all user data by id if password matches */
+    public function getUserById(int $id, string $password): stdClass{
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
+        $stmt = $this->mysqli->prepare("SELECT username, email, pass, status, reputation, language FROM `users` WHERE id = ?");
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'gUbI:failed prepare');
+        $stmt->bind_param('i', $id);
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'gUbI:failed stmt execute');
+        }
+        $result = $stmt->get_result();
+        $user = $result->fetch_object();
+        $stmt->close();
+        if(isset($user) && $user !== false){
+            if(!password_verify($password,$user->pass)){
+                throw new Errorr($this,ErrorCause::DB, Dispatcher::RESPONSE_WpASS);
+            }
+        } else throw new Errorr($this,ErrorCause::DB, Dispatcher::RESPONSE_NeXIST);
+        return $user;
+    }
+    /** Creates new user
+     * $userData - array with firlds: (string)username, (string)email, (string)pass
+     */
+    public function insertUser(array $userData){
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'iU:not enabled');
+        $stmt = $this->mysqli->prepare('INSERT INTO `users`(`username`,`email`,`pass`) VALUES (?,?,?)');
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'iU:failed prepare');
+        $stmt->bind_param('sss', $userData['username'],$userData['email'],$this->w->protectSecret($userData['pass']));
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'iU:failed stmt execute');
         }
         $stmt->close();
     }

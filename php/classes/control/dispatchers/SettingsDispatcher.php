@@ -21,9 +21,6 @@ use project_VT\control\Dispatcher;
 
 
 class SettingsDispatcher extends Dispatcher {
-    public const RESPONSE_GlOGIN='L', RESPONSE_GrEGISTER='R', RESPONSE_WuDATA='D', RESPONSE_WuNAMEtAKEN='T';
-
-
     public function View(){
         header('Content-Type:application/json');
         $data = $this->block('settings');
