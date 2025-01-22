@@ -49,7 +49,7 @@ function loadSettings(){
 	}
 	setRadioIndex('langs', index);
 }
-function saveSettings(secret){
+function saveSettings(){
 	user.setPage(0);
 	user.save();
 	reloadPage();
@@ -64,83 +64,6 @@ function clearCache(){
 	sessionStorage.clear();
 	cachedData = { loader : '<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>' };
 	showToast('Cache cleared!',4250);
-}
-
-function signUpForm(isRegistering=false){
-	if(isRegistering) document.getElementById('mainBody').innerHTML = cachedData.signupForm[1];
-	else document.getElementById('mainBody').innerHTML = cachedData.signupForm[0];
-}
-function clearSignupFields(){
-	document.getElementById('sf_uname').value = '';
-	document.getElementById('sf_pass').value = '';
-	document.getElementById('error_uname').innerHTML = '';
-	document.getElementById('error_pass').innerHTML = '';
-	const email_field = document.getElementById('sf_email');
-	if(email_field){
-		email_field.value = '';
-		document.getElementById('sf_pass2').value = '';
-		document.getElementById('error_email').innerHTML = '';
-	}
-}
-function signUp(secret, isRegistering=false){
-	if(user.gather()){
-		let sArr = proccessSecret(secret);
-		const requestData = {
-			method: 'POST',
-			headers: {
-				'Content-Type': "application/json"
-			},
-			body: JSON.stringify({
-				'user': user.format(),
-				'isReg': isRegistering,
-				[sArr[0]]: sArr[1]
-			})
-		};
-		fetch(host+'settings',requestData).then(response => response.text()).then((data) =>{
-			if(data == 'L'){
-				showToast('Logged in!',1080);
-				clearSignupFields();
-				loadPage(-1);
-			} else if(data == 'R'){	/*TODO flawless form reloading using getResource*/
-				showToast('Registered!',1080);
-				clearSignupFields();
-				loadPage(-1);
-			} else{
-				console.warn('status: '+data);
-				showToast('SignUp went not properly. Refresh the page and try again',1918);
-				/*reloadPage(true);*/
-			}
-		}).catch((e) => console.error('sendFeedback: '+e));
-	}
-	return false;
-}
-function logOut(){
-	const uToken = document.getElementsByName('utoken')[0].value;
-	showToast('Logging out...',618);
-	const requestData = {
-		method: 'POST',
-		headers: {
-			'Content-Type': "application/json"
-		},
-		body: JSON.stringify({
-			'aname': 'Lout',
-			'utoken': uToken
-		})
-	};
-	fetch(host+'action',requestData).then(response => response.text()).then((data) =>{
-		if(data == 'G'){
-			sessionStorage.clear();
-			reloadPage(false);
-			loadPage(0);
-		} else{
-			console.warn('status: '+data);
-			showToast('LogOut went not properly. Refresh the page and try again',1918);
-			reloadPage(true);
-		}
-	}).catch((e) =>{
-		console.error('logOut: '+e);
-		showToast('Logging out failed. Refresh the page.',1341);
-	});
 }
 
 	/*Feedback*/
@@ -195,7 +118,7 @@ function giveFeedback(secret){
 				[sArr[0]]: sArr[1]
 			})
 		};
-		fetch(host+'forms',requestData).then(response => response.text()).then((data) =>{
+		fetch(host+'forms',requestData).then(response => response.text()).then((data)=>{
 			const mainBody = document.getElementById('mainBody');
 			if(data == 'G'){	/*swap to secondBody*/
 				const holder = mainBody.innerHTML;
@@ -207,7 +130,7 @@ function giveFeedback(secret){
 				showToast('Feedback sent not properly. Refresh the page and try again',1918);
 				reloadPage(false);
 			}
-		}).catch((e) => console.error('sendFeedback: '+e));
+		}).catch((e)=> console.error('sendFeedback: '+e));
 	}
 	return false;
 }

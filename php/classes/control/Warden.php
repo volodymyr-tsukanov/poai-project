@@ -221,14 +221,6 @@ class Warden {
         } else if(strpos($req['uri'], '/res/') !== false){
             $this->logActivity(WardenRizz::Route,'Accessing: '.$req['method'].'::'.$req['uri']);
             $req['uri'] = '/';
-        } else{
-            $su = $this->getSessionUser();
-            var_dump($su);
-            if($su !== false && $su['status'] > 10 && strpos($req['uri'],'/'.$su['cpanel']) !== false){
-                $cpD = new CPanelDispatcher();
-                $cpD->Init(); 
-                exit(); //stop after serving privilleged request
-            }
         }
 
         return $req;
@@ -322,11 +314,9 @@ class Warden {
 
         // User actions
     /** Processes login/register POST user data. Returns server text/html response */
-    public function greetUser(): string{
+    public function greetUser(array $data): string{
         if(!$this->checkCSRFinjected()) return Dispatcher::RESPONSE_WaUTH;
 
-        $data = getJsonBody();
-        $isRegistering = filter_var($data['isReg'],FILTER_VALIDATE_BOOL);
         $args = [
             'username' => [
                 'filter' => FILTER_VALIDATE_REGEXP,
@@ -334,12 +324,11 @@ class Warden {
             ],
             'pass' => ['filter' => FILTER_DEFAULT]
         ];
-        if($isRegistering) $args['email'] = ['filter' => FILTER_VALIDATE_EMAIL];
         $udata = filter_var_array(json_decode($data['user'],true),$args);
 
         foreach($udata as $key => $val){
             if($val === null || $val === false){
-                //$this->logActivity(WardenRizz::GatherData,"signup wrong $key");
+                $this->logActivity(WardenRizz::User, "signup wrong $key");
                 return Dispatcher::RESPONSE_WuDATA;
             }
         }
@@ -354,15 +343,7 @@ class Warden {
             $descr = $e->getDescription();
             switch($descr){
                 case Dispatcher::RESPONSE_NeXIST:
-                    if($isRegistering){ //register new user
-                        try{
-                            $db->insertUser($udata);
-                            return Dispatcher::RESPONSE_GrEGISTER;
-                        } catch(Errorr $e){
-                            $this->logActivity(WardenRizz::User,$descr);
-                            return Dispatcher::RESPONSE_BAD;
-                        }
-                    }
+                    $this->logActivity(WardenRizz::User, $udata['username'].': non exists');
                     break;
                 case Dispatcher::RESPONSE_WpASS:
                     $this->logActivity(WardenRizz::User, $udata['username'].': wrong pass');

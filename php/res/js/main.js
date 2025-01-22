@@ -17,7 +17,10 @@
 	/*Init*/
 const host = 'http://localhost/php/poai-project/php/pub/';	/*!default 'http://localhost/'*/
 
-if(window.location.href != host) window.location.replace(host);	/*jump to init*/
+if(window.location.href !== host){
+	if(window.location.href.endsWith('cpanel')) loadPage(-11);	/*to cpanel*/
+	else window.location.replace(host);	/*to init*/
+}
 let user = new User();
 let cachedData = {loader:'<div class="lang-en">Loading&hellip;</div><div class="lang-pl">Ładowanie&hellip;</div><div class="lang-ua">Завантаження&hellip;</div>', magicWord:'*MGWORD*'};
 
@@ -25,13 +28,13 @@ let cachedData = {loader:'<div class="lang-en">Loading&hellip;</div><div class="
 loadSetupResources();
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', ()=>{
 	const container = document.getElementById('cntnr');
 	const navCBtn1 = document.getElementById('navCBtn1');
 
 	/* Awake */
 		/*Events - Navigation*/
-	navCBtn1.addEventListener('click', ()=> {
+	navCBtn1.addEventListener('click', ()=>{
 		const btns = document.getElementById('navBtns');
 		if(btns.checkVisibility()){
 			btns.style.setProperty('display', 'none');
@@ -47,9 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	/* Pages */
 function loadPage(pageId, lang){
-	const mainBody = document.getElementById('mainBody');
-	const updateDelay = randomInt(200,800);
-
 	if(lang === undefined) lang = user.lang;
 	user.applyLang();
 
@@ -63,27 +63,41 @@ function loadPage(pageId, lang){
 		}
 	};
 	switch(pageId){
-		case -1: /* settings */
-			fetch(host+'settings',requestData).then(response => response.json()).then((jsonData) => {
+		case -11: /* cpanel */
+			fetch(host+'cpanel',requestData).then(response => response.json()).then((jsonData)=>{
 				updatePage(jsonData,0);
 				if(jsonData.content.extension === undefined){	/*signed*/
 					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + user.lang;
 					loadSettings();
-					blockUI();
 				} else{
 					cachedData.signupForm = jsonData.content.extension.html;
 					document.getElementById('page_css').innerHTML = jsonData.content.extension.css;
 				}
-			}).catch((e) => {
+			}).catch((e)=>{
 				console.error('loadPage: '+e);
-				/*reloadPage(false);*/
+				reloadPage(false);
+			});
+			break;
+		case -1: /* settings */
+			fetch(host+'settings',requestData).then(response => response.json()).then((jsonData)=>{
+				updatePage(jsonData,0);
+				if(jsonData.content.extension === undefined){	/*signed*/
+					document.getElementById('error_langs').innerHTML = '<div class="lang-en">Current language is</div><div class="lang-pl">Język</div><div class="lang-ua">Мова</div>: ' + user.lang;
+					loadSettings();
+				} else{
+					cachedData.signupForm = jsonData.content.extension.html;
+					document.getElementById('page_css').innerHTML = jsonData.content.extension.css;
+				}
+			}).catch((e)=>{
+				console.error('loadPage: '+e);
+				reloadPage(false);
 			});
 			break;
 		case 0: /*main*/
 			if(cachedData.main === undefined){
-				fetch(host+'main',requestData).then(response => response.json()).then((jsonData) => {
+				fetch(host+'main',requestData).then(response => response.json()).then((jsonData)=>{
 					updatePage(jsonData,0,'main');
-				}).catch((e) => {
+				}).catch((e)=>{
 					console.error('loadPage: '+e);
 					reloadPage(false);
 				});
@@ -93,12 +107,12 @@ function loadPage(pageId, lang){
 			break;
 		case 1: /*projects*/
 			if(cachedData.projects === undefined){
-				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData) => {
+				fetch(host+'projects',requestData).then(response => response.json()).then((jsonData)=>{
 					updatePage(jsonData,-randomInt(620,970),'projects');
 					cachedData.pureSlider = jsonData.content.extension.html;
 					document.getElementById('page_css').innerHTML = jsonData.content.extension.css;
 					document.getElementById('page_js').innerHTML = jsonData.content.extension.js;
-				}).catch((e) => {
+				}).catch((e)=>{
 					console.error('loadPage: '+e);
 					reloadPage(false);
 				});
@@ -107,20 +121,20 @@ function loadPage(pageId, lang){
 			}
 			break;
 		case 2: /*forms*/
-			fetch(host+'forms',requestData).then(response => response.json()).then((jsonData) => {
+			fetch(host+'forms',requestData).then(response => response.json()).then((jsonData)=>{
 				updatePage(jsonData);
 				cachedData.secondBody = jsonData.content.secondBody;
 				loadFeedbackFields();
-			}).catch((e) => {
+			}).catch((e)=>{
 				console.error('loadPage: '+e);
 				reloadPage(false);
 			});
 			break;
 		case 3: /*contacts*/
 			if(cachedData.contacts === undefined){
-				fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData) => {
+				fetch(host+'contacts',requestData).then(response => response.json()).then((jsonData)=>{
 					updatePage(jsonData,-randomInt(340,530),'contacts');
-				}).catch((e) => {
+				}).catch((e)=>{
 					console.error('loadPage: '+e);
 					reloadPage(false);
 				});
@@ -204,7 +218,7 @@ function displayLoader(targetElem=false){
 }
 
 function checkAllImagesLoaded(images){
-	return new Promise((resolve) =>{
+	return new Promise((resolve)=>{
 		let loaded = 0;
 		const total = images.length;
 		for(let i=0; i<total; i++){
@@ -212,13 +226,13 @@ function checkAllImagesLoaded(images){
 			if(image.complete) {
 				loaded++;
 			} else{
-				image.onload = () =>{
+				image.onload = ()=>{
 					loaded++;
 					if(loaded === total){
 						resolve();
 					}
 				};
-				image.onerror = () =>{
+				image.onerror = ()=>{
 					loadedImages++;
 					if (loaded === total) {
 						resolve();
@@ -237,7 +251,7 @@ function showToast(msg='Lets toast!',duration=1000){
 	const toast = document.getElementById('toast');
 	toast.innerText = msg;
 	toast.style.visibility = 'visible';
-	setTimeout(() => {
+	setTimeout(()=>{
 		toast.style.visibility = 'hidden';
 	},duration);
 }

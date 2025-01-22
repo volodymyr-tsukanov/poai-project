@@ -1,5 +1,4 @@
-<?php
-/*
+<!--
    poai-project  Copyright  2024  volodymyr-tsukanov
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,18 +12,27 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
-namespace project_VT\control\dispatchers;
-
-use project_VT\control\Dispatcher;
-
-
-class SettingsDispatcher extends Dispatcher {
-    public function View(){
-        header('Content-Type:application/json');
-        $data = $this->block('settings');
-        $data['content']['title'] = 'Settings';
-        echo json_encode($data);
-    }
-}
-?>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+    
+    <!--Import-->
+        <!--Styles-->
+    <style>$CSS$</style>
+        <!--Scripts-->
+    <script>$JS$</script>
+        <!--Icon-->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.png">
+</head>
+<body>
+    $BOD$
+</body>
+</html>
+$SEP$
+<form action="#" onsubmit="return control('*CSRF*')">
+    <input hidden id="utoken" value="*UTOKEN*">
+</form>

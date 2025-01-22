@@ -53,12 +53,10 @@ class User {
 	}
 
 	applyLang(){
-		/* langs.css */
 		const styleshit = document.styleSheets[1];	/*langs must be second style*/
 		const ruleIndex = 3;
 		
-		styleshit.deleteRule(3);
-		/*console.log('before: ', styleshit);*/
+		styleshit.deleteRule(ruleIndex);
 
 		switch(this.lang){
 			case "pl":
@@ -79,16 +77,12 @@ class User {
 		let regexPass = /^([A-Za-z0-9\*\.\/\-\=\+\^\$\!\@\#\%\&\(\)\:])*$/;
 		const uname = document.getElementById('sf_uname');
 		const pass = document.getElementById('sf_pass');
-		const pass2 = document.getElementById('sf_pass2');
-		const email = document.getElementById('sf_email');
 		const errorUname = document.getElementById('error_uname');
 		const errorPass = document.getElementById('error_pass');
-		const errorEmail = document.getElementById('error_email');
 
 		/*Reset errors*/
 		errorUname.innerHTML = '';
 		errorPass.innerHTML = '';
-		if(errorEmail) errorEmail.innerHTML = '';
 		
 		/*Username*/
 		if(uname.value === null){
@@ -113,31 +107,10 @@ class User {
 			result = false;
 			errorPass.innerHTML = '<div class="lang-en">Entered password unsupported. Try to follow next rules: letters, digits, symbols #$!@%^&*/-+</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
 		}
-		if(pass2){
-			if(pass.value !== pass2.value){
-				result = false;
-				errorPass.innerHTML = '<div class="lang-en">Passwords don\'t match</div><div class="lang-pl">Wprowadzone hasła są różne</div><div class="lang-ua">?</div>.';
-			}
-		}
-
-		/*Email*/
-		if(email){
-			if(email.value === null){
-				result = false;
-				errorEmail.innerHTML = '<div class="lang-en">C\'mon password is needed</div><div class="lang-pl">Podanie hasła jest obowiązkowe</div><div class="lang-ua">?</div>.';
-			} else if(email.value.length < 5 || email.value.length > 254){
-				result = false;
-				errorEmail.innerHTML = '<div class="lang-en">Entered password has improper length. Try to follow next rules: 4-30 symbols</div><div class="lang-pl">Wprowadzone hasło ma niepoprawną długość</div><div class="lang-ua">?</div>.';
-			}/* else if(!regexEmail.test(email.value)){
-				result = false;
-				errorEmail.innerHTML = '<div class="lang-en">Entered password unsupported. Try to follow next rules: letters, digits, symbols #$!@%^&/*-+</div><div class="lang-pl">Imię wprowadzono niepoprawnie</div><div class="lang-ua">Я сумніваюся що існують реальні імена з такими знаками</div>.';
-			}*/
-		}
 
 		if(result){
 			this.uname = uname.value;
 			this.pass = pass.value;
-			if(email) this.email = email.value;
 			this.save();
 		}
 		return result;
@@ -145,7 +118,6 @@ class User {
 
     format(){
         const jsonData = {username:this.uname, pass:this.pass};
-		if(this.email) jsonData.email = this.email;
         return JSON.stringify(jsonData);
     }
 	save(){

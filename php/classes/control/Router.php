@@ -24,7 +24,6 @@ use project_VT\control\dispatchers\SettingsDispatcher;
 use project_VT\control\dispatchers\ContactsDispatcher;
 use project_VT\control\dispatchers\FormsDispatcher;
 use project_VT\control\dispatchers\CPanelDispatcher;
-use project_VT\interfaces\DTBase;
 use project_VT\data\User;
 
 
@@ -38,13 +37,11 @@ enum RouterAction {
 class Router {
     protected $routes = [];
     private Warden $w;
-    private DTBase $db;
     protected User $user;
 
 
     function __construct(){
         $this->w = Warden::getInstance();
-        $this->db = DTBase::getInstance();
         $this->w->awakeSession();
 
         // Init (main)
@@ -66,8 +63,9 @@ class Router {
         // Resources
         $this->addRoute('/res', MainDispatcher::class,RouterAction::ResGet,'GET');
 
-        // Actions
-        $this->addRoute('/action', MainDispatcher::class,RouterAction::Post,'POST');
+        // CPanel
+        $this->addRoute('/cpanel', CPanelDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/cpanel', CPanelDispatcher::class,RouterAction::Post,'POST');
 
         //!DEBUG ONLY
         $this->addRoute('/php/poai-project/php/pub/', MainDispatcher::class,RouterAction::Init,'GET');
@@ -79,7 +77,8 @@ class Router {
         $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::View,'GET');
         $this->addRoute('/php/poai-project/php/pub/settings', SettingsDispatcher::class,RouterAction::Post,'POST');
         $this->addRoute('/php/poai-project/php/pub/res', MainDispatcher::class,RouterAction::ResGet,'GET');
-        $this->addRoute('/php/poai-project/php/pub/action', MainDispatcher::class,RouterAction::Post,'POST');
+        $this->addRoute('/php/poai-project/php/pub/cpanel', CPanelDispatcher::class,RouterAction::Init,'GET');
+        $this->addRoute('/php/poai-project/php/pub/cpanel', CPanelDispatcher::class,RouterAction::Post,'POST');
     }
 
 
