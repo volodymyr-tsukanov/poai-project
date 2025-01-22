@@ -19,7 +19,7 @@
 	<div class="lang-ua">Відгук</div>
 </h1>
 $SEP$
-<form action="#" onsubmit="return giveFeedback('*CSRF*')" onreset="clearFields()" onchange="saveFields()">
+<form action="#" onsubmit="return giveFeedback('*CSRF*')" onreset="clearFeedbackFields()" onchange="saveFeedbackFields()">
 	<fieldset>
 		<legend>
 			<div class="lang-en">Give feedback</div>
@@ -57,6 +57,8 @@ $SEP$
 	
 	<button type="submit" class="btnA1"><div class="lang-en">Send mail</div><div class="lang-pl">Wysłać maila</div><div class="lang-ua">Надіслати відгук</div></button>
 	<button type="reset" class="btnA1"><div class="lang-en">Reset</div><div class="lang-pl">Zresetować</div><div class="lang-ua">Скинути</div></button>
+
+    <input hidden name="utoken" value="*UTOKEN*">
 </form>
 $SEP$
 <h3>Test</h3>

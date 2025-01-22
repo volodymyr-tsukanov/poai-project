@@ -113,7 +113,7 @@ class DTBase {
     /** Gets user id by username if password matches */
     public function selectUserByUsername(string $username, string $password): stdClass{
         if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
-        $stmt = $this->mysqli->prepare("SELECT id, pass FROM `users` WHERE username = ?");
+        $stmt = $this->mysqli->prepare("SELECT id, pass, status FROM `users` WHERE username = ?");
         if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sUbU:failed prepare');
         $stmt->bind_param('s', $username);
         if($stmt->execute() === false){

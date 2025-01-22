@@ -70,16 +70,22 @@ class SessionManager {
         }
         return $oldVal;
     }
-    /** put no params to get. put -1 as param to unset */
-    public static function user(?int $id=null, ?string $token=null): ?array{
+    /** put no params to get. to set put $prms['id'] and 'status'. to unset put -1 as $prms['id'], $prms['token] = uToken. returns oldVal */
+    public static function user(?array $prms=null): ?array{
         $oldVal = $_SESSION['user'];
-        if(!empty($id)){
-            if($id === -1) unset($_SESSION['user']);
+        if(isset($prms['id'])){
+            if($prms['id'] === -1){
+                unset($_SESSION['user']);
+                return $oldVal;
+            }
             else $_SESSION['user'] = [
-                    'id'=>$id,
+                    'id'=>$prms['id'],
+                    'status'=>$prms['status'],
                     't'=>time()
                 ];
-        } else if(!empty($token)) $_SESSION['user']['token'] = $token;
+        }
+        if(isset($prms['token'])) $_SESSION['user']['token'] = $prms['token'];
+        if(isset($prms['cpanel'])) $_SESSION['user']['cpanel'] = $prms['cpanel'];
         return $oldVal;
     }
 }

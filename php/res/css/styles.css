@@ -323,6 +323,26 @@ textarea {
 .btnA1:active {
 	background: #898989;
 }
+.btnB1 {	/*TODO normal button*/
+	padding: 2px;
+	background: var(--color-jet);
+	border-radius: 8px;
+	box-shadow: #0b0b0b8d 6px 5px;
+	color: var(--color-silver2);
+	font-size: 216%;
+	margin: 5px;
+	cursor: pointer;
+	transition: background 0.1s, box-shadow 0.1s, font-size 0.1s linear;
+}
+.btnB1:hover {
+	background: var(--color-mint-cream);
+	color: var(--color-raisin-black);
+	box-shadow: none;
+	font-size: 205%;
+}
+.btnB1:active {
+	background: #898989;
+}
 
 .rdoA1 {
 	font-size: 100%;

@@ -27,9 +27,9 @@ $SEP$
             <div class="lang-pl">Wybranie języka</div>
             <div class="lang-ua">Виберіть мову</div>
         </legend>
-        <input class="rdoA1" type="radio" id="len" name="langs" value="en" checked onchange="user.preview()"><label for="len" class="rdoA1"> English</label> <br>
-        <input class="rdoA1" type="radio" id="lpl" name="langs" value="pl" onchange="user.preview()"><label for="lpl" class="rdoA1"> Polski</label> <br>
-        <input class="rdoA1" type="radio" id="lua" name="langs" value="ua" onchange="user.preview()"><label for="lua" class="rdoA1"> Українська</label> <br>
+        <input class="rdoA1" type="radio" id="len" name="langs" value="en" checked onchange="user.previewLang()"><label for="len" class="rdoA1"> English</label> <br>
+        <input class="rdoA1" type="radio" id="lpl" name="langs" value="pl" onchange="user.previewLang()"><label for="lpl" class="rdoA1"> Polski</label> <br>
+        <input class="rdoA1" type="radio" id="lua" name="langs" value="ua" onchange="user.previewLang()"><label for="lua" class="rdoA1"> Українська</label> <br>
         <span id="error_langs" class="error"></span>
     </fieldset>
     <fieldset>
@@ -44,6 +44,7 @@ $SEP$
     <button type="submit" class="btnA1"><div class="lang-en">Apply</div><div class="lang-pl">Zapisać</div><div class="lang-ua">Зберегти</div></button>
     <button type="reset" class="btnA1"><div class="lang-en">Reset</div><div class="lang-pl">Zresetować</div><div class="lang-ua">Скинути</div></button>
     <button type="button" class="btnA1" onclick="reloadPage(false)"><div class="lang-en">Go back</div><div class="lang-pl">Wrócić</div><div class="lang-ua">Повернутись</div></button>
+    <button type="button" class="btnA1" onclick="logOut()"><div class="lang-en">LogOut</div><div class="lang-pl">Wyłoguj</div><div class="lang-ua">?</div></button>
 
     <input hidden name="utoken" value="*UTOKEN*">
 </form>

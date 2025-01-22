@@ -17,6 +17,7 @@
 namespace project_VT\control;
 
 use DateTime;
+use project_VT\control\dispatchers\CPanelDispatcher;
 use project_VT\interfaces\DTBase;
 
 
@@ -128,7 +129,7 @@ class Warden {
         if($this->config['session-name-variator'] == 1){
             $magicWord = getallheaders()['MagicWord'];
             if(!isset($magicWord)){
-                $sn = makeMagicWord(explode('_',$this->config['magic-words']));
+                $sn = $this->makeupWord(2);
             } else if(strlen($magicWord)<18) $sn = htmlspecialchars($magicWord);
             else{   //TODO log behaviour
                 echo "!MGWORD suspicious";
@@ -217,10 +218,17 @@ class Warden {
         if(strpos($req['uri'],'/data/') !== false || strpos($req['uri'],'.ini') !== false){
             $this->logActivity(WardenRizz::Route,'Accessing: '.$req['method'].'::'.$req['uri']);
             $req['uri'] = '/';
-        }
-        if(strpos($req['uri'], '/res/') !== false){
+        } else if(strpos($req['uri'], '/res/') !== false){
             $this->logActivity(WardenRizz::Route,'Accessing: '.$req['method'].'::'.$req['uri']);
             $req['uri'] = '/';
+        } else{
+            $su = $this->getSessionUser();
+            var_dump($su);
+            if($su !== false && $su['status'] > 10 && strpos($req['uri'],'/'.$su['cpanel']) !== false){
+                $cpD = new CPanelDispatcher();
+                $cpD->Init(); 
+                exit(); //stop after serving privilleged request
+            }
         }
 
         return $req;
@@ -340,7 +348,7 @@ class Warden {
         $db->enable();
         try{
             $userObject = $db->selectUserByUsername($udata['username'],$udata['pass']);
-            SessionManager::user($userObject->id);
+            SessionManager::user(['id'=>$userObject->id, 'status'=>$userObject->status]);
             return Dispatcher::RESPONSE_GlOGIN;
         } catch(Errorr $e){
             $descr = $e->getDescription();
@@ -391,13 +399,17 @@ class Warden {
         return password_hash($password, $algorithm, $options);
     }
 
+    public function makeupWord(int $amount, bool $isVariated=true): string{
+        return makeMagicWord(explode('_',$this->config['magic-words']),$amount,$isVariated);
+    }
+
 
         // Injections
     public function getCSRFinjection(): string{
         $csrfName = 'csrf';
         $csrfToken = $this->makeCSRF();
         if($this->config['csrf'] == 2)
-            $csrfName = makeMagicWord(explode('_',$this->config['magic-words']),4);
+            $csrfName = $this->makeupWord(4);
         SessionManager::CSRF($csrfName,$csrfToken);
         return "$csrfName $csrfToken";
     }
@@ -436,7 +448,7 @@ class Warden {
         $user = SessionManager::user();
         if(empty($user)) return false;
         if(time() - $user['t'] > $this->config['user-expire']){
-            SessionManager::user(-1);   //unset
+            SessionManager::user(['id'=>-1]);   //unset
             return false;
         }
         return $user;
@@ -445,14 +457,13 @@ class Warden {
         $user = $this->getSessionUser();
         if($user === false) return false;
         $uToken = $this->makeUToken();
-        $user['token'] = $uToken;
-        SessionManager::user(null,$uToken);
+        SessionManager::user(['token'=>$uToken]);
         return $uToken;
     }
     public function checkUTokenInjected(): bool{
         $user = $this->getSessionUser();
         if($user === false) return false;
-        $uToken = filter_input(INPUT_POST,'utoken',FILTER_DEFAULT);
+        $uToken = filter_var(getJsonBody()['utoken'],FILTER_DEFAULT);
         if(!isset($uToken)){
             return false;
         }

@@ -19,22 +19,10 @@ namespace project_VT\control\dispatchers;
 use project_VT\control\Dispatcher;
 
 
-class FormsDispatcher extends Dispatcher {
-    public function View(){
-        header('Content-Type:application/json');
-        $data = $this->block('forms');
-        $data['content']['title'] = 'Forms';
-
-        $data['content']['mainBody'] = str_replace('*CSRF*',$this->w->getCSRFinjection(), $data['content']['mainBody']);
-        $uToken = $this->w->getUTokenInjection();
-        if($uToken !== false) $data['content']['mainBody'] = str_replace('*UTOKEN*',$uToken, $data['content']['mainBody']);
-        echo json_encode($data);
-    }
-
-    public function Post(){ //TODO proc form
+class CPanelDispatcher extends Dispatcher {
+    public function Init(){
         header('Content-Type:text/html');
-        if($this->w->checkCSRFinjected()) echo self::RESPONSE_GOOD;
-        else echo self::RESPONSE_WaUTH;
+        var_dump($_SERVER['user']);
     }
 }
 ?>

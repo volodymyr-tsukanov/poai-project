@@ -100,19 +100,47 @@ function signUp(secret, isRegistering=false){
 			if(data == 'L'){
 				showToast('Logged in!',1080);
 				clearSignupFields();
-				/*loadPage(-1);*/
-			} else if(data == 'R'){
+				loadPage(-1);
+			} else if(data == 'R'){	/*TODO flawless form reloading using getResource*/
 				showToast('Registered!',1080);
 				clearSignupFields();
-				/*loadPage(-1);*/
+				loadPage(-1);
 			} else{
 				console.warn('status: '+data);
-				showToast('Feedback sent not properly. Refresh the page and try again',1918);
-				/*reloadPage(false);*/
+				showToast('SignUp went not properly. Refresh the page and try again',1918);
+				/*reloadPage(true);*/
 			}
 		}).catch((e) => console.error('sendFeedback: '+e));
 	}
 	return false;
+}
+function logOut(){
+	const uToken = document.getElementsByName('utoken')[0].value;
+	showToast('Logging out...',618);
+	const requestData = {
+		method: 'POST',
+		headers: {
+			'Content-Type': "application/json"
+		},
+		body: JSON.stringify({
+			'aname': 'Lout',
+			'utoken': uToken
+		})
+	};
+	fetch(host+'action',requestData).then(response => response.text()).then((data) =>{
+		if(data == 'G'){
+			sessionStorage.clear();
+			reloadPage(false);
+			loadPage(0);
+		} else{
+			console.warn('status: '+data);
+			showToast('LogOut went not properly. Refresh the page and try again',1918);
+			reloadPage(true);
+		}
+	}).catch((e) =>{
+		console.error('logOut: '+e);
+		showToast('Logging out failed. Refresh the page.',1341);
+	});
 }
 
 	/*Feedback*/

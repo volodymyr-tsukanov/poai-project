@@ -16,8 +16,9 @@
 */
 namespace project_VT\control\dispatchers;
 
-use project_VT\control\AssetManager;
 use project_VT\control\Dispatcher;
+use project_VT\control\AssetManager;
+use project_VT\control\SessionManager;
 
 
 class SettingsDispatcher extends Dispatcher {
@@ -30,6 +31,11 @@ class SettingsDispatcher extends Dispatcher {
         if($uToken !== false){
             $data['content']['mainBody'] = $data['content']['secondBody'];
             $data['content']['mainBody'] = str_replace('*UTOKEN*',$uToken, $data['content']['mainBody']);
+
+            $sessionUser = SessionManager::user();
+            if($sessionUser['status'] > 10){
+                $data['content']['mainBody'] .= "<button onclick=\"window.location.replace(host+'".$sessionUser['cpanel']."')\">Control Panel</button>";
+            }
         } else{
             $block = explode('$SEP$',str_replace('*SEC*',$this->w->getCSRFinjection(), $this->htmlRaw('signup-form')));
             $data['content']['extension'] = ['html'=>$block, 'css'=>AssetManager::getCSSContent('signup-form')];

@@ -17,6 +17,7 @@
 namespace project_VT\control\dispatchers;
 
 use project_VT\control\Dispatcher;
+use project_VT\control\SessionManager;
 
 
 class MainDispatcher extends Dispatcher {
@@ -84,6 +85,24 @@ class MainDispatcher extends Dispatcher {
             }
             echo json_encode($data);
         }
+    }
+
+    public function Post(){ // actions
+        header('Content-Type:text/html');
+        $output = self::RESPONSE_BAD;
+        $data = filter_var_array(getJsonBody());
+        switch($data['aname']){
+            case 'Lout':    //logout
+                if($this->w->checkUTokenInjected()){
+                    SessionManager::user(['id'=>-1]);   //unset
+                    $output = self::RESPONSE_GOOD;
+                }
+                break;
+            default:
+                $output = self::RESPONSE_NeXIST;
+                break;
+        }
+        echo $output;
     }
 }
 ?>
