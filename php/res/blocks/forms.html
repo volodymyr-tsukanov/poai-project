@@ -27,13 +27,13 @@ $SEP$
 			<div class="lang-ua">Залишити відгук</div>
 		</legend>
 		
-		<label for="name"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>:</label><input name="name" id="name" type="text" autocomplete="name" required>
-		<span id="error_name" class="error"></span> <br>
-
-		<label for="sender">Email:</label><input name="sender" id="sender" type="email" autocomplete="email" required>
+		<label for="sender"><div class="lang-en">Name</div><div class="lang-pl">Imię</div><div class="lang-ua">Ім'я</div>:</label><input name="sender" id="sender" type="text" autocomplete="name" required>
 		<span id="error_sender" class="error"></span> <br>
 
-		<fieldset style="width:fit-content;">
+		<label for="email">Email:</label><input name="email" id="email" type="email" autocomplete="email" required>
+		<span id="error_email" class="error"></span> <br>
+
+		<fieldset style="width:fit-content">
 			<legend>
 				<div class="lang-en">Gender</div>
 				<div class="lang-pl">Plec</div>
@@ -61,4 +61,4 @@ $SEP$
     <input hidden name="utoken" value="*UTOKEN*">
 </form>
 $SEP$
-<h3>Test</h3>
+<h3>Letter sent</h3>

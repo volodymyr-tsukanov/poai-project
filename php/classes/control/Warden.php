@@ -17,7 +17,6 @@
 namespace project_VT\control;
 
 use DateTime;
-use project_VT\control\dispatchers\CPanelDispatcher;
 use project_VT\interfaces\DTBase;
 
 
@@ -28,6 +27,7 @@ enum WardenRizz {
     case Asset;
     case Session;
     case User;
+    case Letter;
     case GatherData;
 }
 
@@ -311,9 +311,50 @@ class Warden {
         return $data;
     }
 
+    /** Processes letter POST data. Returns server text/html responce */
+    public function gatherFeedback(): string{
+        if(!$this->checkCSRFinjected()) return Dispatcher::RESPONSE_WaUTH;
+
+        $data = getJsonBody();
+        $args = [
+            'sender' => [
+                'filter' => FILTER_VALIDATE_REGEXP,
+                'options' => ['regexp' => '/^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\-\s]{4,70}$/']
+            ],
+            'email' => FILTER_VALIDATE_EMAIL,
+            'subject' => FILTER_DEFAULT,    //TODO use FILTER_CALLBACK
+            'message' => FILTER_DEFAULT,
+            'abd' => FILTER_DEFAULT
+        ];
+        $ldata = filter_var_array(json_decode($data['letter'],true),$args);
+
+        foreach($ldata as $key => $val){
+            if($val === null || $val === false){
+                $this->logActivity(WardenRizz::Letter, "wrong $key");
+                return Dispatcher::RESPONSE_WdATA;
+            }
+        }
+        if(!in_array($ldata['subject'], ['project-VT','pear','telephone-book','sw-c','code-crypt','nspec'])) return Dispatcher::RESPONSE_WdATA;
+
+        $db = DTBase::getInstance();
+        $db->enable();
+        try{
+            $db->insertLetter($ldata);
+            return Dispatcher::RESPONSE_GOOD;
+        } catch(Errorr $e){
+            $descr = $e->getDescription();
+            switch($descr){
+                default:
+                    $this->logActivity(WardenRizz::Letter,$descr);
+                    return Dispatcher::RESPONSE_BAD;
+            }
+            return $descr;
+        }
+    }
+
 
         // User actions
-    /** Processes login/register POST user data. Returns server text/html response */
+    /** Processes login POST user data. Returns server text/html response */
     public function greetUser(array $data): string{
         if(!$this->checkCSRFinjected()) return Dispatcher::RESPONSE_WaUTH;
 
@@ -329,7 +370,7 @@ class Warden {
         foreach($udata as $key => $val){
             if($val === null || $val === false){
                 $this->logActivity(WardenRizz::User, "signup wrong $key");
-                return Dispatcher::RESPONSE_WuDATA;
+                return Dispatcher::RESPONSE_WdATA;
             }
         }
 
@@ -405,7 +446,7 @@ class Warden {
             return false;
         }
         if($token === false || empty($token)){   //no right token in the request
-            $this->logActivity(WardenRizz::Session,'CSRF no name='.$csrf['name']);
+            $this->logActivity(WardenRizz::Session,'no named CSRF');
             return false;
         }
         if(time() - $csrf['time'] > $this->config['csrf-expire']){
@@ -437,9 +478,12 @@ class Warden {
     public function getUTokenInjection(): string|bool{
         $user = $this->getSessionUser();
         if($user === false) return false;
-        $uToken = $this->makeUToken();
-        SessionManager::user(['token'=>$uToken]);
-        return $uToken;
+        if(isset($user['token'])) return $user['token'];
+        else{
+            $uToken = $this->makeUToken();
+            SessionManager::user(['token'=>$uToken]);
+            return $uToken;
+        }
     }
     public function checkUTokenInjected(): bool{
         $user = $this->getSessionUser();

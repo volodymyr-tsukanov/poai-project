@@ -17,6 +17,11 @@ const host = 'http://localhost/php/poai-project/php/pub/cpanel';	/*!default 'htt
 let user = new User();
 
 
+document.addEventListener('DOMContentLoaded', ()=>{
+
+});
+
+
 /* Default methods */
 function proccessSecret(secret){
 	if(!secret) return ['noS', '-'];
@@ -24,6 +29,15 @@ function proccessSecret(secret){
 	if(sArr.length !== 2) sArr = ['noS', '-'];
 	return sArr;
 }
+
+function addLetterListItem(jsonData, clearList=false){
+	const letterListBody = document.getElementById('letterListBody');
+	if(clearList) letterListBody.innerHTML = '';
+	let item = document.createElement('tr');
+	item.innerHTML = `<td>${jsonData.status}</td><td>${jsonData.created}</td><td>${jsonData.sender}</td><td>${jsonData.receiver_id}</td>`;
+	letterListBody.appendChild(item);
+}
+
 
 /* Form methods */
 	/*SignUp*/
@@ -75,6 +89,35 @@ function logOut(){
 			sessionStorage.clear();
 			location.reload();
 		} else{
+			console.warn('status: '+data);
+			alert('LogOut went not properly. Refresh the page and try again');
+		}
+	}).catch((e)=>{
+		console.error('logOut: '+e);
+		alert('Logging out failed. Refresh the page.');
+	});
+}
+
+function gatherLetters(subject='project-VT'){
+	const uToken = document.getElementById('utoken').value;
+	const requestData = {
+		method: 'POST',
+		headers: {
+			'Content-Type': "application/json"
+		},
+		body: JSON.stringify({
+			'act': 'GltrS',
+			'subject': subject,
+			'utoken': uToken
+		})
+	};
+	fetch(host,requestData).then(response => response.text()).then((data)=>{
+		if(data.length > 1){
+			jsonData = JSON.parse(data);
+			jsonData.forEach(item=>{
+				addLetterListItem(item);
+			});
+		} else{	/*TODO error responce handling */
 			console.warn('status: '+data);
 			alert('LogOut went not properly. Refresh the page and try again');
 		}

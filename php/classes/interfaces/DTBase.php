@@ -93,7 +93,12 @@ class DTBase {
             throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt execute');
         }
         $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt result');
+        }
         $arr = $result->fetch_assoc();
+        $result->free();
         $stmt->close();
         if($arr === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt result->fetch');
         return $arr;
@@ -106,8 +111,9 @@ class DTBase {
         $stmt = $this->mysqli->prepare('INSERT INTO `naughtyList`(`ip_start`,`ip_end`,`reason`,`abd`) VALUES (?,?,?,?)');
         if($stmt === false) throw new Errorr($this,ErrorCause::DB,'iNL:failed prepare');
         $stmt->bind_param('bbis', $ipData['ip'],$ipData['ip'],$ipData['reason'],$ipData['abd']);
-        if($stmt->execute() === false) throw new Errorr($this,ErrorCause::DB,'iNL:failed stmt execute');
+        $result = $stmt->execute();
         $stmt->close();
+        if($result === false) throw new Errorr($this,ErrorCause::DB,'iNL:failed stmt execute');
     }
 
     /** Gets user id by username if password matches */
@@ -121,9 +127,14 @@ class DTBase {
             throw new Errorr($this,ErrorCause::DB,'sUbU:failed stmt execute');
         }
         $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sUbU:failed stmt result');
+        }
         $user = $result->fetch_object();
+        $result->free();
         $stmt->close();
-        if(isset($user) && $user !== false){
+        if($user !== null && $user !== false){
             if(!password_verify($password,$user->pass)){
                 throw new Errorr($this,ErrorCause::DB, Dispatcher::RESPONSE_WpASS);
             }
@@ -141,9 +152,14 @@ class DTBase {
             throw new Errorr($this,ErrorCause::DB,'gUbI:failed stmt execute');
         }
         $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'gUbI:failed stmt result');
+        }
         $user = $result->fetch_object();
+        $result->free();
         $stmt->close();
-        if(isset($user) && $user !== false){
+        if($user !== null && $user !== false){
             if(!password_verify($password,$user->pass)){
                 throw new Errorr($this,ErrorCause::DB, Dispatcher::RESPONSE_WpASS);
             }
@@ -151,18 +167,48 @@ class DTBase {
         return $user;
     }
     /** Creates new user
-     * $userData - array with firlds: (string)username, (string)email, (string)pass
+     * $userData - array with fields: (string)username, (string)email, (string)pass
      */
     public function insertUser(array $userData){
         if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'iU:not enabled');
         $stmt = $this->mysqli->prepare('INSERT INTO `users`(`username`,`email`,`pass`) VALUES (?,?,?)');
         if($stmt === false) throw new Errorr($this,ErrorCause::DB,'iU:failed prepare');
         $stmt->bind_param('sss', $userData['username'],$userData['email'],$this->w->protectSecret($userData['pass']));
+        $result = $stmt->execute();
+        $stmt->close();
+        if($result === false) throw new Errorr($this,ErrorCause::DB,'iU:failed stmt execute');
+    }
+
+    public function selectLettersBySubject(string $subject): array{
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
+        $stmt = $this->mysqli->prepare("SELECT id, status, sender, created, `receiver_id` FROM `letters` WHERE subject = ?");
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sLbS:failed prepare');
+        $stmt->bind_param('s', $subject);
         if($stmt->execute() === false){
             $stmt->close();
-            throw new Errorr($this,ErrorCause::DB,'iU:failed stmt execute');
+            throw new Errorr($this,ErrorCause::DB,'sLbS:failed stmt execute');
         }
+        $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sLbS:failed stmt result');
+        }
+        $letters = $result->fetch_all(MYSQLI_ASSOC);
+        $result->free();
         $stmt->close();
+        return $letters;
+    }
+    /** Creates new letter (contact)
+     * $feedbackData - array with fields: (string)sender, (string)email, (string enum)subject, (string)message
+     */
+    public function insertLetter(array $feedbackData){
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'iL:not enabled');
+        $stmt = $this->mysqli->prepare('INSERT INTO `letters`(`subject`,`message`,`sender`) VALUES (?,?,?)');
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'iL:failed prepare');
+        $stmt->bind_param('sss', $feedbackData['subject'],$feedbackData['message'],$feedbackData['sender']);
+        $result = $stmt->execute();
+        $stmt->close();
+        if($result === false) throw new Errorr($this,ErrorCause::DB,'iL:failed stmt execute');
     }
 }
 ?>

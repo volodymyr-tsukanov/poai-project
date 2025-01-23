@@ -12,6 +12,8 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     padding-left: 2em;
     padding-right: 2em;
     padding-top: 0.4em;
@@ -21,7 +23,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
     transition: .4s ease-in-out;
 }
 .form:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     border: 1px solid black;
 }
 

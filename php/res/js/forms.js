@@ -71,30 +71,30 @@ function loadFeedbackFields(){
 	let fields = localStorage.getItem('feedback');
 	if(fields && confirm('Load last saved feedback data?')){
 		fields = JSON.parse(fields);
-		document.getElementById('name').value = fields.name;
 		document.getElementById('sender').value = fields.sender;
-		document.getElementById('prjt').value = fields.project;
-		document.getElementById('cmnt').value = fields.comment;
+		document.getElementById('email').value = fields.email;
+		document.getElementById('prjt').value = fields.subject;
+		document.getElementById('cmnt').value = fields.message;
 		setRadioIndex('gender', fields.gender);
 	} else console.log('no feedback data');
 }
 function saveFeedbackFields(){
 	let fields = {};
-	fields.name = document.getElementById('name').value;
 	fields.sender = document.getElementById('sender').value;
-	fields.project = document.getElementById('prjt').value;
-	fields.comment = document.getElementById('cmnt').value;
+	fields.email = document.getElementById('email').value;
+	fields.subject = document.getElementById('prjt').value;
+	fields.message = document.getElementById('cmnt').value;
 	fields.gender = getRadioIndex('gender');
 	localStorage.setItem('feedback', JSON.stringify(fields));
 }
 function clearFeedbackFields(){
-	document.getElementById('name').value = '';
 	document.getElementById('sender').value = '';
+	document.getElementById('email').value = '';
 	document.getElementById('prjt').value = 'nspec';
 	document.getElementById('cmnt').value = '';
 	setRadioIndex('gender', 1);
-	document.getElementById('error_name').innerHTML = '';
 	document.getElementById('error_sender').innerHTML = '';
+	document.getElementById('error_email').innerHTML = '';
 	document.getElementById('error_project').innerHTML = '';
 	document.getElementById('error_comment').innerHTML = '';
 }
@@ -114,7 +114,7 @@ function giveFeedback(secret){
 				'Content-Type': "application/json"
 			},
 			body: JSON.stringify({
-				'mail': letter.format(),
+				'letter': letter.format(),
 				[sArr[0]]: sArr[1]
 			})
 		};

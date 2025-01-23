@@ -17,41 +17,44 @@
 namespace project_VT\data;
 
 use DateTime;
+use stdClass;
 
 
-enum LetterStatus: int {
+enum LetterStatus: int{
     case New = 1;
     case Read = 11;
     case Answered = 111;
     case Important = 122;
 }
-enum LetterSubject: int{
-    case ThisSite = 1;
-    case nspec = 0;
+enum LetterSubject: string{
+    case ThisSite = 'project-VT';
+    case nspec = 'nspec';
 }
 
 
 class Letter {
     private int $id;
+    protected int $receiverId;
     protected string $message;
     protected DateTime $created;
     protected LetterStatus $status;
     protected LetterSubject $subject;
 
 
-    function __construct(string $message, DateTime $created, LetterStatus $status, LetterSubject $subject)
-    {
+    function __construct(int $id, string $message, DateTime $created, LetterStatus $status, LetterSubject $subject = LetterSubject::nspec, int $receiverId = -1){
+        $this->id = $id;
         $this->message = $message;
         $this->created = $created;
         $this->status = $status;
         $this->subject = $subject;
+        if($receiverId>=0) $this->receiverId = $receiverId;
     }
     function __destruct(){
         unset($this->date);
     }
 
     public static function fromStdClass(stdClass $object): Letter{
-        return new self($object->username, $object->email, $passwd, $object->language);
+        return new self($object->id, $object->message, $object->created, $object->status, $object->subject, $object->receiver_id);
     }
     public static function fromJson(string $jsonData): Letter{
         $json = json_decode($jsonData);

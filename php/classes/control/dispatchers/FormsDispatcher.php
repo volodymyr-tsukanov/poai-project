@@ -33,8 +33,7 @@ class FormsDispatcher extends Dispatcher {
 
     public function Post(){ //TODO proc form
         header('Content-Type:text/html');
-        if($this->w->checkCSRFinjected()) echo self::RESPONSE_GOOD;
-        else echo self::RESPONSE_WaUTH;
+        echo $this->w->gatherFeedback();
     }
 }
 ?>

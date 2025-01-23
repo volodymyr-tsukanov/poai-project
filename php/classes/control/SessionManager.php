@@ -18,6 +18,20 @@ namespace project_VT\control;
 
 
 class SessionManager {
+    private static function getCleanSession(): array{
+        $cSession = [];
+        if(isset($_SESSION['user'])){
+            $cSession['user'] = [
+                'id'=>$_SESSION['user']['id'],
+                'status'=>$_SESSION['user']['status'],
+                't'=>$_SESSION['user']['t']
+            ];
+        }
+        if(isset($_SESSION['UA'])) $cSession['UA'] = $_SESSION['UA'];
+        if(isset($_SESSION['limiter'])) $cSession['limiter'] = $_SESSION['limiter'];
+        return $cSession;
+    }
+
     public static function start(string $name){
         session_name($name);
         session_start();
@@ -45,7 +59,9 @@ class SessionManager {
         if(empty($expire)) $expire = 0;
         $t = time();
         if(($t - $_SESSION['updated'] ?? 0) > $expire){
+            $cSession = self::getCleanSession();
             session_regenerate_id(true);    //deletes old session
+            $_SESSION = $cSession;
             $_SESSION['updated'] = $t;
         }
     }
@@ -57,6 +73,7 @@ class SessionManager {
         }
         return $oldVal;
     }
+    /** One time read */
     public static function CSRF(string $name='csrf', ?string $token=null): ?array{
         $oldVal = $_SESSION['CSRF'];
         if(empty($token)){

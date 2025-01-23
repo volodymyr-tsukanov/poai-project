@@ -20,7 +20,7 @@ namespace project_VT\control;
 class Dispatcher {
     public const RESPONSE_GOOD='G', RESPONSE_BAD='B',   //TODO transit to main.js
                 RESPONSE_NeXIST='X', RESPONSE_WrEQEST='E', RESPONSE_WaUTH='A',
-                RESPONSE_GlOGIN='L', RESPONSE_GrEGISTER='R', RESPONSE_WuDATA='D', RESPONSE_WpASS='P', RESPONSE_WuNAMEtAKEN='T';
+                RESPONSE_GlOGIN='L', RESPONSE_GrEGISTER='R', RESPONSE_WdATA='D', RESPONSE_WpASS='P', RESPONSE_WuNAMEtAKEN='T';
 
     protected Warden $w;
 
