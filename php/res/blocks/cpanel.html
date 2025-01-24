@@ -28,10 +28,10 @@
             color: aliceblue;
         }
         table {
-            max-height: 60%;
+            max-height: 50%;
             min-width: 50%;
             max-width: 90%;
-            overflow-y: auto;
+            overflow-y: scroll;
             margin: 0 5%;
             border: 8px;
         }
@@ -73,12 +73,43 @@
 </html>
 $SEP$
 <form action="#" onsubmit="return control()">
+    <button type="button" onclick="logOut()">LogOut</button>
     <h2>Letters</h2>
+    <select id="subjects">
+        <option value="project-VT" selected>This site</option>
+        <option value="pear">Pear</option>
+        <option value="telephone-book">Telephone Book</option>
+        <option value="nspec">NoThInG</option>
+    </select>
+    <button type="button" onclick="gatherLettersBySubject(document.getElementById('subjects').value)">FindBySubject</button>
+    <select id="statuses">
+        <option value="new" selected>New</option>
+        <option value="read">Read</option>
+        <option value="answered">Answered</option>
+        <option value="important">Important</option>
+    </select>
+    <button type="button" onclick="gatherLettersByStatus(document.getElementById('statuses').value)">FindByStatus</button>
     <table id="letterList">
         <thead>
-            <tr><th>Status</th><th>Created</th><th>Sender</th><th>ReceiverID</th></tr>
+            <tr><th id="letterListDHeader">Status</th><th>Created</th><th>Sender</th><th>ReceiverID</th><th>Actions</th></tr>
         </thead>
         <tbody id="letterListBody"></tbody>
     </table>
+    <div id="letterBody" style="display:none">
+        <span id="letterBodyText"></span> <br>
+        <button type="button" onclick="document.getElementById('letterList').style='';document.getElementById('letterBody').style='display:none'">Close</button>
+    </div> <br>
+
+    <h2>NaughtyList</h2>
+    <button type="button" onclick="gatherNaughty()">Load</button>
+    <table id="naughtyList">
+        <thead>
+            <tr><th>IPstart</th><th>IPend</th><th>Reason</th><th>Created</th><th>ABD</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="naughtyListBody"></tbody>
+    </table>
+
+    <br><br><span>Sorry, no time for UI 🫣</span>
+
     <input hidden id="utoken" value="*UTOKEN*">
 </form>

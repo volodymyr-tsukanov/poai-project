@@ -103,6 +103,25 @@ class DTBase {
         if($arr === false) throw new Errorr($this,ErrorCause::DB,'sNL:failed stmt result->fetch');
         return $arr;
     }
+    /** TODO */
+    public function selectNaughtyListAll(): array{
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
+        $stmt = $this->mysqli->prepare("SELECT * FROM `naughtyList`");
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sNLa:failed prepare');
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sNLa:failed stmt execute');
+        }
+        $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sNLa:failed stmt result');
+        }
+        $nList = $result->fetch_all(MYSQLI_ASSOC);
+        $result->free();
+        $stmt->close();
+        return $nList;
+    }
     /** Inserts new entry to naughtyList
      * $ipData - array with fields: (bin)ip, (int)reason, (string)abd
      */
@@ -114,6 +133,16 @@ class DTBase {
         $result = $stmt->execute();
         $stmt->close();
         if($result === false) throw new Errorr($this,ErrorCause::DB,'iNL:failed stmt execute');
+    }
+    /** TODO */
+    public function deleteNaughtyList(int $id){
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'iNL:not enabled');
+        $stmt = $this->mysqli->prepare('DELETE FROM `naughtyList` WHERE id = ?');
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'dNL:failed prepare');
+        $stmt->bind_param('i', $id);
+        $result = $stmt->execute();
+        $stmt->close();
+        if($result === false) throw new Errorr($this,ErrorCause::DB,'dNL:failed stmt execute');
     }
 
     /** Gets user id by username if password matches */
@@ -181,7 +210,7 @@ class DTBase {
 
     public function selectLettersBySubject(string $subject): array{
         if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
-        $stmt = $this->mysqli->prepare("SELECT id, status, sender, created, `receiver_id` FROM `letters` WHERE subject = ?");
+        $stmt = $this->mysqli->prepare("SELECT id, status, sender, created, receiver_id FROM `letters` WHERE subject = ?");
         if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sLbS:failed prepare');
         $stmt->bind_param('s', $subject);
         if($stmt->execute() === false){
@@ -198,6 +227,45 @@ class DTBase {
         $stmt->close();
         return $letters;
     }
+    public function selectLettersByStatus(string $status): array{
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
+        $stmt = $this->mysqli->prepare("SELECT id, subject, sender, created, receiver_id FROM `letters` WHERE status = ?");
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'sLbT:failed prepare');
+        $stmt->bind_param('s', $status);
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sLbT:failed stmt execute');
+        }
+        $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'sLbT:failed stmt result');
+        }
+        $letters = $result->fetch_all(MYSQLI_ASSOC);
+        $result->free();
+        $stmt->close();
+        return $letters;
+    }
+    /** Gets all letter data by id */
+    public function getLetterById(int $id): array{
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'not enabled');
+        $stmt = $this->mysqli->prepare("SELECT subject, message, status, sender, created, receiver_id FROM `letters` WHERE id = ?");
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'gLbI:failed prepare');
+        $stmt->bind_param('i', $id);
+        if($stmt->execute() === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'gLbI:failed stmt execute');
+        }
+        $result = $stmt->get_result();
+        if($result === false){
+            $stmt->close();
+            throw new Errorr($this,ErrorCause::DB,'gLbI:failed stmt result');
+        }
+        $letter = $result->fetch_assoc();
+        $result->free();
+        $stmt->close();
+        return $letter;
+    }
     /** Creates new letter (contact)
      * $feedbackData - array with fields: (string)sender, (string)email, (string enum)subject, (string)message
      */
@@ -209,6 +277,16 @@ class DTBase {
         $result = $stmt->execute();
         $stmt->close();
         if($result === false) throw new Errorr($this,ErrorCause::DB,'iL:failed stmt execute');
+    }
+    /** TODO */
+    public function updateLetterStatus(int $id, string $status, int $userId){
+        if(!$this->isEnabled()) throw new Errorr($this,ErrorCause::DB,'uLS:not enabled');
+        $stmt = $this->mysqli->prepare('UPDATE `letters` SET status = ?, receiver_id = ? WHERE id = ?');
+        if($stmt === false) throw new Errorr($this,ErrorCause::DB,'uLS:failed prepare');
+        $stmt->bind_param('sii', $status,$userId,$id);
+        $result = $stmt->execute();
+        $stmt->close();
+        if($result === false) throw new Errorr($this,ErrorCause::DB,'uLS:failed stmt execute');
     }
 }
 ?>
