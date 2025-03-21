@@ -1,7 +1,7 @@
-# Portfolio web site
-in many ways... <br>
+# Portfolio web page
+in Node.js <br>
 
-**HTML**; **CSS**; **JavaScript**; **JSON**; **Fetch API** <br><br>
+**Node.js**, **TypeScript**, **TilewindCSS** <br><br>
 
 
 Shields: [![Apache 2.0][apache-shield]][apache]

@@ -1,0 +1,42 @@
+#   poai-project  Copyright  2025  volodymyr-tsukanov
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: df/nj_df
+    image: localhost/simple-nodejs:alpha
+    container_name: poai-project-nj-app_cnt
+    networks:   # lets containers on local machine communicate using their names (no LAN/WAN exposure)
+      - backend
+    resource_limits:
+      memory: 256m  # 256MB mem limit
+      cpus: 0.4     # 40% CPU limit
+    depends_on:
+      - db
+  db:
+    image: docker.io/postgres:latest
+    container_name: poai-project-nj-db_cnt
+    networks:
+      - backend
+    resource_limits:
+      memory: 512m
+      cpus: 0.4
+
+networks:
+  backend:
+    driver: bridge
