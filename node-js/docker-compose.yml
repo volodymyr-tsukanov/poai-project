@@ -22,7 +22,7 @@ services:
     image: localhost/simple-nodejs:alpha
     container_name: poai-project-nj-app_cnt
     volumes:
-      - ./app:/home/app
+      - .:/home/app
     networks:   # lets containers on local machine communicate using their names (no LAN/WAN exposure)
       - backend
     ports:
