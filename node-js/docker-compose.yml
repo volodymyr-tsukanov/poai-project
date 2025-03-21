@@ -21,13 +21,17 @@ services:
       dockerfile: df/nj_df
     image: localhost/simple-nodejs:alpha
     container_name: poai-project-nj-app_cnt
+    volumes:
+      - ./app:/home/app
     networks:   # lets containers on local machine communicate using their names (no LAN/WAN exposure)
       - backend
+    ports:
+      - "127.0.0.1:3003:3003"
     resource_limits:
-      memory: 256m  # 256MB mem limit
-      cpus: 0.4     # 40% CPU limit
-    depends_on:
-      - db
+      memory: 512m  # 512MB mem limit
+      cpus: 0.5     # 50% CPU limit
+    #depends_on:
+     # - db
   db:
     image: docker.io/postgres:latest
     container_name: poai-project-nj-db_cnt
@@ -35,7 +39,7 @@ services:
       - backend
     resource_limits:
       memory: 512m
-      cpus: 0.4
+      cpus: 0.3
 
 networks:
   backend:

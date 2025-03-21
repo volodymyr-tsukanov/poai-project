@@ -13,6 +13,15 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+timestamp=$(date +"%d/%m/%Y %H:%M:%S")
+file_setup=".setup.done.tmp"
+
 cd /home/app
-npm install
+
+if [ ! -f $file_setup ]; then
+    npm install
+
+    echo "$timestamp" > $file_setup
+fi
+
 npm run dev
