@@ -11,18 +11,9 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { Navig } from "@/components/layout/Navig";
-import { Titler } from "@/components/layout/Titler";
-import { ELanguage } from "@/lib/enums";
 
-
-export default function Home() {
-  const lang = ELanguage.English;
-
-  return (
-      <div id="cntnr">
-        <Titler title="Main" lang={lang} />
-        <Navig lang={lang} />
-      </div>
-  );
-}
+export enum ELanguage {
+    English = 1,
+    Polish = 48,
+    Ukranian = 38
+};
