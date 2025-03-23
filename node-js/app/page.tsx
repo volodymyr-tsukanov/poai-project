@@ -13,16 +13,14 @@
 //    limitations under the License.
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
-import { ELanguage } from "@/lib/enums";
+import { CUID } from "@/lib/classes";
 
 
 export default function Home() {
-  const lang = ELanguage.English;
-
   return (
       <div id="cntnr">
-        <Titler title="Main" lang={lang} />
-        <Navig lang={lang} />
+        <Titler uid={new CUID('main.titler')} />
+        <Navig />
       </div>
   );
 }

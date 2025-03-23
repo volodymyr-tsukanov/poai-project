@@ -13,7 +13,7 @@
 //    limitations under the License.
 
 export enum ELanguage {
-    English = 1,
-    Polish = 48,
-    Ukranian = 38
+    ENGLISH = 'ENG',
+    POLISH = 'POL',
+    UKRANIAN = 'UKR'
 };

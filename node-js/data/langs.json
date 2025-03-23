@@ -1,0 +1,45 @@
+{
+  "ENG":{
+    "navig":{
+      "buttons":{
+        "main":"Main",
+        "projects":"Projects",
+        "feedback":"Feedback"
+      }
+    },
+    "main":{
+      "titler":"Main",
+      "":""
+    },
+    "projects":{}
+  },
+
+  "POL":{
+    "navig":{
+      "buttons":{
+        "main":"Gowna",
+        "projects":"Projekty",
+        "feedback":"Opinia"
+      }
+    },
+    "main":{
+      "titler":"Gowna",
+      "":""
+    },
+    "projects":{}
+  },
+
+  "UKR":{
+    "navig":{
+      "buttons":{
+        "projects":"?",
+        "feedback":"?"
+      }
+    },
+    "main":{
+      "titler":"?",
+      "":""
+    },
+    "projects":{}
+  }
+}

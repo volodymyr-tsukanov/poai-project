@@ -11,13 +11,16 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+import { CLangs } from '@/lib/classes';
 import style from './Titler.module.css';
 import { TPageProps } from "@/lib/types";
 
 
-export function Titler({title,lang}:TPageProps){
+export function Titler({uid}:TPageProps){
+    const title = CLangs.getByUID(uid);
+    
     return (
-        <h1 className={"lang-"+lang +" "+ style.titler}>
+        <h1 className={style.titler}>
             {title}
         </h1>
     );

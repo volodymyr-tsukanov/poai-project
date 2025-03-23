@@ -1,0 +1,85 @@
+/*
+   poai-project  Copyright  2025  volodymyr-tsukanov
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+.ubNavig {
+  flex-grow: 0;
+  background: #141414;
+  border-radius: 5px;
+  margin: 0 3px 3px 0;
+  padding: 8px 5px 5px 8px;
+  font-size: 80%;
+  color: var(--color-mint-cream);
+  cursor: pointer;
+  transition: font-size 0.1s, padding 0.2s, background 0.3s, color 0.4s ease;
+}
+.ubNavigContent {
+  display: none;
+  opacity: 0;
+}
+.ubNavigIcon {
+  display: block;
+  opacity: 1;
+  height: 30px;
+  width: 30px;
+}
+.ubNavig:hover {
+  background: var(--color-mint-cream);
+  color: #141414;	/*TODO var*/
+  font-size: 86%;
+  padding: 10px;
+}
+.ubNavig:hover .ubNavigContent {
+  display: block;
+  opacity: 1;
+}
+.ubNavig:hover .ubNavigIcon {
+  display: none;
+  opacity: 0;
+}
+.ubNavig:active {
+  background: black;
+  color: white;
+  padding: 5px;
+}
+
+
+@media screen and (max-width: 720px) and (orientation : portrait) {
+  .ubNavig {
+    font-size: 80%;
+  }
+  .ubNavig:active {
+    padding: 2px;
+  }
+  .ubNavigContent {
+    display: inline-block;
+    opacity: 1;
+  }
+  .ubNavigIcon {
+    display: inline-block;
+  }
+  .ubNavig:hover {
+    background: var(--color-dark-accent);
+    color: var(--color-mint-cream);
+    font-size: 80%;
+    padding: 8px 5px 5px 8px;
+  }
+  .ubNavig:hover .ubNavigContent {
+    display: inline-block;
+  }
+  .ubNavig:hover .ubNavigIcon {
+    display: inline-block;
+    opacity: 1;
+  }
+}
