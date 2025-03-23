@@ -18,9 +18,8 @@ import { CUID } from "@/lib/classes";
 
 export default function Home() {
   return (
-      <div id="cntnr">
-        <Titler uid={new CUID('main.titler')} />
-        <Navig />
+      <div>
+        
       </div>
   );
 }

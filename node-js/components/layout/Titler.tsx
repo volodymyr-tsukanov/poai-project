@@ -11,16 +11,17 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLangs } from '@/lib/classes';
 import style from './Titler.module.css';
+import { CLangs } from '@/lib/classes';
 import { TPageProps } from "@/lib/types";
+import { FTitle } from "@/components/ui/fonts";
 
 
 export function Titler({uid}:TPageProps){
     const title = CLangs.getByUID(uid);
     
     return (
-        <h1 className={style.titler}>
+        <h1 className={`${style.titler} ${FTitle.className} antialiased`}>
             {title}
         </h1>
     );

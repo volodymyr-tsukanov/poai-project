@@ -41,26 +41,24 @@
 }
 
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: black;
-    --foreground: whitesmoke;
-  }
-}
-
-
 body {
   background: var(--background);
   color: var(--foreground);
   cursor: default;
   font-size: var(--font-size);
+}
+
+footer {
+  order: 5;
+  width: 95%;
+  margin: 25px 0 0 0;
+  background: var(--color-outer-space);
+  border-radius: 20px 20px 0 0;
+  box-shadow: #edeee70f -2px -3px;
+  color: whitesmoke;
+  text-align: center;
+  font-size: 140%;
+  cursor: default;
 }
 
 h1, h2, h3 {
@@ -121,4 +119,40 @@ textarea {
 	border-radius: 6px;
 	color: whitesmoke;
 	font-size: 15pt;
+}
+#mainBody {
+	order: 4;
+	width: 100%;
+	padding: 0 10px 0 30px;
+}
+
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /*--font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);*/
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: black;
+    --foreground: whitesmoke;
+  }
+}
+@media screen and (max-width: 840px) and (orientation : landscape) {
+	#cntnr {
+		font-size: 16pt;
+	}
+	#mainBody {
+		padding: 0 5px 0 10px;
+	}
+}
+@media screen and (max-width: 720px) and (orientation : portrait) {
+	#cntnr {
+		font-size: 17pt;
+	}
+	#mainBody {
+		padding: 10px 2px 0 4px;
+	}
 }

@@ -16,13 +16,13 @@ import { TPageProps } from '@/lib/types';
 import { CLangs } from '@/lib/classes';
 import { DIconSide, DRandomInt } from '@/lib/consts';
 import Image from 'next/image';
+import { FSubtitle } from '../fonts';
 
 
 export default function UBNavig({uid,props}:TPageProps) {
   const text = CLangs.getByUID(uid);
   if(props === undefined){
     const c = DRandomInt(0,100);
-    console.log(c);
     const icon = (c>98) ? 'butt-plug' : '404'
     props = {
       iconSrc: `/icons/${icon}.svg`,
@@ -39,7 +39,7 @@ export default function UBNavig({uid,props}:TPageProps) {
         className={style.ubNavigIcon}
         alt={props.iconAlt??'no-alt'}
       />
-      <div className={style.ubNavigContent}>
+      <div className={`${style.ubNavigContent} ${FSubtitle.className}`}>
         {text}
       </div>
     </button>
