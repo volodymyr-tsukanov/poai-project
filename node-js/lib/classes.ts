@@ -13,10 +13,12 @@
 //    limitations under the License.
 import langs from '@/data/langs.json';
 import { ELanguage } from "./enums";
+import crypto from 'crypto';
 
 
 export class CUID {
   private ok : boolean;
+  private hash : string;
   private leafes : string[];
 
   constructor(uid:string,separator:string='.'){
@@ -24,6 +26,7 @@ export class CUID {
     this.leafes = [];
     this.ok = true;
 
+    const hash16 = crypto.createHash('md5');
     let lPointer : any = langs.ENG;
     const it = leaves[Symbol.iterator]();
     while(this.ok){
@@ -32,12 +35,14 @@ export class CUID {
       if(itRes.value){
         if(itRes.value in lPointer){
           this.leafes.push(itRes.value);
+          hash16.update(itRes.value);
           lPointer = lPointer[itRes.value];
         } else {
           this.ok = false;
         }
       }
     }
+    this.hash = hash16.digest('base64');
   }
 
   public isOk() : boolean{
@@ -45,6 +50,9 @@ export class CUID {
   }
   public length() : number{
     return this.leafes.length;
+  }
+  public getHash() : string{
+    return this.hash;
   }
   public get getLeaves() : readonly string[]{
     return this.leafes;
@@ -55,7 +63,7 @@ export class CLangs {
   public static readonly localStorageKey = 'lang';
   private static currentLanguage : ELanguage = ELanguage.ENGLISH;
 
-  public static getByUID(uid:CUID) : string|boolean{
+  public static getByUID(uid:CUID) : string|string[]|boolean{
     if(!uid.isOk()) return false;
 
     let lPointer : any = langs[CLangs.currentLanguage];

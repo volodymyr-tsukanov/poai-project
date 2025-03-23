@@ -12,7 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import "@/styles/globals.css";
-import { CLangs, CUID } from "@/lib/classes";
+import { CLangs } from "@/lib/classes";
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
 import { FSubtitleItalic } from "@/components/ui/fonts";
@@ -30,7 +30,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
       </head>
       <body>
         <div id="cntnr">
-          <Titler uid={new CUID('main.titler')} />
+          <Titler />
           <Navig />
           <div id="mainBody">{children}</div>
           <footer className={`${FSubtitleItalic.className} antialiased`}> by VT 2025 </footer>

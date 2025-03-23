@@ -31,8 +31,8 @@
 .ubNavigIcon {
   display: block;
   opacity: 1;
-  height: 30px;
-  width: 30px;
+  height: 31px;
+  width: 31px;
 }
 .ubNavig:hover {
   background: var(--color-mint-cream);

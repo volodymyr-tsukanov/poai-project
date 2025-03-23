@@ -11,15 +11,19 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { Navig } from "@/components/layout/Navig";
-import { Titler } from "@/components/layout/Titler";
-import { CUID } from "@/lib/classes";
+import { FOrdinary } from "@/components/ui/fonts";
+import { CLangs, CUID } from "@/lib/classes";
+import { UTextConverger } from "@/lib/utils/TextConverger";
+import React from "react";
 
 
 export default function Home() {
+  const TextConverger = new UTextConverger(new CUID('main'));
+  const textA = CLangs.getByUID(new CUID('main.textA')) as string[];
+  
   return (
-      <div>
-        
-      </div>
+    <div className={`${FOrdinary.className} text-center`}>
+      {TextConverger.txtArray2html(textA,false,false,true)}
+    </div>
   );
 }

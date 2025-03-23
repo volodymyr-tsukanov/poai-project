@@ -4,12 +4,18 @@
       "buttons":{
         "main":"Main",
         "projects":"Projects",
-        "feedback":"Feedback"
+        "feedback":"Feedback",
+        "contact":"Contact",
+        "settings":"Settings"
       }
     },
     "main":{
       "titler":"Main",
-      "":""
+      "textA":[
+        "Hello everyone! 👋",
+        "I'm <i>νolodymyr</i>, student of Politechnika Lubelska university in Poland.",
+        "Welcome to my <b>portfolio</b> page! It was made as a project for one of my subjects (so I've left the requirements for my below for my professor) and contains a list of my works, a review page and my contact information."
+      ]
     },
     "projects":{}
   },
@@ -19,7 +25,9 @@
       "buttons":{
         "main":"Gowna",
         "projects":"Projekty",
-        "feedback":"Opinia"
+        "feedback":"Opinia",
+        "contact":"Lontact",
+        "settings":"Ustawienia"
       }
     },
     "main":{
@@ -32,8 +40,11 @@
   "UKR":{
     "navig":{
       "buttons":{
+        "main":"?",
         "projects":"?",
-        "feedback":"?"
+        "feedback":"?",
+        "contact":"?",
+        "settings":"?"
       }
     },
     "main":{

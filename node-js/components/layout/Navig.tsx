@@ -21,7 +21,10 @@ export function Navig(){
     <div className={style.navig}>
       <div id={style.navigBtns}>
         <UBNavig uid={new CUID('navig.buttons.main')} props={{iconSrc:"/icons/info.png",iconAlt:"Main"}} />
-        <UBNavig uid={new CUID('navig.buttons.projects')} />
+        <UBNavig uid={new CUID('navig.buttons.projects')} props={{iconSrc:"/icons/portfolio.png",iconAlt:"Projects"}} />
+        <UBNavig uid={new CUID('navig.buttons.feedback')} props={{iconSrc:"/icons/comment.png",iconAlt:"Comment"}} />
+        <UBNavig uid={new CUID('navig.buttons.contact')} props={{iconSrc:"/icons/contacts.png",iconAlt:"Contacts"}} />
+        <UBNavig uid={new CUID('navig.buttons.settings')} props={{iconSrc:"/icons/settings.png",iconAlt:"Settings"}} />
       </div>
       <div id={style.navigClosed}> VV/ -|- \VV </div>
       <button id={style.navigCBtn1}>
