@@ -1,4 +1,4 @@
-## assets/icons/
+## icons/
   - [info.png](https://www.svgrepo.com/svg/509138/info)
     COLLECTION: Orchid Line Interface Icons
     LICENSE: MIT License
@@ -23,3 +23,11 @@
     COLLECTION: Ios7 Premium Fill 2
     LICENSE: CC0 License
     AUTHOR: SVG Repo
+  - [404.svg](https://www.svgrepo.com/svg/441689/page-not-found)
+    COLLECTION: Chikin Variety Glyph Icons
+    LICENSE: CC Attribution License
+    AUTHOR: chikin icons
+  - [butt-plug.svg](https://www.svgrepo.com/svg/441591/butt-plug)
+    COLLECTION: Chikin Variety Glyph Icons
+    LICENSE: CC Attribution License
+    AUTHOR: chikin icons
