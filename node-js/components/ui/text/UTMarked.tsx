@@ -11,25 +11,21 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { FOrdinary } from "@/components/ui/fonts";
-import UTMarked from "@/components/ui/text/UTMarked";
-import { CLangs, CUID } from "@/lib/classes";
-import React from "react";
+'use client';
+import style from './UTMarked.module.css';
+import { UTextConverger } from "@/lib/utils/UTextConverger";
 
 
-export default function Home() {
-  const textAUID = new CUID('main.textA');
-  const textA:string[] = CLangs.getByUID(textAUID) as string[];
+/** MarkedText element. 
+ * @param text marked string 
+ * */
+export default function UTMarked(props:{text:string}) {
+  const TextConverger = new UTextConverger();
+  const content = TextConverger.md2html(props.text);
 
   return (
-    <div className={`${FOrdinary.className} text-center`}>
-      {
-        textA.map((textPart,index)=>(
-          <React.Fragment key={`${textAUID.getHash()}-f-${index}`}>
-            <UTMarked text={textPart} />
-          </React.Fragment>
-        ))
-      }
+    <div className={style.utMarked}>
+      {content}
     </div>
   );
 }

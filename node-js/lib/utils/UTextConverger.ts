@@ -16,6 +16,13 @@ import { DRandomHash } from "../consts";
 import React from "react";
 
 
+enum TextMarkupStatus{
+  None = ' ',
+  Bold = 'b',
+  Italic = 'i',
+  BoldNItalic = 'j',
+}
+
 export class UTextConverger {
   private rKey : string;
 
@@ -24,7 +31,7 @@ export class UTextConverger {
     this.rKey = DRandomHash('md5');
   }
 
-  private procBold(proc:(string|React.ReactNode)[]){
+  /*private procBold(proc:(string|React.ReactNode)[]){
     let index:number = 0;
     proc = proc.map(part => {
       if(typeof part === 'string'){
@@ -54,18 +61,50 @@ export class UTextConverger {
         return React.createElement(React.Fragment, {key:`${this.rKey}-f-${index++}`}, ...procElements);
       } else return part;
     });
-  }
+  }*/
 
   public md2html(input:string) : React.ReactNode{
-    let proc:(string|React.ReactNode)[] = [input];
+    if(input.length<7) return null;
+    let proc:React.ReactNode[] = [];
 
-    this.procBold(proc);
-    this.procItalic(proc);
+    const it:StringIterator<string> = input[Symbol.iterator]();
+    let mkp:TextMarkupStatus = TextMarkupStatus.None;
+    let buffer:string = '';
+    let index:number = 0;
+    let itRes = it.next();
+    while(!itRes.done){
+      if(mkp===TextMarkupStatus.None){
+        if(itRes.value === '~'){
+          itRes=it.next();  //look ahead to see markup type
+          mkp = itRes.value as TextMarkupStatus;  //! unsafe char to enum
+          proc.push(buffer); buffer='';
+        } else buffer += itRes.value;
+      } else{
+        if(itRes.value === '~'){
+          let elemType:string='a';
+          switch(mkp){
+            case TextMarkupStatus.Bold:
+            case TextMarkupStatus.Italic:
+              elemType=mkp;
+              break;
+            case TextMarkupStatus.BoldNItalic:
+              break;
+            default:
+              console.warn(`TextConverger: no option '${mkp}'`);
+              break;
+          }
+          proc.push(React.createElement(elemType,{key:`${this.rKey}-${elemType}-${index++}`},buffer));
+          mkp=TextMarkupStatus.None; buffer='';
+        } else buffer += itRes.value;
+      }
+      itRes = it.next();
+    }
 
+    if(buffer.length > 0) proc.push(buffer);
     return React.createElement(React.Fragment, null, ...proc);
   }
 
-  public txtArray2html(input:string[],useBr:boolean=true,procMd2Html:boolean=false,procUnsafeTxtAsHtml:boolean=false) : React.ReactNode{
+  /*public txtArray2html(input:string[],useBr:boolean=true,procMd2Html:boolean=false,procUnsafeTxtAsHtml:boolean=false) : React.ReactNode{
     if(input.length === 1) return React.createElement(React.Fragment,null,input[0]);
     const proc:React.ReactNode[] = [input[0]];
     for(let i = 1; i<input.length; i++){
@@ -78,5 +117,5 @@ export class UTextConverger {
       }
     }
     return React.createElement(React.Fragment, null, ...proc);
-  }
+  }*/
 }
