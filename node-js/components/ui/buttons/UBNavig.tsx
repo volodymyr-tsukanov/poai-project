@@ -12,9 +12,9 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import style from './UBNavig.module.css';
-import { TPageProps } from '@/lib/types';
+import { TPageProps } from '@/lib/interfaces';
 import { CLangs } from '@/lib/classes';
-import { DIconSide, DRandomInt } from '@/lib/consts';
+import { DIcon404, DIconSide } from '@/lib/consts';
 import { FSubtitle } from '../fonts';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -23,10 +23,8 @@ import Link from 'next/link';
 export default function UBNavig({uid,props}:TPageProps) {
   const text = CLangs.getByUID(uid);
   if(props === undefined){
-    const c = DRandomInt(0,100);
-    const icon = (c>98) ? 'butt-plug' : '404'
     props = {
-      iconSrc: `/icons/${icon}.svg`,
+      iconSrc: DIcon404,
       iconAlt: "non found"
     };
   }

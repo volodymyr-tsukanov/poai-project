@@ -11,12 +11,34 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLangs, CUID } from "@/lib/classes";
-import { FOrdinary } from "@/components/ui/fonts";
+import { FSpecial } from "@/components/ui/fonts";
+import UIExternal from "@/components/ui/images/UIExternal";
+import USLoader from "@/components/ui/skeletons/USLoader";
+import { CUID } from "@/lib/classes";
+import { Suspense } from "react";
 
 
-export default function Home() {
+export default async function Home() {
   return (
-    'Contacts'
+    <div className={`${FSpecial.className} text-center`}>
+      <a className="lnkA1" href="https://github.com/volodymyr-tsukanov" target="_blank">
+        <Suspense fallback='GitHub'>
+        <UIExternal 
+          src="https://img.shields.io/badge/GitHub-161A1D?style=social&logo=github&logoColor=black"
+          height={50}
+          alt="GitHub"
+          className="height-max:50" />
+          </Suspense>
+      </a> <br/>
+      <a className="lnkA1" href="https://www.linkedin.com/in/volodymyr-tsukanov-4b624a299" target="_blank">
+        <Suspense fallback={USLoader({uid:new CUID('contact.l')})}>
+        <UIExternal
+          src="https://img.shields.io/badge/Linkedin-161A1D?style=social&logo=linkedin&logoColor=black"
+          height={50}
+          alt="Linkedin"
+          className="height-max:50" />
+        </Suspense>
+      </a> <br/>
+    </div>
   );
 }

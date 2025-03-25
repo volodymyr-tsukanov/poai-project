@@ -15,6 +15,11 @@ import crypto from 'crypto';
 
 
 export const DIconSide : number = 320
+export const DIcon404 = (sobriety:number=98)=>{
+  const c = DRandomInt(0,100);
+  const icon = (c>(sobriety%100)) ? 'butt-plug' : '404'
+  return `/icons/${icon}.svg`;
+};
 
 export const DRandomInt = (min:number,max:number)=>{
   return min + Math.floor(Math.random() * (max-min+1));
@@ -26,4 +31,9 @@ export const DRandomHash = (algorithm:'md5'|'sha256'|'sha512',digest:crypto.Bina
   const hash = crypto.createHash(algorithm);
   hash.update(DRandomString(16));
   return hash.digest(digest);
+};
+
+export const DDelay = (ms:number)=>{
+  if(!ms || ms>10000) ms = 10000;
+  return new Promise((resolve)=>setTimeout(resolve,ms));
 };

@@ -17,7 +17,20 @@
         "Welcome to my ~bportfolio~ page! It was made as a project for one of my subjects (so I've left the requirements for my below for my professor) and contains a list of my works, a review page and my contact information."
       ]
     },
-    "projects":{}
+    "projects":{},
+    "contact":{
+      "loading":{
+        "text":"loading",
+        "textA":[
+          "text",
+          "links",
+          "styles",
+          "positive emotions 😸",
+          "scripts",
+          "images"
+        ]
+      }
+    }
   },
 
   "POL":{
