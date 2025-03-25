@@ -10,9 +10,9 @@
       }
     },
     "main":{
-      "titler":"Main",
+      "titler":"Main Page",
       "textA":[
-        "Hello everyone! 👋",
+        "Hello everyone! ~o👋~",
         "I'm ~iνolodymyr~, student of Politechnika Lubelska university in Poland.",
         "Welcome to my ~bportfolio~ page! It was made as a project for one of my subjects (so I've left the requirements for my below for my professor) and contains a list of my works, a review page and my contact information."
       ]
@@ -31,8 +31,12 @@
       }
     },
     "main":{
-      "titler":"Gowna",
-      "":""
+      "titler":"Główna Strona",
+      "textA":[
+        "Witam wszystkich! ~o👋~",
+        "Nazywam się ~iνolodymyr~, jestem studentem Politechniki Lubelskiej w Polsce.",
+        "Zapraszam na stronę z moim ~bportfolio~! Została ona stworzona jako projekt dla jednego z moich przedmiotów (więc zostawiłem poniżej wymagania dla mojego profesora) i zawiera listę moich prac, stronę z recenzjami i moje dane kontaktowe."
+      ]
     },
     "projects":{}
   },
@@ -48,8 +52,12 @@
       }
     },
     "main":{
-      "titler":"?",
-      "":""
+      "titler":"Титульна Cторінка",
+      "textA":[
+        "Мої вітання! ~o👋~",
+        "Мене звати ~iνolodymyr~, я студент Politechniki Lubelskiej (Польща).",
+        "Радий вас бачити на моїй ~bportfolio~! Я створив її як проєкт для одного з моїх предметів (інформація для моєї професорки нижче). Вона містить в собі список моїх робіт, формуляр для відгуків й мою контактну інформацію."
+      ]
     },
     "projects":{}
   }

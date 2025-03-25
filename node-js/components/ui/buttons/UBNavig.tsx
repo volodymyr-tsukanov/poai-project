@@ -15,8 +15,9 @@ import style from './UBNavig.module.css';
 import { TPageProps } from '@/lib/types';
 import { CLangs } from '@/lib/classes';
 import { DIconSide, DRandomInt } from '@/lib/consts';
-import Image from 'next/image';
 import { FSubtitle } from '../fonts';
+import Image from 'next/image';
+import Link from 'next/link';
 
 
 export default function UBNavig({uid,props}:TPageProps) {
@@ -29,9 +30,11 @@ export default function UBNavig({uid,props}:TPageProps) {
       iconAlt: "non found"
     };
   }
+  let target = uid.lastLeaf;
+  if(target=='main') target='/';
 
   return (
-    <button className={style.ubNavig}>
+    <Link key={`${uid.hashCode}-l`} href={target} className={style.ubNavig}>
       <Image
         src={props.iconSrc}
         width={DIconSide}
@@ -39,9 +42,9 @@ export default function UBNavig({uid,props}:TPageProps) {
         className={style.ubNavigIcon}
         alt={props.iconAlt??'no-alt'}
       />
-      <div className={`${style.ubNavigContent} ${FSubtitle.className}`}>
+      <p className={`${style.ubNavigContent} ${FSubtitle.className}`}>
         {text}
-      </div>
-    </button>
+      </p>
+    </Link>
   );
 }

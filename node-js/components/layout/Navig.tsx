@@ -12,8 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import style from './Navig.module.css';
-import UBNavig from '../ui/buttons/UBNavig';
 import { CUID } from '@/lib/classes';
+import UBNavig from '../ui/buttons/UBNavig';
 
 
 export function Navig(){

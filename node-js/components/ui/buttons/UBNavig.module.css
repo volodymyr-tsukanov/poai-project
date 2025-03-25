@@ -15,6 +15,7 @@
 */
 .ubNavig {
   flex-grow: 0;
+  max-height: fit-content;
   background: #141414;
   border-radius: 5px;
   margin: 0 3px 3px 0;

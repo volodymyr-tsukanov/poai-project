@@ -16,8 +16,8 @@ import style from './UTMarked.module.css';
 import { UTextConverger } from "@/lib/utils/UTextConverger";
 
 
-/** MarkedText element. 
- * @param text marked string 
+/** MarkedText element. Rendered on **client** 
+ * @param props text = marked string 
  * */
 export default function UTMarked(props:{text:string}) {
   const TextConverger = new UTextConverger();

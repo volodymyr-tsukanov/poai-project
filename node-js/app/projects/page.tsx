@@ -13,23 +13,10 @@
 //    limitations under the License.
 import { CLangs, CUID } from "@/lib/classes";
 import { FOrdinary } from "@/components/ui/fonts";
-import UTMarked from "@/components/ui/text/UTMarked";
-import React from "react";
 
 
 export default function Home() {
-  const textAUID = new CUID('main.textA');
-  const textA:string[] = CLangs.getByUID(textAUID) as string[];
-
   return (
-    <div className={`${FOrdinary.className} text-center`}>
-      {
-        textA.map((textPart,index)=>(
-          <React.Fragment key={`${textAUID.hashCode}-f-${index}`}>
-            <UTMarked text={textPart} />
-          </React.Fragment>
-        ))
-      }
-    </div>
+    'Projects'
   );
 }

@@ -11,16 +11,17 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CUID } from "../classes";
 import { DRandomHash } from "../consts";
+import { CUID } from "../classes";
 import React from "react";
 
 
 enum TextMarkupStatus{
-  None = ' ',
-  Bold = 'b',
-  Italic = 'i',
-  BoldNItalic = 'j',
+  None=' ',
+  Bold='b',
+  Italic='i',
+  Underline='u',
+  Strikeout='s'
 }
 
 export class UTextConverger {
@@ -30,38 +31,6 @@ export class UTextConverger {
     if(uid) this.rKey = uid.getHash();
     this.rKey = DRandomHash('md5');
   }
-
-  /*private procBold(proc:(string|React.ReactNode)[]){
-    let index:number = 0;
-    proc = proc.map(part => {
-      if(typeof part === 'string'){
-        const bParts = part.split('**');
-        if(bParts.length < 2) return part;
-        const procElements:React.ReactNode[] = [bParts[0]];
-        for(let i = 1; i < bParts.length; i+=2){
-          procElements.push(React.createElement('b', {key:`${this.rKey}-b-${i}`}, bParts[i]));
-          procElements.push(bParts[i+1]);
-        }
-        return React.createElement(React.Fragment, {key:`${this.rKey}-f-${index++}`}, ...procElements);
-      } else return part;
-    });
-    console.warn(proc);
-  }
-  private procItalic(proc:(string|React.ReactNode)[]){
-    let index:number = 0;
-    proc = proc.map(part => {
-      if(typeof part === 'string'){
-        const iParts = part.split('_');
-        if(iParts.length < 2) return part;
-        const procElements:React.ReactNode[] = [iParts[0]];
-        for(let i = 1; i < iParts.length; i+=2){
-          procElements.push(React.createElement('i', {key:`${this.rKey}-i-${i}`}, iParts[i]));
-          procElements.push(iParts[i+1]);
-        }
-        return React.createElement(React.Fragment, {key:`${this.rKey}-f-${index++}`}, ...procElements);
-      } else return part;
-    });
-  }*/
 
   public md2html(input:string) : React.ReactNode{
     if(input.length<7) return null;
@@ -85,9 +54,9 @@ export class UTextConverger {
           switch(mkp){
             case TextMarkupStatus.Bold:
             case TextMarkupStatus.Italic:
+            case TextMarkupStatus.Underline:
+            case TextMarkupStatus.Strikeout:
               elemType=mkp;
-              break;
-            case TextMarkupStatus.BoldNItalic:
               break;
             default:
               console.warn(`TextConverger: no option '${mkp}'`);
@@ -103,19 +72,4 @@ export class UTextConverger {
     if(buffer.length > 0) proc.push(buffer);
     return React.createElement(React.Fragment, null, ...proc);
   }
-
-  /*public txtArray2html(input:string[],useBr:boolean=true,procMd2Html:boolean=false,procUnsafeTxtAsHtml:boolean=false) : React.ReactNode{
-    if(input.length === 1) return React.createElement(React.Fragment,null,input[0]);
-    const proc:React.ReactNode[] = [input[0]];
-    for(let i = 1; i<input.length; i++){
-      if(useBr) proc.push(React.createElement('br',{key:`${this.rKey}-br-${i}`}));
-      if(procMd2Html) proc.push(this.md2html(input[i]));
-      else if(procUnsafeTxtAsHtml) proc.push(React.createElement('div',{dangerouslySetInnerHTML:{__html:input[i]}}));
-      else {
-        if(useBr) proc.push(input[i]);
-        else proc.push(React.createElement('div',{key:`${this.rKey}-div-${i}`},input[i]));
-      }
-    }
-    return React.createElement(React.Fragment, null, ...proc);
-  }*/
 }

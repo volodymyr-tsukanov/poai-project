@@ -45,17 +45,23 @@ export class CUID {
     this.hash = hash16.digest('base64');
   }
 
-  public isOk() : boolean{
-    return this.ok;
-  }
-  public length() : number{
+  public get complexity() : number{
     return this.leafes.length;
   }
-  public getHash() : string{
-    return this.hash;
-  }
-  public get getLeaves() : readonly string[]{
+  public get leaves() : readonly string[]{
     return this.leafes;
+  }
+  public get root() : string{
+    return this.leafes[0];
+  }
+  public get lastLeaf() : string{
+    return this.leafes[this.leafes.length-1];
+  }
+  public get isOk() : boolean{
+    return this.ok;
+  }
+  public get hashCode() : string{
+    return this.hash;
   }
 }
 
@@ -64,10 +70,10 @@ export class CLangs {
   private static currentLanguage : ELanguage = ELanguage.ENGLISH;
 
   public static getByUID(uid:CUID) : string|string[]|boolean{
-    if(!uid.isOk()) return false;
+    if(!uid.isOk) return false;
 
     let lPointer : any = langs[CLangs.currentLanguage];
-    uid.getLeaves.forEach(leaf => {
+    uid.leaves.forEach(leaf => {
       lPointer = lPointer[leaf];  //! any to string conflict
     });
     return lPointer;
