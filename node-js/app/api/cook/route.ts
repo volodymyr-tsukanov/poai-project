@@ -16,7 +16,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 
-export async function GET(req:Request) : Promise<NextResponse>{
+/*export async function GET(req:Request) : Promise<NextResponse>{
   const urlSplitA = req.url.split('?');
   if(urlSplitA.length===2){
     const urlParams = new URLSearchParams(urlSplitA[1]);
@@ -31,7 +31,7 @@ export async function GET(req:Request) : Promise<NextResponse>{
       }
     } else return NextResponse.json({msg:'a'});
   } else return NextResponse.json({msg:'n'});
-}
+}*/
 
 export async function POST(req:Request) : Promise<NextResponse>{
   const reqBody = await req.json();

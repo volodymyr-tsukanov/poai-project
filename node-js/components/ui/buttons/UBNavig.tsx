@@ -12,7 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import style from './UBNavig.module.css';
-import { TPageProps } from '@/lib/interfaces';
+import { IPageProps } from '@/lib/interfaces';
 import { CLangs } from '@/lib/classes';
 import { DIcon404, DIconSide } from '@/lib/consts';
 import { FSubtitle } from '../fonts';
@@ -20,7 +20,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 
-export default function UBNavig({uid,props}:TPageProps) {
+export default function UBNavig({uid,props}:IPageProps) {
   const text = CLangs.getResByUID(uid);
   if(props === undefined){
     props = {

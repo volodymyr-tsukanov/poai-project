@@ -13,6 +13,36 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+#navigBtns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(0);
+  transition: opacity 0.4s, transform 0.25s ease-in-out;
+}
+.navig:hover #navigBtns {
+  opacity: 1;
+  transform: translateY(32px);
+}
+
+#navigClosed {
+  opacity: 1;
+  font-size: 90%;
+  transform: translateY(0);
+  transition: opacity 0.4s, transform 0.25s ease-out;
+}
+.navig:hover #navigClosed {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+#navigCBtn1 {
+  display: none;
+}
+
+
 .navig {
   order: 2;
   width: 95%;
@@ -33,34 +63,6 @@
   opacity: 1;
   transform: translateY(-22px);
   background: radial-gradient(circle, var(--color-battleship-gray) 0%, #2F2F2F 21%);
-}
-
-#navigBtns {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  opacity: 0;
-  transform: translateY(0);
-  transition: opacity 0.4s, transform 0.25s ease-in-out;
-}
-.navig:hover #navigBtns {
-  opacity: 1;
-  transform: translateY(32px);
-}
-
-#navigClosed {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.4s, transform 0.25s ease-out;
-}
-.navig:hover #navigClosed {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-#navigCBtn1 {
-  display: none;
 }
 
 

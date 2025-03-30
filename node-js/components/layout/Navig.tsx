@@ -14,6 +14,8 @@
 import style from './Navig.module.css';
 import { CUID } from '@/lib/classes';
 import UBNavig from '../ui/buttons/UBNavig';
+import UTVariable from '../ui/text/UTVariable';
+import { FSubtitleItalic } from '../ui/fonts';
 
 
 export function Navig(){
@@ -26,7 +28,7 @@ export function Navig(){
         <UBNavig uid={new CUID('navig.buttons.contact')} props={{iconSrc:"/icons/contacts.png",iconAlt:"Contacts"}} />
         <UBNavig uid={new CUID('navig.buttons.settings')} props={{iconSrc:"/icons/settings.png",iconAlt:"Settings"}} />
       </div>
-      <div id={style.navigClosed}> VV/ -|- \VV </div>
+      <UTVariable uidPart='title' id={style.navigClosed} className={FSubtitleItalic.className} />
       <button id={style.navigCBtn1}>
         Menu {/* TODO lang+uid */}
       </button>

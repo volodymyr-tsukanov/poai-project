@@ -22,7 +22,7 @@ function cacheClear(){
   //TODO
 }
 function goBack(){
-  //TODO
+  window.history.back();
 }
 
 export default function Home() {
@@ -30,16 +30,16 @@ export default function Home() {
 
   const handleSubmit = (event:React.FormEvent)=>{
     event.preventDefault();
-    CLangs.switchLanguage(selectedLang);
+    CLangs.saveLanguage(selectedLang);
   }
   const handleReset = (event:React.FormEvent)=>{
     event.preventDefault();
-    console.log(event);
+    CLangs.saveLanguage(ELanguage.ENGLISH);
   }
   const handleLangsChange = (event:React.ChangeEvent<HTMLInputElement>)=>{
     const lang:ELanguage = event.target.value as ELanguage; //!type conflict string->ELanguage
     setSelectedLang(lang);
-    CLangs.previewLanguage(selectedLang);
+    CLangs.previewLanguage(lang);
   }
 
   /*useEffect(()=>{

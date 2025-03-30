@@ -1,5 +1,6 @@
 {
   "ENG":{
+    "titler":"Project VT",
     "navig":{
       "buttons":{
         "main":"Main",
@@ -10,7 +11,7 @@
       }
     },
     "main":{
-      "titler":"Main Page",
+      "title":"Main Page",
       "textA":[
         "Hello everyone! ~o👋~",
         "I'm ~iνolodymyr~, student of Politechnika Lubelska university in Poland.",
@@ -19,7 +20,7 @@
     },
     "projects":{},
     "contact":{
-      "titler":"Contacts",
+      "title":"Contacts",
       "loading":{
         "text":"loading",
         "textA":[
@@ -33,7 +34,7 @@
       }
     },
     "settings":{
-      "titler":"Settings",
+      "title":"Settings",
       "form":{
         "langs":{
           "legend":"Select language"
@@ -54,17 +55,18 @@
   },
 
   "POL":{
+    "titler":"Projekt VT",
     "navig":{
       "buttons":{
         "main":"Gowna",
         "projects":"Projekty",
         "feedback":"Opinia",
-        "contact":"Lontact",
+        "contact":"Kontact",
         "settings":"Ustawienia"
       }
     },
     "main":{
-      "titler":"Główna Strona",
+      "title":"Główna Strona",
       "textA":[
         "Witam wszystkich! ~o👋~",
         "Nazywam się ~iνolodymyr~, jestem studentem Politechniki Lubelskiej w Polsce.",
@@ -74,11 +76,28 @@
     "projects":{},
     "contact":{},
     "settings":{
-      "titler":"Ustawienia"
+      "title":"Ustawienia",
+      "form":{
+        "langs":{
+          "legend":"Wybranie języka"
+        },
+        "cache":{
+          "legend":"Kaszowane dane",
+          "buttons":{
+            "clear":"Wyczyścić"
+          }
+        },
+        "buttons":{
+          "submit":"Zapisać",
+          "reset":"Zresetować",
+          "return":"Powrot"
+        }
+      }
     }
   },
 
   "UKR":{
+    "titler":"Project VT",
     "navig":{
       "buttons":{
         "main":"?",
@@ -89,7 +108,7 @@
       }
     },
     "main":{
-      "titler":"Титульна Cторінка",
+      "title":"Титульна Cторінка",
       "textA":[
         "Мої вітання! ~o👋~",
         "Мене звати ~iνolodymyr~, я студент Politechniki Lubelskiej (Польща).",
@@ -99,7 +118,23 @@
     "projects":{},
     "contact":{},
     "settings":{
-      "titler":"Налаштування"
+      "title":"Налаштування",
+      "form":{
+        "langs":{
+          "legend":"Виберіть мову"
+        },
+        "cache":{
+          "legend":"Данні кеш",
+          "buttons":{
+            "clear":"Видалити"
+          }
+        },
+        "buttons":{
+          "submit":"Зберегти",
+          "reset":"Скинути",
+          "return":"Повернутись"
+        }
+      }
     }
   }
 }

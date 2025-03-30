@@ -26,6 +26,11 @@ export const FSubtitle = Courier_Prime({
   preload: true,
   fallback: ["Courier New","Courier","monospace"]
 });
+export const FSubtitleSlim = Courier_Prime({
+  weight: "400",
+  preload: true,
+  fallback: ["Courier New","Courier","monospace"]
+});
 export const FSubtitleItalic = Courier_Prime({
   weight: "400",
   style: "italic",

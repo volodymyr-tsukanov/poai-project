@@ -81,22 +81,31 @@ form {
   border-radius: 1px;
   box-shadow: #0b0b0b5e 1px 3px;
 }
-
+fieldset {
+  margin: 2px 12px 0 2px;
+  padding: 0 3px 0 3px;
+  border-radius: 6px 4px 0 4px;
+  border-width: 2px;
+  border-color: var(--color-platinum);
+}
+fieldset:first-of-type {
+  border-radius: 6px 23px 0 4px;
+}
+fieldset:last-of-type {
+  border-radius: 6px 4px 23px 6px;
+}
 label {
   margin-top: 8px;
   cursor: help;
 }
-
 input {
   margin-top: 8px;
   font-size: 100%;
 }
-
 select {
   margin-top: 8px;
   font-size: 84%;
 }
-
 textarea {
   width: 80%;
   min-width: 50%;

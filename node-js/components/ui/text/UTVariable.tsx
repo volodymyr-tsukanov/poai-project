@@ -11,17 +11,24 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import style from './Titler.module.css';
-import { CLangs, CUID } from '@/lib/classes';
-import { FTitle } from "@/components/ui/fonts";
+'use client';
+import { CLangs, CUID } from "@/lib/classes";
+import { usePathname } from "next/navigation";
 
 
-export function Titler(){
-    const title = CLangs.getResByUID(new CUID('titler'));
-    
-    return (
-        <h1 className={`${style.titler} ${FTitle.className} antialiased`}>
-            {title}
-        </h1>
-    );
+interface UTVariableProps {
+  uidPart: string,
+  className?: string,
+  id?: string
+}
+
+export default function UTVariable(props:UTVariableProps){
+  let pageName = usePathname().split("/")[1];
+  if(pageName.length===0) pageName = 'main';
+  const uid = new CUID(pageName+'.'+props.uidPart);
+  const res = CLangs.getResByUID(uid);
+  const text:string = (typeof res)==="string"?res:'VV/ -|- \VV';
+  return (
+    <p className={props.className} id={props.id}>{text}</p>
+  );
 }

@@ -14,7 +14,7 @@
 import { CUID } from "./classes";
 
 
-export interface TPageProps {
+export interface IPageProps {
     uid: CUID;
     props?: any;
 };

@@ -13,15 +13,25 @@
 //    limitations under the License.
 import './globals.css';
 import { CLangs } from "@/lib/classes";
+import { ELanguage } from '@/lib/enums';
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
 import { FSubtitleItalic } from "@/components/ui/fonts";
+import { cookies } from 'next/headers';
 
+
+async function loadCookies(){
+  try{  //LANGUAGE
+    const cookieStore = await cookies();
+    const lang = cookieStore.get(CLangs.KEY)?.value;
+    if(lang){
+      CLangs.previewLanguage(lang as ELanguage);  //!type conflict string->ELanguage
+    }
+  } catch(e){console.warn('language not loaded: '+e);}
+}
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode;}>) {
-  if(typeof window !== 'undefined'){
-    CLangs.loadLanguage();
-  }
+  loadCookies();
 
   return (
     <html lang="en">

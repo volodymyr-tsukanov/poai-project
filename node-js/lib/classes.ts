@@ -79,33 +79,20 @@ export class CLangs {
     return lPointer;
   }
 
-  /** Loads language from `localStorage` */
-  public static loadLanguage(){
-    const storedLanguage = localStorage.getItem(this.KEY);
-    if (storedLanguage && Object.values(ELanguage).includes(storedLanguage as ELanguage)) {
-      this.currentLanguage = storedLanguage as ELanguage;
-    } else this.currentLanguage = ELanguage.ENGLISH;
-  }
-
   /** Changes global language settings, @returns false if already set */
-  public static async switchLanguage(newLanguage:ELanguage){
-    if(this.previewLanguage(newLanguage)){
-      const response = await fetch('/api/cook',{
-        method: "POST",
-        headers: {
-          'Content-Type':'application/json'
-        },
-        body: JSON.stringify({typ:'lang',val:newLanguage})
-      });
-      const data = await response.json();
-      console.warn(data);
-    }
+  public static async saveLanguage(newLanguage:ELanguage){
+    const response = await fetch('/api/cook',{
+      method: "POST",
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({typ:'lang',val:newLanguage})
+    });
+    const data = await response.json();
+    if(data.msg === 'o') window.location.reload();
+    console.warn(data);
   }
   public static previewLanguage(language:ELanguage){
-    if(CLangs.currentLanguage === language) return false;
-    else{
-      CLangs.currentLanguage = language;
-      return true;
-    }
+    CLangs.currentLanguage = language;
   }
 }
