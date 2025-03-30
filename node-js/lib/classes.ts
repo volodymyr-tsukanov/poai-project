@@ -66,10 +66,10 @@ export class CUID {
 }
 
 export class CLangs {
-  public static readonly localStorageKey = 'lang';
+  public static readonly KEY = 'lang';
   private static currentLanguage : ELanguage = ELanguage.ENGLISH;
 
-  public static getByUID(uid:CUID) : string|string[]|boolean{
+  public static getResByUID(uid:CUID) : string|string[]|boolean{
     if(!uid.isOk) return false;
 
     let lPointer : any = langs[CLangs.currentLanguage];
@@ -81,18 +81,30 @@ export class CLangs {
 
   /** Loads language from `localStorage` */
   public static loadLanguage(){
-    const storedLanguage = localStorage.getItem(this.localStorageKey);
+    const storedLanguage = localStorage.getItem(this.KEY);
     if (storedLanguage && Object.values(ELanguage).includes(storedLanguage as ELanguage)) {
       this.currentLanguage = storedLanguage as ELanguage;
     } else this.currentLanguage = ELanguage.ENGLISH;
   }
 
   /** Changes global language settings, @returns false if already set */
-  public static switchLanguage(newLanguage:ELanguage):boolean{
-    if(CLangs.currentLanguage === newLanguage) return false;
+  public static async switchLanguage(newLanguage:ELanguage){
+    if(this.previewLanguage(newLanguage)){
+      const response = await fetch('/api/cook',{
+        method: "POST",
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({typ:'lang',val:newLanguage})
+      });
+      const data = await response.json();
+      console.warn(data);
+    }
+  }
+  public static previewLanguage(language:ELanguage){
+    if(CLangs.currentLanguage === language) return false;
     else{
-      CLangs.currentLanguage = newLanguage;
-      localStorage.setItem(this.localStorageKey,newLanguage);
+      CLangs.currentLanguage = language;
       return true;
     }
   }

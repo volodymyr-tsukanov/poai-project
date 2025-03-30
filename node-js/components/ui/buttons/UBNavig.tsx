@@ -21,7 +21,7 @@ import Link from 'next/link';
 
 
 export default function UBNavig({uid,props}:TPageProps) {
-  const text = CLangs.getByUID(uid);
+  const text = CLangs.getResByUID(uid);
   if(props === undefined){
     props = {
       iconSrc: DIcon404,

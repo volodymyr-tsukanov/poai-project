@@ -19,7 +19,7 @@ import React from "react";
 
 export default function Home() {
   const textAUID = new CUID('main.textA');
-  const textA:string[] = CLangs.getByUID(textAUID) as string[];
+  const textA:string[] = CLangs.getResByUID(textAUID) as string[];
 
   return (
     <div className={`${FOrdinary.className} text-center`}>

@@ -19,6 +19,7 @@
     },
     "projects":{},
     "contact":{
+      "titler":"Contacts",
       "loading":{
         "text":"loading",
         "textA":[
@@ -29,6 +30,25 @@
           "scripts",
           "images"
         ]
+      }
+    },
+    "settings":{
+      "titler":"Settings",
+      "form":{
+        "langs":{
+          "legend":"Select language"
+        },
+        "cache":{
+          "legend":"Cached data",
+          "buttons":{
+            "clear":"Clear"
+          }
+        },
+        "buttons":{
+          "submit":"Apply",
+          "reset":"Reset",
+          "return":"Go back"
+        }
       }
     }
   },
@@ -51,7 +71,11 @@
         "Zapraszam na stronę z moim ~bportfolio~! Została ona stworzona jako projekt dla jednego z moich przedmiotów (więc zostawiłem poniżej wymagania dla mojego profesora) i zawiera listę moich prac, stronę z recenzjami i moje dane kontaktowe."
       ]
     },
-    "projects":{}
+    "projects":{},
+    "contact":{},
+    "settings":{
+      "titler":"Ustawienia"
+    }
   },
 
   "UKR":{
@@ -72,6 +96,10 @@
         "Радий вас бачити на моїй ~bportfolio~! Я створив її як проєкт для одного з моїх предметів (інформація для моєї професорки нижче). Вона містить в собі список моїх робіт, формуляр для відгуків й мою контактну інформацію."
       ]
     },
-    "projects":{}
+    "projects":{},
+    "contact":{},
+    "settings":{
+      "titler":"Налаштування"
+    }
   }
 }

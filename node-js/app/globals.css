@@ -127,6 +127,116 @@ textarea {
 }
 
 
+.btnA1 {
+  padding: 2px;
+  background: var(--color-battleship-gray);
+  border-radius: 8px;
+  box-shadow: #0b0b0b8d 2px 4px;
+  color: var(--color-jet);
+  font-size: 100%;
+  margin: 3px;
+  cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s, font-size 0.2s linear;
+}
+.btnA1:hover {
+  background: var(--color-silver2);
+  color: var(--color-raisin-black);
+  box-shadow: none;
+  font-size: 105%;
+}
+.btnA1:active {
+  background: #898989;
+}
+.btnB1 {
+  /*TODO normal button*/
+  padding: 2px;
+  background: var(--color-jet);
+  border-radius: 8px;
+  box-shadow: #0b0b0b8d 6px 5px;
+  color: var(--color-silver2);
+  font-size: 216%;
+  margin: 5px;
+  cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s, font-size 0.1s linear;
+}
+.btnB1:hover {
+  background: var(--color-mint-cream);
+  color: var(--color-raisin-black);
+  box-shadow: none;
+  font-size: 205%;
+}
+.btnB1:active {
+  background: #898989;
+}
+
+.rdoA1 {
+  font-size: 100%;
+  cursor: default;
+  transition: font-size 0.2s linear;
+}
+.rdoA1:hover {
+  font-size: 105%;
+}
+
+.lnkA1 {
+  font-size: 120%;
+  cursor: alias;
+  transition: font-size 0.2s linear;
+}
+.lnkA1:hover {
+  font-size: 130%;
+}
+.lnkA1 img {
+  height: 50px;
+  width: auto;
+  transition: height 0.3s linear;
+}
+.lnkA1:hover img {
+  height: 56px;
+  width: auto;
+}
+
+.smlA1 {
+  display: inline;
+  font-size: 100%;
+  cursor: none;
+  transition: font-size 0.3s linear;
+}
+.smlA1:hover {
+  font-size: 108%;
+}
+
+.embededCode {
+  color: var(--color-linen);
+  font-size: 90%;
+  font-family: "Courier New", Courier, monospace;
+  cursor: copy;
+}
+
+.error {
+  color: palevioletred;
+  font-size: 110%;
+  cursor: not-allowed;
+}
+
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17pt;
+  transition: opacity 0.5s ease-in-out;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

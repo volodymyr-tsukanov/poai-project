@@ -13,8 +13,8 @@ import React from 'react';
 
 
 export default function USLoader({uid}:TPageProps){
-  const text:string = CLangs.getByUID(new CUID(uid.root+'.loading.text')) as string;
-  const textA:string[] = CLangs.getByUID(new CUID(uid.root+'.loading.textA')) as string[];
+  const text:string = CLangs.getResByUID(new CUID(uid.root+'.loading.text')) as string;
+  const textA:string[] = CLangs.getResByUID(new CUID(uid.root+'.loading.textA')) as string[];
 
   return (
     <div className={style.loaderCard}>

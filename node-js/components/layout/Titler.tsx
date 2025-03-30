@@ -17,7 +17,7 @@ import { FTitle } from "@/components/ui/fonts";
 
 
 export function Titler(){
-    const title = CLangs.getByUID(new CUID('main.titler'));
+    const title = CLangs.getResByUID(new CUID('main.titler'));
     
     return (
         <h1 className={`${style.titler} ${FTitle.className} antialiased`}>

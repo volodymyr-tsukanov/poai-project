@@ -11,7 +11,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import "@/styles/globals.css";
+import './globals.css';
 import { CLangs } from "@/lib/classes";
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
