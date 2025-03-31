@@ -19,7 +19,7 @@ import { FSpecial } from "@/components/ui/fonts";
 export default function Loading() {
   return (
     <div className={FSpecial.className}>
-      <USLoader uid={new CUID('contact.loading')} />
+      <USLoader uid={new CUID('contact.l')} />
     </div>
   );
 }

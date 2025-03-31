@@ -15,9 +15,29 @@
 import { CLangs, CUID } from "@/lib/classes";
 import { ELanguage } from "@/lib/enums";
 import { FOrdinary } from "@/components/ui/fonts";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { PrefetchKind } from "next/dist/client/components/router-reducer/router-reducer-types";
 
 
+async function requestLanguageSave(language:ELanguage,router:AppRouterInstance) {
+  try{
+    const response = await fetch('/api/cook',{
+      method: "POST",
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({typ:'lang',val:language})
+    });
+    if(response.status===307||response.status===304){
+      console.log('Language changed!');
+      router.refresh();
+    }
+  } catch(e) {
+    console.warn(e);
+  }
+}
 function cacheClear(){
   //TODO
 }
@@ -26,25 +46,21 @@ function goBack(){
 }
 
 export default function Home() {
+  const router = useRouter();
   const [selectedLang,setSelectedLang] = useState(ELanguage.ENGLISH);
 
   const handleSubmit = (event:React.FormEvent)=>{
     event.preventDefault();
-    CLangs.saveLanguage(selectedLang);
+    requestLanguageSave(selectedLang,router);
   }
   const handleReset = (event:React.FormEvent)=>{
     event.preventDefault();
-    CLangs.saveLanguage(ELanguage.ENGLISH);
+    requestLanguageSave(ELanguage.ENGLISH,router);
   }
   const handleLangsChange = (event:React.ChangeEvent<HTMLInputElement>)=>{
     const lang:ELanguage = event.target.value as ELanguage; //!type conflict string->ELanguage
     setSelectedLang(lang);
-    CLangs.previewLanguage(lang);
   }
-
-  /*useEffect(()=>{
-    CLangs.switchLanguage(selectedLang);
-  },[selectedLang]);*/
 
   return (
     <form onSubmit={handleSubmit} onReset={handleReset}>

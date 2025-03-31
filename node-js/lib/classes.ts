@@ -67,7 +67,11 @@ export class CUID {
 
 export class CLangs {
   public static readonly KEY = 'lang';
-  private static currentLanguage : ELanguage = ELanguage.ENGLISH;
+  private static currentLanguage:ELanguage = ELanguage.ENGLISH;
+
+  public static get language():ELanguage{
+    return this.currentLanguage;
+  }
 
   public static getResByUID(uid:CUID) : string|string[]|boolean{
     if(!uid.isOk) return false;
@@ -79,20 +83,7 @@ export class CLangs {
     return lPointer;
   }
 
-  /** Changes global language settings, @returns false if already set */
-  public static async saveLanguage(newLanguage:ELanguage){
-    const response = await fetch('/api/cook',{
-      method: "POST",
-      headers: {
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify({typ:'lang',val:newLanguage})
-    });
-    const data = await response.json();
-    if(data.msg === 'o') window.location.reload();
-    console.warn(data);
-  }
-  public static previewLanguage(language:ELanguage){
+  public static setLanguage(language:ELanguage){
     CLangs.currentLanguage = language;
   }
 }

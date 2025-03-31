@@ -15,29 +15,26 @@ import { FSpecial } from "@/components/ui/fonts";
 import UIExternal from "@/components/ui/images/UIExternal";
 import USLoader from "@/components/ui/skeletons/USLoader";
 import { CUID } from "@/lib/classes";
-import { Suspense } from "react";
 
 
 export default async function Home() {
   return (
     <div className={`${FSpecial.className} text-center`}>
       <a className="lnkA1" href="https://github.com/volodymyr-tsukanov" target="_blank">
-        <Suspense fallback='GitHub'>
         <UIExternal 
           src="https://img.shields.io/badge/GitHub-161A1D?style=social&logo=github&logoColor=black"
           height={50}
           alt="GitHub"
-          className="height-max:50" />
-          </Suspense>
+          className="height-max:50"
+          fallback='Github' />
       </a> <br/>
       <a className="lnkA1" href="https://www.linkedin.com/in/volodymyr-tsukanov-4b624a299" target="_blank">
-        <Suspense fallback={USLoader({uid:new CUID('contact.l')})}>
         <UIExternal
           src="https://img.shields.io/badge/Linkedin-161A1D?style=social&logo=linkedin&logoColor=black"
           height={50}
           alt="Linkedin"
-          className="height-max:50" />
-        </Suspense>
+          className="height-max:50" 
+          fallback={USLoader({uid:new CUID('contact.l')})} />
       </a> <br/>
     </div>
   );

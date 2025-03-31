@@ -32,7 +32,7 @@ export default function UBNavig({uid,props}:IPageProps) {
   if(target=='main') target='/';
 
   return (
-    <Link key={`${uid.hashCode}-l`} href={target} className={style.ubNavig}>
+    <Link key={`${uid.hashCode}-l`} href={target} className={style.ubNavig} prefetch={props.prefetch??null}>
       <Image
         src={props.iconSrc}
         width={DIconSide}

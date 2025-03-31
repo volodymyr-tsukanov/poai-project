@@ -54,7 +54,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
   display: block;
   height: 100%;
   padding: 6px;
-  color: var(--color-mint-cream);
+  color: var(--color-light-mint-cream);
   animation: spin_4991 1.5s infinite;
 }
 

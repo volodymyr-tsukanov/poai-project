@@ -22,11 +22,11 @@ export function Navig(){
   return (
     <div className={style.navig}>
       <div id={style.navigBtns}>
-        <UBNavig uid={new CUID('navig.buttons.main')} props={{iconSrc:"/icons/info.png",iconAlt:"Main"}} />
+        <UBNavig uid={new CUID('navig.buttons.main')} props={{iconSrc:"/icons/info.png",iconAlt:"Main",prefetch:false}} />
         <UBNavig uid={new CUID('navig.buttons.projects')} props={{iconSrc:"/icons/portfolio.png",iconAlt:"Projects"}} />
         <UBNavig uid={new CUID('navig.buttons.feedback')} props={{iconSrc:"/icons/comment.png",iconAlt:"Comment"}} />
         <UBNavig uid={new CUID('navig.buttons.contact')} props={{iconSrc:"/icons/contacts.png",iconAlt:"Contacts"}} />
-        <UBNavig uid={new CUID('navig.buttons.settings')} props={{iconSrc:"/icons/settings.png",iconAlt:"Settings"}} />
+        <UBNavig uid={new CUID('navig.buttons.settings')} props={{iconSrc:"/icons/settings.png",iconAlt:"Settings",prefetch:false}} />
       </div>
       <UTVariable uidPart='title' id={style.navigClosed} className={FSubtitleItalic.className} />
       <button id={style.navigCBtn1}>

@@ -12,39 +12,47 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import './globals.css';
-import { CLangs } from "@/lib/classes";
+import { CLangs, CUID } from "@/lib/classes";
 import { ELanguage } from '@/lib/enums';
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
-import { FSubtitleItalic } from "@/components/ui/fonts";
+import USLoader from '@/components/ui/skeletons/USLoader';
+import { FSpecial, FSubtitleItalic } from "@/components/ui/fonts";
 import { cookies } from 'next/headers';
+import { Suspense } from 'react';
+import { revalidatePath } from 'next/cache';
 
 
-async function loadCookies(){
+async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){
   try{  //LANGUAGE
     const cookieStore = await cookies();
     const lang = cookieStore.get(CLangs.KEY)?.value;
     if(lang){
-      CLangs.previewLanguage(lang as ELanguage);  //!type conflict string->ELanguage
-    }
+      const language:ELanguage = lang as ELanguage; //!type unsafety
+      CLangs.setLanguage(language);
+    } else console.warn('empty language cookie');
   } catch(e){console.warn('language not loaded: '+e);}
+
+  return (
+    <div id="cntnr">
+      <Titler />
+      <Navig />
+      <div id="mainBody">{children}</div>
+      <footer className={`${FSubtitleItalic.className} antialiased`}> by VT 2025 </footer>
+    </div>
+  );
 }
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode;}>) {
-  loadCookies();
-
+export default async function RootLayout({children}:Readonly<{children:React.ReactNode;}>) {
   return (
     <html lang="en">
       <head>
         <title> Project VT </title>
       </head>
       <body>
-        <div id="cntnr">
-          <Titler />
-          <Navig />
-          <div id="mainBody">{children}</div>
-          <footer className={`${FSubtitleItalic.className} antialiased`}> by VT 2025 </footer>
-        </div>
+        <Suspense fallback={<div className={FSpecial.className}><USLoader uid={new CUID('main.l')} /></div>}>
+          {BodyLayout({children})}
+        </Suspense>
       </body>
     </html>
   );

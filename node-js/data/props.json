@@ -16,7 +16,17 @@
         "Hello everyone! ~o👋~",
         "I'm ~iνolodymyr~, student of Politechnika Lubelska university in Poland.",
         "Welcome to my ~bportfolio~ page! It was made as a project for one of my subjects (so I've left the requirements for my below for my professor) and contains a list of my works, a review page and my contact information."
-      ]
+      ],
+      "loading":{
+        "text":"loading",
+        "textA":[
+          "text",
+          "styles",
+          "positive emotions 😸",
+          "scripts",
+          "languages"
+        ]
+      }
     },
     "projects":{},
     "contact":{
@@ -61,7 +71,7 @@
         "main":"Gowna",
         "projects":"Projekty",
         "feedback":"Opinia",
-        "contact":"Kontact",
+        "contact":"Kontakt",
         "settings":"Ustawienia"
       }
     },
@@ -71,7 +81,17 @@
         "Witam wszystkich! ~o👋~",
         "Nazywam się ~iνolodymyr~, jestem studentem Politechniki Lubelskiej w Polsce.",
         "Zapraszam na stronę z moim ~bportfolio~! Została ona stworzona jako projekt dla jednego z moich przedmiotów (więc zostawiłem poniżej wymagania dla mojego profesora) i zawiera listę moich prac, stronę z recenzjami i moje dane kontaktowe."
-      ]
+      ],
+      "loading":{
+        "text":"loading",
+        "textA":[
+          "text",
+          "styles",
+          "positive emotions 😸",
+          "scripts",
+          "languages"
+        ]
+      }
     },
     "projects":{},
     "contact":{},
@@ -113,7 +133,17 @@
         "Мої вітання! ~o👋~",
         "Мене звати ~iνolodymyr~, я студент Politechniki Lubelskiej (Польща).",
         "Радий вас бачити на моїй ~bportfolio~! Я створив її як проєкт для одного з моїх предметів (інформація для моєї професорки нижче). Вона містить в собі список моїх робіт, формуляр для відгуків й мою контактну інформацію."
-      ]
+      ],
+      "loading":{
+        "text":"loading",
+        "textA":[
+          "text",
+          "styles",
+          "positive emotions 😸",
+          "scripts",
+          "languages"
+        ]
+      }
     },
     "projects":{},
     "contact":{},

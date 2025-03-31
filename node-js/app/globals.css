@@ -15,26 +15,26 @@
 */
 @import "tailwindcss";
 
-
 :root {
   --background: black;
   --foreground: whitesmoke;
 
   /* - Colors */
-  /*Graytone*/
-  --color-jet: #2F2F2F;
-  --color-battleship-gray: #959595;
-  /*Dark*/
+    /*Dark*/
   --color-dark-accent: #0B0B0B;
-  --color-eerie-black: #161A1D;
-  --color-raisin-black: #32323F;
-  --color-outer-space: #3E4C4C;
-  /*Light*/
-  --color-mint-cream: #E8EEEA;
-  --color-platinum: #D9D9D9;
-  --color-silver: #C7C3C3;
-  --color-silver2: #B6B6B6;
-  --color-linen: #F5ECE4;
+  --color-dark-chinese-black: #141414;
+  --color-dark-eerie-black: #161A1D;
+  --color-dark-jet: #2F2F2F;
+  --color-dark-raisin-black: #32323F;
+  --color-dark-outer-space: #3E4C4C;
+    /*Light*/
+  --color-light-off-white: #EBEBEB;
+  --color-light-mint-cream: #E8EEEA;
+  --color-light-linen: #F5ECE4;
+  --color-light-platinum: #D9D9D9;
+  --color-light-silver: #C7C3C3;
+  --color-light-silver2: #B6B6B6;
+  --color-light-battleship-gray: #959595;
 
   /* - Metrics */
   --font-size: 15pt;
@@ -44,15 +44,15 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  cursor: default;
   font-size: var(--font-size);
+  cursor: default;
 }
 
 footer {
   order: 5;
   width: 95%;
   margin: 25px 0 0 0;
-  background: var(--color-outer-space);
+  background: var(--color-dark-outer-space);
   border-radius: 20px 20px 0 0;
   box-shadow: #edeee70f -2px -3px;
   color: whitesmoke;
@@ -77,7 +77,7 @@ b:hover, i:hover {
 
 form {
   margin: 10px;
-  background: linear-gradient(45deg, var(--color-dark-accent) 0%, var(--color-raisin-black) 30%, var(--color-jet) 80%);
+  background: linear-gradient(45deg, var(--color-dark-accent) 0%, var(--color-dark-raisin-black) 30%, var(--color-dark-jet) 80%);
   border-radius: 1px;
   box-shadow: #0b0b0b5e 1px 3px;
 }
@@ -86,7 +86,7 @@ fieldset {
   padding: 0 3px 0 3px;
   border-radius: 6px 4px 0 4px;
   border-width: 2px;
-  border-color: var(--color-platinum);
+  border-color: var(--color-light-platinum);
 }
 fieldset:first-of-type {
   border-radius: 6px 23px 0 4px;
@@ -111,7 +111,7 @@ textarea {
   min-width: 50%;
   max-width: 94%;
   margin-top: 8px;
-  background: var(--color-mint-cream);
+  background: var(--color-light-mint-cream);
   color: black;
   font-size: 92%;
   font-family: Consolas, monospace;
@@ -124,7 +124,7 @@ textarea {
 	justify-content: center;
 	flex-wrap: wrap;
 	margin: 1px;
-	background: var(--color-eerie-black);
+	background: var(--color-dark-eerie-black);
 	border-radius: 6px;
 	color: whitesmoke;
 	font-size: 15pt;
@@ -138,18 +138,18 @@ textarea {
 
 .btnA1 {
   padding: 2px;
-  background: var(--color-battleship-gray);
+  background: var(--color-light-battleship-gray);
   border-radius: 8px;
   box-shadow: #0b0b0b8d 2px 4px;
-  color: var(--color-jet);
+  color: var(--color-dark-jet);
   font-size: 100%;
   margin: 3px;
   cursor: pointer;
   transition: background 0.1s, box-shadow 0.1s, font-size 0.2s linear;
 }
 .btnA1:hover {
-  background: var(--color-silver2);
-  color: var(--color-raisin-black);
+  background: var(--color-light-silver2);
+  color: var(--color-dark-raisin-black);
   box-shadow: none;
   font-size: 105%;
 }
@@ -159,18 +159,18 @@ textarea {
 .btnB1 {
   /*TODO normal button*/
   padding: 2px;
-  background: var(--color-jet);
+  background: var(--color-dark-jet);
   border-radius: 8px;
   box-shadow: #0b0b0b8d 6px 5px;
-  color: var(--color-silver2);
+  color: var(--color-light-silver2);
   font-size: 216%;
   margin: 5px;
   cursor: pointer;
   transition: background 0.1s, box-shadow 0.1s, font-size 0.1s linear;
 }
 .btnB1:hover {
-  background: var(--color-mint-cream);
-  color: var(--color-raisin-black);
+  background: var(--color-light-mint-cream);
+  color: var(--color-dark-raisin-black);
   box-shadow: none;
   font-size: 205%;
 }
@@ -216,7 +216,7 @@ textarea {
 }
 
 .embededCode {
-  color: var(--color-linen);
+  color: var(--color-light-linen);
   font-size: 90%;
   font-family: "Courier New", Courier, monospace;
   cursor: copy;

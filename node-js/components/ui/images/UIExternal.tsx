@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import { DIcon404 } from '@/lib/consts';
+import { ReactNode, Suspense } from 'react';
 
 
 interface UIExternalProps {
@@ -19,20 +20,21 @@ interface UIExternalProps {
   height?:number,
   width?:number,
   alt:string,
-  className?:string
+  className?:string,
+  fallback?:ReactNode
 }
 
 async function checkImage(src:string):Promise<boolean>{
   try{
     const res = await fetch(src, {cache:'force-cache'});
     return res.ok;
-  } catch (e) {return false;}
+  } catch (_) {return false;}
 }
 
-export default async function UIExternal(props:UIExternalProps) {
+async function UIExternal(props:UIExternalProps){
   let src = props.src;
   const imgAvailable = await checkImage(props.src);
-  if(!imgAvailable) src = DIcon404(89);
+  if(!imgAvailable) src = DIcon404(96);
 
   return (
     <img
@@ -43,4 +45,8 @@ export default async function UIExternal(props:UIExternalProps) {
       alt={props.alt??'no-alt'}
     />
   );
+}
+export default function UIExternalWrapper(props:UIExternalProps){
+  if(props.fallback) return(<Suspense fallback={props.fallback}>{UIExternal(props)}</Suspense>);
+  else return UIExternal(props);
 }

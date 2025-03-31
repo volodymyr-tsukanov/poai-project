@@ -14,6 +14,8 @@
 import { CLangs } from "@/lib/classes";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+import { redirect, RedirectType } from "next/navigation";
 
 
 /*export async function GET(req:Request) : Promise<NextResponse>{
@@ -45,7 +47,8 @@ export async function POST(req:Request) : Promise<NextResponse>{
             maxAge: (60*60*24)*30, //30 days
             path: '/'
           });
-          return NextResponse.json({msg:'o'});
+          revalidatePath('/','layout');
+          return new NextResponse(null,{status: 307});
         default:
           console.warn('yo, crook');
           return NextResponse.json({msg:'b'});

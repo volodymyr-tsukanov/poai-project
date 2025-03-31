@@ -50,9 +50,9 @@
   z-index: 1;
   transform: translateY(-40px);
   opacity: 0.8;
-  background: radial-gradient(circle, var(--color-battleship-gray) 0%, #171717 15%);
+  background: radial-gradient(circle, var(--color-light-battleship-gray) 0%, #171717 15%);
   border-radius: 20px 20px 22px 22px;
-  border: 2px solid var(--color-platinum);
+  border: 2px solid var(--color-light-platinum);
   color: white;
   text-align: center;
   font-family: "Courier New", Courier, monospace;
@@ -62,7 +62,7 @@
 .navig:hover {
   opacity: 1;
   transform: translateY(-22px);
-  background: radial-gradient(circle, var(--color-battleship-gray) 0%, #2F2F2F 21%);
+  background: radial-gradient(circle, var(--color-light-battleship-gray) 0%, #2F2F2F 21%);
 }
 
 
@@ -71,12 +71,12 @@
     width: 80%;
     transform: translateY(0);
     opacity: 1;
-    background: var(--color-jet);
+    background: var(--color-dark-jet);
     border-radius: 10px 10px 12px 12px;
   }
   .navig:hover {
     transform: translateY(0);
-    background: var(--color-jet);
+    background: var(--color-dark-jet);
   }
   .nav:hover #navigClosed {
     opacity: 0;
@@ -102,7 +102,7 @@
     padding: 2px;
     background: #161A1D00;
     border-style: none;
-    color: var(--color-platinum);
+    color: var(--color-light-platinum);
     cursor: pointer;
     font-size: 80%;
   }
