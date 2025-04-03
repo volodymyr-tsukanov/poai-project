@@ -11,23 +11,11 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLanguage, CUID } from "@/lib/classes";
-import UFSettings from "@/components/ui/forms/UFSettings";
-import { AGetLanguage } from "../actions";
-import { notFound } from "next/navigation";
+import { FSpecial } from "@/components/ui/fonts";
 
 
-export default async function Home() {
-  const lang = new CLanguage(await AGetLanguage());
-  const resMap = lang.getResMapByUID(new CUID('settings.form'));
-  if(typeof resMap==="boolean"){
-    console.error('Settings::language map not found');
-    notFound();
-  }
-
+export default function NotFoundPage(){
   return (
-    <div>
-      <UFSettings language={lang.language} resMap={resMap}/>
-    </div>
+    <div className={`${FSpecial.className} text-center text-lg antialiased`}>Emptyness 404</div>
   );
 }

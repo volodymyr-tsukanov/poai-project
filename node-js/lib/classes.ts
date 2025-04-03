@@ -77,6 +77,35 @@ export class CLanguage {
     return this.lang;
   }
 
+  objHasNested(obj:any) : boolean{
+    for(const key in obj){
+      if(obj.hasOwnProperty(key)){
+        if(obj[key] !== null && typeof obj[key]==='object'){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  mapNested(obj:any,parentKey='',result=new Map<string,string>()) : Map<string,string>{
+    for(const key in obj){
+      if(obj.hasOwnProperty(key)){
+        const fullPath = parentKey?parentKey+'.'+key:key;
+        if(obj[key] !== null && typeof obj[key]==='object'){  //obj has next
+          this.mapNested(obj[key],fullPath,result);
+        } else {  //obj is last
+          result.set(fullPath,String(obj[key]));
+        }
+      }
+    }
+    return result;
+  }
+
+  /** Gets language resource
+   * @returns (if exists) resource _string|string[]_
+   * @returns (not found) _false_
+   * @returns (not resouce) _true_
+   */
   public getResByUID(uid:CUID) : string|string[]|boolean{
     if(!uid.isOk) return false;
 
@@ -84,7 +113,19 @@ export class CLanguage {
     uid.leaves.forEach(leaf => {
       lPointer = lPointer[leaf];  //! any to string conflict
     });
+    if(this.objHasNested(lPointer)) return true;
     return lPointer;
+  }
+  public getResMapByUID(uid:CUID) : Map<string,any>|boolean{
+    if(!uid.isOk) return false;
+
+    let lPointer : any = langs[this.lang];
+    uid.leaves.forEach(leaf => {
+      lPointer = lPointer[leaf];
+    });
+    if(lPointer){
+      return this.mapNested(lPointer);
+    } else return false;
   }
 
   public static StoL(languageString:string) : ELanguage{
