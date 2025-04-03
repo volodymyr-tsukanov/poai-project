@@ -11,15 +11,17 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLangs, CUID } from "@/lib/classes";
+import { CLanguage, CUID } from "@/lib/classes";
 import { FOrdinary } from "@/components/ui/fonts";
 import UTMarked from "@/components/ui/text/UTMarked";
+import { AGetLanguage } from "./actions";
 import React from "react";
 
 
-export default function Home() {
+export default async function Home() {
+  const lang = new CLanguage(await AGetLanguage());
   const textAUID = new CUID('main.textA');
-  const textA:string[] = CLangs.getResByUID(textAUID) as string[];
+  const textA:string[] = lang.getResByUID(textAUID) as string[];
 
   return (
     <div className={`${FOrdinary.className} text-center`}>

@@ -11,12 +11,18 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CUID } from "./classes";
-import { ELanguage } from "./enums";
+'use server';
+import { ELanguage } from "@/lib/enums";
+import { CLanguage } from "@/lib/classes";
+import { cookies } from "next/headers";
 
 
-export interface IComponentProps {
-    uid: CUID;
-    lang: ELanguage;
-    props?: any;
-};
+export async function AGetLanguage(defaultLanguage:ELanguage=ELanguage.ENGLISH){
+  try{
+    const lang = (await cookies()).get(CLanguage.KEY)?.value;
+    if(lang){
+      return CLanguage.StoL(lang);
+    } else console.warn('empty language cookie');
+  } catch(e){console.warn('language not loaded: '+e);}
+  return defaultLanguage;
+}

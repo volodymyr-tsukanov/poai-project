@@ -11,7 +11,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import langs from '@/data/props.json';
+import langs from '@/data/langs.json';
 import { ELanguage } from "./enums";
 import crypto from 'crypto';
 
@@ -65,25 +65,36 @@ export class CUID {
   }
 }
 
-export class CLangs {
-  public static readonly KEY = 'lang';
-  private static currentLanguage:ELanguage = ELanguage.ENGLISH;
+export class CLanguage {
+  public static KEY = 'lang';
+  private lang:ELanguage;
 
-  public static get language():ELanguage{
-    return this.currentLanguage;
+  constructor(language:ELanguage){
+    this.lang = language;
   }
 
-  public static getResByUID(uid:CUID) : string|string[]|boolean{
+  public get language() : ELanguage{
+    return this.lang;
+  }
+
+  public getResByUID(uid:CUID) : string|string[]|boolean{
     if(!uid.isOk) return false;
 
-    let lPointer : any = langs[CLangs.currentLanguage];
+    let lPointer : any = langs[this.lang];
     uid.leaves.forEach(leaf => {
       lPointer = lPointer[leaf];  //! any to string conflict
     });
     return lPointer;
   }
 
-  public static setLanguage(language:ELanguage){
-    CLangs.currentLanguage = language;
+  public static StoL(languageString:string) : ELanguage{
+    switch(languageString){
+      case ELanguage.POLISH:
+        return ELanguage.POLISH;
+      case ELanguage.UKRANIAN:
+        return ELanguage.UKRANIAN;
+      default:
+        return ELanguage.ENGLISH;
+    }
   }
 }

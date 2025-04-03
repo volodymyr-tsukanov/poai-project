@@ -11,7 +11,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { DIcon404 } from '@/lib/consts';
+import { DDelay, DIcon404 } from '@/lib/consts';
 import { ReactNode, Suspense } from 'react';
 
 
@@ -26,15 +26,16 @@ interface UIExternalProps {
 
 async function checkImage(src:string):Promise<boolean>{
   try{
-    const res = await fetch(src, {cache:'force-cache'});
+    const res = await fetch(src,{cache:'force-cache'});
     return res.ok;
-  } catch (_) {return false;}
+  } catch (e) {console.warn(e);return false;}
 }
 
 async function UIExternal(props:UIExternalProps){
   let src = props.src;
   const imgAvailable = await checkImage(props.src);
   if(!imgAvailable) src = DIcon404(96);
+  await DDelay(2000);
 
   return (
     <img

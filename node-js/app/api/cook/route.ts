@@ -11,11 +11,10 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLangs } from "@/lib/classes";
+import { CLanguage } from "@/lib/classes";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { redirect, RedirectType } from "next/navigation";
 
 
 /*export async function GET(req:Request) : Promise<NextResponse>{
@@ -42,13 +41,13 @@ export async function POST(req:Request) : Promise<NextResponse>{
       const cookieStore = await cookies();
       switch(reqBody.typ){
         case 'lang':
-          cookieStore.set(CLangs.KEY,reqBody.val,{
+          cookieStore.set(CLanguage.KEY,reqBody.val,{
             httpOnly: true,
             maxAge: (60*60*24)*30, //30 days
             path: '/'
           });
           revalidatePath('/','layout');
-          return new NextResponse(null,{status: 307});
+          return new NextResponse(null,{status:307}); //temp redirect
         default:
           console.warn('yo, crook');
           return NextResponse.json({msg:'b'});

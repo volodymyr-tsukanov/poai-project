@@ -13,7 +13,7 @@
 //    limitations under the License.
 import { DRandomHash } from "../consts";
 import { CUID } from "../classes";
-import React from "react";
+import React, { HTMLAttributes, ReactNode } from "react";
 
 
 enum TextMarkupStatus{
@@ -21,18 +21,19 @@ enum TextMarkupStatus{
   Bold='b',
   Italic='i',
   Underline='u',
-  Strikeout='s'
+  Strikeout='s',
+  Manual='m'
 }
 
 export class UTextConverger {
   private rKey : string;
 
   constructor(uid?:CUID){
-    if(uid) this.rKey = uid.getHash();
+    if(uid) this.rKey = uid.hashCode;
     this.rKey = DRandomHash('md5');
   }
 
-  public md2html(input:string) : React.ReactNode{
+  public md2html(input:string,manualFormatting?:HTMLAttributes<ReactNode>[]) : ReactNode{
     if(input.length<7) return null;
     let proc:React.ReactNode[] = [];
 
@@ -58,6 +59,10 @@ export class UTextConverger {
             case TextMarkupStatus.Strikeout:
               elemType=mkp;
               break;
+            case TextMarkupStatus.Manual:
+              elemType='div';
+              //TODO apply attributes to div
+              break;
             default:
               console.warn(`TextConverger: no option '${mkp}'`);
               break;
@@ -70,6 +75,6 @@ export class UTextConverger {
     }
 
     if(buffer.length > 0) proc.push(buffer);
-    return React.createElement(React.Fragment, null, ...proc);
+    return React.createElement(React.Fragment,null,...proc);
   }
 }

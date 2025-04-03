@@ -11,11 +11,14 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLangs, CUID } from "@/lib/classes";
+import { CUID } from "@/lib/classes";
 import { FOrdinary } from "@/components/ui/fonts";
+import { AGetLanguage } from "../actions";
 
 
-export default function Home() {
+export default async function Home() {
+  const language = await AGetLanguage();
+
   return (
     'Fedb'
   );

@@ -7,14 +7,15 @@
 
 // THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import style from './USLoader.module.css';
-import { IPageProps } from '@/lib/interfaces';
-import { CLangs, CUID } from '@/lib/classes';
+import { IComponentProps } from '@/lib/interfaces';
+import { CLanguage, CUID } from '@/lib/classes';
 import React from 'react';
 
 
-export default function USLoader({uid}:IPageProps){
-  const text:string = CLangs.getResByUID(new CUID(uid.root+'.loading.text')) as string;
-  const textA:string[] = CLangs.getResByUID(new CUID(uid.root+'.loading.textA')) as string[];
+export default function USLoader({uid,lang}:IComponentProps){
+  const langu = new CLanguage(lang);
+  const text:string = langu.getResByUID(new CUID(uid.root+'.loading.text')) as string;
+  const textA:string[] = langu.getResByUID(new CUID(uid.root+'.loading.textA')) as string[];
 
   return (
     <div className={style.loaderCard}>

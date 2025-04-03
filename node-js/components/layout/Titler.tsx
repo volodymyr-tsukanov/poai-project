@@ -12,12 +12,14 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import style from './Titler.module.css';
-import { CLangs, CUID } from '@/lib/classes';
+import { ELanguage } from '@/lib/enums';
+import { CLanguage, CUID } from '@/lib/classes';
 import { FTitle } from "@/components/ui/fonts";
 
 
-export function Titler(){
-    const title = CLangs.getResByUID(new CUID('titler'));
+export function Titler(props:{lang:ELanguage}){
+    const lang = new CLanguage(props.lang);
+    const title = lang.getResByUID(new CUID('titler'));
     
     return (
         <h1 className={`${style.titler} ${FTitle.className} antialiased`}>

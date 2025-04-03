@@ -14,7 +14,7 @@
 import crypto from 'crypto';
 
 
-export const DIconSide : number = 320
+export const DIconSide:number = 320;
 export const DIcon404 = (sobriety:number=98)=>{
   const c = DRandomInt(0,100);
   const icon = (c>(sobriety%100)) ? 'butt-plug' : '404'

@@ -11,13 +11,16 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+import { CUID } from "@/lib/classes";
 import { FSpecial } from "@/components/ui/fonts";
 import UIExternal from "@/components/ui/images/UIExternal";
 import USLoader from "@/components/ui/skeletons/USLoader";
-import { CUID } from "@/lib/classes";
+import { AGetLanguage } from "../actions";
 
 
 export default async function Home() {
+  const language = await AGetLanguage();
+
   return (
     <div className={`${FSpecial.className} text-center`}>
       <a className="lnkA1" href="https://github.com/volodymyr-tsukanov" target="_blank">
@@ -34,7 +37,7 @@ export default async function Home() {
           height={50}
           alt="Linkedin"
           className="height-max:50" 
-          fallback={USLoader({uid:new CUID('contact.l')})} />
+          fallback={USLoader({uid:new CUID('contact.l'),lang:language})} />
       </a> <br/>
     </div>
   );

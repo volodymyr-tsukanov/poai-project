@@ -14,12 +14,13 @@
 import { CUID } from "@/lib/classes";
 import USLoader from "@/components/ui/skeletons/USLoader";
 import { FSpecial } from "@/components/ui/fonts";
+import { ELanguage } from "@/lib/enums";
 
 
 export default function Loading() {
   return (
     <div className={FSpecial.className}>
-      <USLoader uid={new CUID('contact.l')} />
+      <USLoader uid={new CUID('contact.l')} lang={ELanguage.ENGLISH} />
     </div>
   );
 }

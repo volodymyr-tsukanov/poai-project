@@ -12,21 +12,24 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 'use client';
-import { CLangs, CUID } from "@/lib/classes";
+import { ELanguage } from "@/lib/enums";
+import { CLanguage, CUID } from "@/lib/classes";
 import { usePathname } from "next/navigation";
 
 
 interface UTVariableProps {
   uidPart: string,
+  lang: ELanguage,
   className?: string,
   id?: string
 }
 
 export default function UTVariable(props:UTVariableProps){
+  const lang = new CLanguage(props.lang);
   let pageName = usePathname().split("/")[1];
   if(pageName.length===0) pageName = 'main';
   const uid = new CUID(pageName+'.'+props.uidPart);
-  const res = CLangs.getResByUID(uid);
+  const res = lang.getResByUID(uid);
   const text:string = (typeof res)==="string"?res:'VV/ -|- \VV';
   return (
     <p className={props.className} id={props.id}>{text}</p>
