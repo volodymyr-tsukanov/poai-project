@@ -111,7 +111,6 @@ select {
   color: black;
 }
 textarea {
-  width: 80%;
   min-width: 50%;
   max-width: 94%;
   margin-top: 8px;

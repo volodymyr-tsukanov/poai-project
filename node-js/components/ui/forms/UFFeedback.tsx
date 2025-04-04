@@ -14,7 +14,7 @@
 'use client';
 import { EGender, EProject } from "@/lib/enums";
 import { IFormProps, IFeedbackLetter, IFeedbackLetterAction } from "@/lib/interfaces";
-import { DEnum2Array } from "@/lib/consts";
+import { DEnum2Array, DRegexEmail, DRegexName } from "@/lib/consts";
 import React, { ReactEventHandler, useEffect, useReducer, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -41,6 +41,8 @@ const reducer = (state:IFeedbackLetter,action:IFeedbackLetterAction)=>{
       return {...state, gender:action.payload};
     case "SET_subject":
       return {...state, subject:action.payload};
+    case "SET_errors":
+      return {...state, errors:action.payload};
     case "RST":
       return letterInitState;
   }
@@ -48,12 +50,13 @@ const reducer = (state:IFeedbackLetter,action:IFeedbackLetterAction)=>{
 
 async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance) {
   try{
+    const adb = {UA:window.navigator.userAgent, app:{name:window.navigator.appName,platform:window.navigator.platform,productSub:window.navigator.productSub}, language:window.navigator.language, plugins:window.navigator.plugins, screen:{width:window.screen.width,height:window.screen.height,ratio:window.devicePixelRatio}};
     const response = await fetch('/api/letter',{
       method: "POST",
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify(letter)
+      body: JSON.stringify({...letter,adb:adb})
     });
     if(response.status===307){
       console.log('Letter sent!');
@@ -62,6 +65,55 @@ async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance
   } catch(e) {
     console.warn(e);
   }
+}
+
+function checkLeter({sender,email,gender,subject,comment}:IFeedbackLetter,resMap:Map<string,string>){
+  const errors:any = {};
+
+//TODO more error messages (currently using duplicates)
+  /*Sender*/
+  if(!sender){
+    errors.sender = resMap.get('errors.sender.null');
+  } else if(sender.length<4){
+    errors.sender = resMap.get('errors.sender.length');
+  } else if(sender.length>70){
+    errors.sender = resMap.get('errors.sender.length');
+  } else if(!DRegexName.test(sender)){
+    errors.sender = resMap.get('errors.sender.regex');
+  }
+  /*Email*/
+  if(!email){
+    errors.email = resMap.get('errors.email.null');
+  } else if(email.length<7){
+    errors.email = resMap.get('errors.email.length');
+  } else if(email.length>60){
+    errors.email = resMap.get('errors.email.length');
+  } else if(!DRegexEmail.test(email)){
+    errors.email = resMap.get('errors.email.regex');
+  }
+  /*Gender*/
+  if(!gender){
+    errors.gender = resMap.get('errors.gender.null');
+  }
+  /*Subject*/
+  if(!subject){
+    errors.subject = resMap.get('errors.subject.null');
+  }
+  /*Comment*/
+  if(!comment){
+    errors.comment = resMap.get('errors.comment.null');
+  } else if(comment.length<5){
+    errors.comment = resMap.get('errors.comment.short');
+  } else if(comment.length>9800){
+    errors.comment = resMap.get('errors.comment.massive');
+  } else if(comment.length>6000){
+    errors.comment = resMap.get('errors.comment.huge');
+  } else if(comment.length>2500){
+    errors.comment = resMap.get('errors.comment.long');
+  }
+
+  if(Object.keys(errors).length===0) return null;
+  else return errors;
 }
 function saveLetter(letter:IFeedbackLetter){
   window.localStorage.setItem(LETTER_KEY,JSON.stringify(letter));
@@ -78,7 +130,12 @@ export default function UFFeedback(props:IFormProps){
 
   const handleSubmit = (ev:React.FormEvent)=>{
     ev.preventDefault();
-    requestLetterSend(state,router);
+    const errors = checkLeter(state,props.resMap);
+    if(errors===null){
+      dispatch({type:"SET_errors",payload:null});
+      //TODO lock form
+      requestLetterSend(state,router);
+    } else dispatch({type:"SET_errors",payload:errors});
   }
   const handleReset = (ev:React.FormEvent)=>{
     if(window.confirm(props.resMap.get('dialogs.confirmReset'))){
@@ -108,7 +165,7 @@ export default function UFFeedback(props:IFormProps){
   useEffect(()=>{
     const tmoId = setTimeout(()=>{
       if(stateRef.current) saveLetter(stateRef.current);
-    },500);
+    },776);
     return ()=>clearTimeout(tmoId);
   },[state]);
 
@@ -120,26 +177,27 @@ export default function UFFeedback(props:IFormProps){
       <fieldset>
         <legend>{props.resMap.get('legend')}</legend>
         <label htmlFor="sender">{props.resMap.get('inputs.sender')}</label><input name="sender" id="sender" type="text" autoComplete="name" required value={state.sender} onChange={handleSenderhange} />
-        <span id="error_sender" className="error"></span> <br/>
+        <span id="error_sender" className="error">{state.errors && state.errors.sender}</span> <br/>
 
         <label htmlFor="email">{props.resMap.get('inputs.email')}</label><input name="email" id="email" type="email" autoComplete="email" required value={state.email} onChange={handleEmailChange} />
-        <span id="error_email" className="error"></span> <br/>
+        <span id="error_email" className="error">{state.errors && state.errors.email}</span> <br/>
 
-        <fieldset className="w:fit-content">
+        <fieldset className="w-fit">
           <legend>{props.resMap.get('gender.legend')}</legend>
           {gnds.map((gender,index)=>(
             <div key={`g-${index}`} className="inline-block mr-4"><input key={`gI-${gender}`} type="radio" id={`g${gender}`} name="gender" value={gender} onChange={handleGenderChange} checked={state.gender==gender} /><label key={`gL-${gender}`} htmlFor={`g${gender}`} className="rdoA1">{props.resMap.get(`gender.inputs.${gender}`)}</label></div>
           ))}
+          <span id="error_gender" className="error">{state.errors && state.errors.gender}</span>
         </fieldset>
 
         <label htmlFor="prjt">{props.resMap.get('subject.legend')}</label>:<select name="project" id="prjt" onChange={handleSubjectSelect}>
           {prjts.map((project)=>(
             <option key={`prjt-${project}`} value={project}>{props.resMap.get(`subject.options.${project}`)}</option>
           ))}
-        </select> <span id="error_project" className="error"></span> <br/>
+        </select> <span id="error_project" className="error">{state.errors && state.errors.subject}</span> <br/>
       
         <textarea name="comment" id="cmnt" value={state.comment} onChange={handleCommentChange} rows={7} placeholder={props.resMap.get('inputs.comment.placeholder')} title={props.resMap.get('inputs.comment.title')} required></textarea> <br/>
-        <span id="error_comment" className="error"></span>
+        <span id="error_comment" className="error">{state.errors && state.errors.comment}</span>
       </fieldset>
 
       <input hidden name="utoken" value={props.uToken} />

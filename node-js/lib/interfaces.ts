@@ -27,13 +27,14 @@ export interface IFormProps {
 }
 
 export interface IFeedbackLetter {
-  sender:string;
-  email:string;
-  gender:EGender;
-  subject:EProject;
-  comment:string;
+  sender: string;
+  email: string;
+  gender: EGender;
+  subject: EProject;
+  comment: string;
+  errors?: any;
 }
 export interface IFeedbackLetterAction {
-  type: 'UPD_sender'|'UPD_email'|'UPD_comment'|'SET_gender'|'SET_subject'|'RST';
+  type: 'UPD_sender'|'UPD_email'|'UPD_comment'|'SET_gender'|'SET_subject'|'SET_errors'|'RST';
   payload: any;
 }

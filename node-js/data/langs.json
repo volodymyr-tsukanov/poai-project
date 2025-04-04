@@ -64,6 +64,31 @@
           "submit":"Send",
           "reset":"Reset"
         },
+        "errors":{
+          "sender":{
+            "null":"Name is needed",
+            "length":"Entered name has improper length. Try: 4-30 symbols",
+            "regex":"Entered name unsupported. Try: only letters"
+          },
+          "email":{
+            "null":"Email is needed",
+            "length":"Entered email has improper length. Try: 7-60 symbols",
+            "regex":"Entered email unsupported. Try: real email"
+          },
+          "gender":{
+            "null":"Really?"
+          },
+          "subject":{
+            "null":"We can't talk about nothing"
+          },
+          "comment":{
+            "null":"Empty letter body",
+            "short":"Comment is too short. A little more text is needed",
+            "long":"Comment is too long.",
+            "huge":"Wow, that big-boy text wont fit in letter",
+            "massive":"It's massive... You know what else is MASSIVE?!"
+          }
+        },
         "dialogs":{
           "confirmReset":"This will reset all feedback fields. Continue?"
         }

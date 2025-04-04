@@ -41,3 +41,6 @@ export const DDelay = (ms:number)=>{
 export const DEnum2Array = (enumerable:any)=>{
   return Object.values(enumerable) as string[];
 }
+
+export const DRegexName = /^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\-\s])*$/;
+export const DRegexEmail = /^[a-zA-Z0-9._%+-]+@[a-z.-]+\.[a-z]{2,}$/;

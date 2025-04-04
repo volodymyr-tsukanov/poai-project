@@ -23,11 +23,18 @@
   font-size: 80%;
   color: var(--color-light-mint-cream);
   cursor: pointer;
-  transition: transform 0.23s, font-size 0.1s, padding 0.2s, background 0.3s, color 0.4s ease;
+  transition: transform 0.23s, border-radius 0.47s, font-size 0.1s, padding 0.2s, background 0.3s, color 0.4s ease;
+}
+.ubNavig:first-of-type {
+  border-radius: 2px 5px 5px 16px;
+}
+.ubNavig:last-of-type {
+  border-radius: 5px 2px 16px 5px;
 }
 .ubNavig:hover {
-  transform: translateY(-12px);
   min-width: 50px;
+  transform: translateY(-12px);
+  border-radius: 1px 1px 21px 21px;
   background: var(--color-light-mint-cream);
   color: var(--color-dark-chinese-black);
   font-size: 86%;
