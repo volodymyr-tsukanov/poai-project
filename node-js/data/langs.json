@@ -90,7 +90,9 @@
           }
         },
         "dialogs":{
-          "confirmReset":"This will reset all feedback fields. Continue?"
+          "confirmReset":"This will reset all feedback fields. Continue?",
+          "formAccepted":"?",
+          "formRejected":"!"
         }
       }
     },

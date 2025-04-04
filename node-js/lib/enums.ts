@@ -16,6 +16,17 @@ export enum ELanguage {
   POLISH = 'POL',
   UKRANIAN = 'UKR'
 };
+export enum EServerResponse {
+  Good = 'g',
+  FraudOuterValue = 'fv',
+  EmptyBody = 'eb',
+  NotEnoughParams = 'np',
+  WrongRequest = 'wr',
+  WrongContentType = 'wt',
+  WrongParam = 'wp',
+  ErrorGlobal = 'eg',
+  ErrorSpecific = 'es'
+};
 
 export enum EGender {
   Male = 'ml',

@@ -12,7 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 'use client';
-import { EGender, EProject } from "@/lib/enums";
+import { EGender, EProject, EServerResponse } from "@/lib/enums";
 import { IFormProps, IFeedbackLetter, IFeedbackLetterAction } from "@/lib/interfaces";
 import { DEnum2Array, DRegexEmail, DRegexName } from "@/lib/consts";
 import React, { ReactEventHandler, useEffect, useReducer, useRef } from "react";
@@ -48,19 +48,24 @@ const reducer = (state:IFeedbackLetter,action:IFeedbackLetterAction)=>{
   }
 }
 
-async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance) {
+async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance,resMap:Map<string,string>) {
   try{
-    const adb = {UA:window.navigator.userAgent, app:{name:window.navigator.appName,platform:window.navigator.platform,productSub:window.navigator.productSub}, language:window.navigator.language, plugins:window.navigator.plugins, screen:{width:window.screen.width,height:window.screen.height,ratio:window.devicePixelRatio}};
+    const abd = {UA:window.navigator.userAgent, app:{name:window.navigator.appName,platform:window.navigator.platform,productSub:window.navigator.productSub}, language:window.navigator.language, plugins:window.navigator.plugins, screen:{width:window.screen.width,height:window.screen.height,ratio:window.devicePixelRatio}};
     const response = await fetch('/api/letter',{
       method: "POST",
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({...letter,adb:adb})
+      body: JSON.stringify({...letter,abd:abd})
     });
-    if(response.status===307){
-      console.log('Letter sent!');
+    const resBody = await response.json();
+    if(resBody.t===EServerResponse.Good){
+      alert(resMap.get('dialogs.formAccepted'));
+      window.localStorage.removeItem(LETTER_KEY);
       router.refresh();
+    } else{
+      alert(resMap.get('dialogs.formRejected'));
+      console.warn('Feedback::letter rejected: '+resBody.t);
     }
   } catch(e) {
     console.warn(e);
@@ -132,9 +137,9 @@ export default function UFFeedback(props:IFormProps){
     ev.preventDefault();
     const errors = checkLeter(state,props.resMap);
     if(errors===null){
-      dispatch({type:"SET_errors",payload:null});
+      dispatch({type:"RST",payload:null});
       //TODO lock form
-      requestLetterSend(state,router);
+      requestLetterSend(state,router,props.resMap);
     } else dispatch({type:"SET_errors",payload:errors});
   }
   const handleReset = (ev:React.FormEvent)=>{
