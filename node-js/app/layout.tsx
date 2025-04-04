@@ -32,8 +32,8 @@ async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){
       </head>
       <body>
         <div id="cntnr">
-          <Titler lang={language} />
-          <Navig lang={language} />
+          <Titler language={language} />
+          <Navig language={language} />
           <div id="mainBody">{children}</div>
           <footer className={`${FSubtitleItalic.className} antialiased`}> by VT 2025 </footer>
         </div>
@@ -44,7 +44,7 @@ async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){
 
 export default function RootLayout({children}:Readonly<{children:React.ReactNode;}>) {
   return (
-    <Suspense fallback={<html><head></head><body><div className={FSpecial.className}><USLoader uid={new CUID('main.l')} lang={ELanguage.ENGLISH}/></div></body></html>}>
+    <Suspense fallback={<html><head></head><body><div className={FSpecial.className}><USLoader uid={new CUID('main.l')} language={ELanguage.ENGLISH}/></div></body></html>}>
       {BodyLayout({children})}
     </Suspense>
   );

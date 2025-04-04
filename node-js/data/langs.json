@@ -28,7 +28,47 @@
         ]
       }
     },
-    "projects":{},
+    "projects":{
+      "title":"Projects Page"
+    },
+    "feedback":{
+      "title":"Feedback Page",
+      "form":{
+        "legend":"Give feedback",
+        "inputs":{
+          "sender":"Name",
+          "email":"Email",
+          "comment":{
+            "title":"Comment",
+            "placeholder":"Comment..."
+          }
+        },
+        "gender":{
+          "legend":"Gender",
+          "inputs":{
+            "ml":"Male",
+            "fl":"Female",
+            "tr":"Robot"
+          }
+        },
+        "subject":{
+          "legend":"Feedback subject",
+          "options":{
+            "project-VT":"This site",
+            "pear":"Pear",
+            "telephone-book":"TelephoneBook",
+            "nspec":"NoThInG"
+          }
+        },
+        "buttons":{
+          "submit":"Send",
+          "reset":"Reset"
+        },
+        "dialogs":{
+          "confirmReset":"This will reset all feedback fields. Continue?"
+        }
+      }
+    },
     "contact":{
       "title":"Contacts",
       "loading":{
@@ -68,7 +108,7 @@
     "titler":"Projekt VT",
     "navig":{
       "buttons":{
-        "main":"Gowna",
+        "main":"Główna",
         "projects":"Projekty",
         "feedback":"Opinia",
         "contact":"Kontakt",
@@ -83,18 +123,32 @@
         "Zapraszam na stronę z moim ~bportfolio~! Została ona stworzona jako projekt dla jednego z moich przedmiotów (więc zostawiłem poniżej wymagania dla mojego profesora) i zawiera listę moich prac, stronę z recenzjami i moje dane kontaktowe."
       ],
       "loading":{
-        "text":"loading",
+        "text":"ładowanie",
         "textA":[
-          "text",
-          "styles",
-          "positive emotions 😸",
-          "scripts",
-          "languages"
+          "tekstu",
+          "styli",
+          "emocji pozytywnych 😸",
+          "skryptów",
+          "języków"
         ]
       }
     },
-    "projects":{},
-    "contact":{},
+    "projects":{
+      "title":"?"
+    },
+    "contact":{"title":"Kontakt",
+      "loading":{
+        "text":"ładowanie",
+        "textA":[
+          "tekstu",
+          "linków",
+          "styli",
+          "emocji pozytywnych 😸",
+          "skryptów",
+          "zdjęć"
+        ]
+      }
+    },
     "settings":{
       "title":"Ustawienia",
       "form":{

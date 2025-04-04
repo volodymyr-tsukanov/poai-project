@@ -17,8 +17,8 @@ import { CLanguage, CUID } from '@/lib/classes';
 import { FTitle } from "@/components/ui/fonts";
 
 
-export function Titler(props:{lang:ELanguage}){
-    const lang = new CLanguage(props.lang);
+export function Titler(props:{language:ELanguage}){
+    const lang = new CLanguage(props.language);
     const title = lang.getResByUID(new CUID('titler'));
     
     return (

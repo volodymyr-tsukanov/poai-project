@@ -17,23 +17,6 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 
 
-/*export async function GET(req:Request) : Promise<NextResponse>{
-  const urlSplitA = req.url.split('?');
-  if(urlSplitA.length===2){
-    const urlParams = new URLSearchParams(urlSplitA[1]);
-    if(urlParams.has('typ')){
-      const cookieStore = await cookies();
-      switch(urlParams.get('typ')){
-        case 'lang':
-          return NextResponse.json({lang:cookieStore.get(CLangs.KEY)?.value});
-        default:
-          console.warn('yo, crook');
-          return NextResponse.json({msg:'b'});
-      }
-    } else return NextResponse.json({msg:'a'});
-  } else return NextResponse.json({msg:'n'});
-}*/
-
 export async function POST(req:Request) : Promise<NextResponse>{
   const reqBody = await req.json();
   if(reqBody){

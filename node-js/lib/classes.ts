@@ -12,7 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import langs from '@/data/langs.json';
-import { ELanguage } from "./enums";
+import { EGender, ELanguage, EProject } from "./enums";
 import crypto from 'crypto';
 
 
@@ -66,7 +66,7 @@ export class CUID {
 }
 
 export class CLanguage {
-  public static KEY = 'lang';
+  public static readonly KEY = 'lang';
   private lang:ELanguage;
 
   constructor(language:ELanguage){

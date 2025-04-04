@@ -13,16 +13,12 @@
 //    limitations under the License.
 'use client';
 import { ELanguage } from "@/lib/enums";
+import { IFormProps } from "@/lib/interfaces";
 import { CLanguage } from "@/lib/classes";
 import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-
-interface UFSettingsProps {
-  language: ELanguage,
-  resMap: Map<string,string>
-}
 
 async function requestLanguageSave(language:ELanguage,router:AppRouterInstance) {
   try{
@@ -48,7 +44,7 @@ function goBack(){
   window.history.back();
 }
 
-export default function UFSettings(props:UFSettingsProps){
+export default function UFSettings(props:IFormProps){
   const router = useRouter();
   const [selectedLang,setSelectedLang] = useState(props.language);
 

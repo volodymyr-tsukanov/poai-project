@@ -20,9 +20,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 
-export default function UBNavig({uid,lang,props}:IComponentProps) {
-  const langu = new CLanguage(lang);
-  const text = langu.getResByUID(uid);
+export default function UBNavig({uid,language,props}:IComponentProps) {
+  const lang = new CLanguage(language);
+  const text = lang.getResByUID(uid);
   if(props === undefined){
     props = {
       iconSrc: DIcon404,

@@ -99,12 +99,16 @@ label {
   cursor: help;
 }
 input {
-  margin-top: 8px;
+  margin: 8px 0 0 5px;
+  background: var(--color-light-linen);
   font-size: 100%;
+  color: black;
 }
 select {
-  margin-top: 8px;
+  margin: 8px 0 0 10px;
+  background: var(--color-light-mint-cream);
   font-size: 84%;
+  color: black;
 }
 textarea {
   width: 80%;

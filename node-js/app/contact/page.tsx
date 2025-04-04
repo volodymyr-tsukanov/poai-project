@@ -37,7 +37,7 @@ export default async function Home() {
           height={50}
           alt="Linkedin"
           className="height-max:50" 
-          fallback={USLoader({uid:new CUID('contact.l'),lang:language})} />
+          fallback={USLoader({uid:new CUID('contact.l'),language:language})} />
       </a> <br/>
     </div>
   );

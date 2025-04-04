@@ -11,15 +11,23 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CUID } from "@/lib/classes";
-import { FOrdinary } from "@/components/ui/fonts";
+import { CLanguage, CUID } from "@/lib/classes";
+import UFFeedback from "@/components/ui/forms/UFFeedback";
 import { AGetLanguage } from "../actions";
+import { notFound } from "next/navigation";
 
 
 export default async function Home() {
-  const language = await AGetLanguage();
+  const lang = new CLanguage(await AGetLanguage());
+  const resMap = lang.getResMapByUID(new CUID('feedback.form'));
+  if(typeof resMap==="boolean"){
+    console.error('Feedback::language map not found');
+    notFound();
+  }
 
   return (
-    'Fedb'
+    <div>
+      <UFFeedback language={lang.language} resMap={resMap}/>
+    </div>
   );
 }

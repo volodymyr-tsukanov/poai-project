@@ -12,10 +12,10 @@ import { CLanguage, CUID } from '@/lib/classes';
 import React from 'react';
 
 
-export default function USLoader({uid,lang}:IComponentProps){
-  const langu = new CLanguage(lang);
-  const text:string = langu.getResByUID(new CUID(uid.root+'.loading.text')) as string;
-  const textA:string[] = langu.getResByUID(new CUID(uid.root+'.loading.textA')) as string[];
+export default function USLoader({uid,language}:IComponentProps){
+  const lang = new CLanguage(language);
+  const text:string = lang.getResByUID(new CUID(uid.root+'.loading.text')) as string;
+  const textA:string[] = lang.getResByUID(new CUID(uid.root+'.loading.textA')) as string[];
 
   return (
     <div className={style.loaderCard}>

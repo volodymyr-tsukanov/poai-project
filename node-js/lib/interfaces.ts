@@ -12,11 +12,28 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import { CUID } from "./classes";
-import { ELanguage } from "./enums";
+import { EGender, ELanguage, EProject } from "./enums";
 
 
 export interface IComponentProps {
-    uid: CUID;
-    lang: ELanguage;
-    props?: any;
+  uid: CUID;
+  language: ELanguage;
+  props?: any;
 };
+export interface IFormProps {
+  language: ELanguage;
+  resMap: Map<string, string>;
+  uToken?: string;
+}
+
+export interface IFeedbackLetter {
+  sender:string;
+  email:string;
+  gender:EGender;
+  subject:EProject;
+  comment:string;
+}
+export interface IFeedbackLetterAction {
+  type: 'UPD_sender'|'UPD_email'|'UPD_comment'|'SET_gender'|'SET_subject'|'RST';
+  payload: any;
+}

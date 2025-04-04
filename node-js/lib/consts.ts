@@ -37,3 +37,7 @@ export const DDelay = (ms:number)=>{
   if(!ms || ms>10000) ms = 10000;
   return new Promise((resolve)=>setTimeout(resolve,ms));
 };
+
+export const DEnum2Array = (enumerable:any)=>{
+  return Object.values(enumerable) as string[];
+}
