@@ -26,7 +26,7 @@ export async function POST(req:Request) : Promise<NextResponse>{
       if(reqBody.typ && reqBody.val){
         const cookieStore = await cookies();
         switch(reqBody.typ){
-          case 'lang':
+          case "lang":
             cookieStore.set(CLanguage.KEY,reqBody.val,{
               httpOnly: true,
               maxAge: (60*60*24)*30, //30 days

@@ -11,15 +11,15 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import './globals.css';
-import { ELanguage } from '@/lib/enums';
+import "./globals.css";
+import { ELanguage } from "@/lib/enums";
 import { CUID } from "@/lib/classes";
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
-import USLoader from '@/components/ui/skeletons/USLoader';
+import USLoader from "@/components/ui/skeletons/USLoader";
 import { FSpecial, FSubtitleItalic } from "@/components/ui/fonts";
-import { AGetLanguage } from './actions';
-import { Suspense } from 'react';
+import { AGetLanguage } from "./actions";
+import { Suspense } from "react";
 
 
 async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){

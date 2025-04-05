@@ -11,23 +11,20 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLanguage, CUID } from "@/lib/classes";
-import UFFeedback from "@/components/ui/forms/UFFeedback";
-import { AGetLanguage } from "../actions";
-import { notFound } from "next/navigation";
+import style from "./USImage.module.css";
 
 
-export default async function Home() {
-  const lang = new CLanguage(await AGetLanguage());
-  const resMap = lang.getResMapByUID(new CUID('feedback.form'));
-  if(typeof resMap==='boolean'){
-    console.error('Feedback::language map not found');
-    notFound();
-  }
+interface USImageProps {
+  height?: number;
+  width?: number;
+  className?: string;
+}
+
+export default function USImage(props:USImageProps){
+  const height = props.height??100, width = props.width??100;
 
   return (
-    <div>
-      <UFFeedback language={lang.language} resMap={resMap}/>
+    <div className={`${style.block} ${props.className}`} style={{height:height,width:width}}>
     </div>
   );
 }

@@ -29,7 +29,24 @@
       }
     },
     "projects":{
-      "title":"Projects Page"
+      "title":"Projects Page",
+      "tiles":{
+        "project-VT":{
+          "icon":"favicon.ico",
+          "title":"This site",
+          "text":"Actually this site. Explore it and feel free to leave your response on ~bFeedback~ page."
+        },
+        "pear":{
+          "icon":"https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true",
+          "title":"Pear",
+          "text":"~iOracle Database~ for Apple product sales system. Logical and relational database models, SQL server only (without frontend and backend). Team project."
+        },
+        "telephone-book":{
+          "icon":"https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
+          "title":"Telephone Book",
+          "text":"Simple contact phone application. The main idea was to make an app in the style of an old yellow phone book and basic contacts functions."
+        }
+      }
     },
     "feedback":{
       "title":"Feedback Page",

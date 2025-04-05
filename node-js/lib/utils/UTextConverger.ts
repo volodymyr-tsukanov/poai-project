@@ -17,12 +17,12 @@ import React, { HTMLAttributes, ReactNode } from "react";
 
 
 enum TextMarkupStatus{
-  None=' ',
-  Bold='b',
-  Italic='i',
-  Underline='u',
-  Strikeout='s',
-  Manual='m'
+  None=" ",
+  Bold="b",
+  Italic="i",
+  Underline="u",
+  Strikeout="s",
+  Manual="m"
 }
 
 export class UTextConverger {
@@ -39,18 +39,18 @@ export class UTextConverger {
 
     const it:StringIterator<string> = input[Symbol.iterator]();
     let mkp:TextMarkupStatus = TextMarkupStatus.None;
-    let buffer:string = '';
+    let buffer:string = "";
     let index:number = 0;
     let itRes = it.next();
     while(!itRes.done){
       if(mkp===TextMarkupStatus.None){
-        if(itRes.value === '~'){
+        if(itRes.value==='~'){
           itRes=it.next();  //look ahead to see markup type
           mkp = itRes.value as TextMarkupStatus;  //! unsafe char to enum
           proc.push(buffer); buffer='';
         } else buffer += itRes.value;
       } else{
-        if(itRes.value === '~'){
+        if(itRes.value==='~'){
           let elemType:string='a';
           switch(mkp){
             case TextMarkupStatus.Bold:

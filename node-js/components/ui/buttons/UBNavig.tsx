@@ -11,13 +11,13 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import style from './UBNavig.module.css';
-import { IComponentProps } from '@/lib/interfaces';
-import { CLanguage } from '@/lib/classes';
-import { DIcon404, DIconSide } from '@/lib/consts';
-import { FSubtitle } from '../fonts';
-import Image from 'next/image';
-import Link from 'next/link';
+import style from "./UBNavig.module.css";
+import { IComponentProps } from "@/lib/interfaces";
+import { CLanguage } from "@/lib/classes";
+import { DIcon404, DIconSide } from "@/lib/consts";
+import { FSubtitle } from "../fonts";
+import Image from "next/image";
+import Link from "next/link";
 
 
 export default function UBNavig({uid,language,props}:IComponentProps) {
@@ -30,7 +30,7 @@ export default function UBNavig({uid,language,props}:IComponentProps) {
     };
   }
   let target = uid.lastLeaf;
-  if(target=='main') target='/';
+  if(target=="main") target='/';
 
   return (
     <Link key={`${uid.hashCode}-l`} href={target} className={style.ubNavig} prefetch={props.prefetch??null}>
@@ -39,7 +39,7 @@ export default function UBNavig({uid,language,props}:IComponentProps) {
         width={DIconSide}
         height={DIconSide}
         className={style.ubNavigIcon}
-        alt={props.iconAlt??'no-alt'}
+        alt={props.iconAlt??"no-alt"}
       />
       <p className={`${style.ubNavigContent} ${FSubtitle.className}`}>
         {text}

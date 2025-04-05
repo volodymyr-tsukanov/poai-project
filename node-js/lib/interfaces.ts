@@ -11,8 +11,8 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CUID } from "./classes";
 import { EGender, ELanguage, EProject } from "./enums";
+import { CUID } from "./classes";
 
 
 export interface IComponentProps {
@@ -22,7 +22,7 @@ export interface IComponentProps {
 };
 export interface IFormProps {
   language: ELanguage;
-  resMap: Map<string, string>;
+  resMap: Map<string,string>;
   uToken?: string;
 }
 
@@ -35,6 +35,6 @@ export interface IFeedbackLetter {
   errors?: any;
 }
 export interface IFeedbackLetterAction {
-  type: 'UPD_sender'|'UPD_email'|'UPD_comment'|'SET_gender'|'SET_subject'|'SET_errors'|'RST';
+  type: "UPD_sender"|"UPD_email"|"UPD_comment"|"SET_gender"|"SET_subject"|"SET_errors"|"RST";
   payload: any;
 }

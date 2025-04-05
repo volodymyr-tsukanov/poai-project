@@ -12,26 +12,26 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 export enum ELanguage {
-  ENGLISH = 'ENG',
-  POLISH = 'POL',
-  UKRANIAN = 'UKR'
+  ENGLISH = "ENG",
+  POLISH = "POL",
+  UKRANIAN = "UKR"
 };
 export enum EServerResponse {
-  Good = 'g',
-  FraudOuterValue = 'fv',
-  EmptyBody = 'eb',
-  NotEnoughParams = 'np',
-  WrongRequest = 'wr',
-  WrongContentType = 'wt',
-  WrongParam = 'wp',
-  ErrorGlobal = 'eg',
-  ErrorSpecific = 'es'
+  Good = "g",
+  FraudOuterValue = "fv",
+  EmptyBody = "eb",
+  NotEnoughParams = "np",
+  WrongRequest = "wr",
+  WrongContentType = "wt",
+  WrongParam = "wp",
+  ErrorGlobal = "eg",
+  ErrorSpecific = "es"
 };
 
 export enum EGender {
-  Male = 'ml',
-  Female = 'fl',
-  Other = 'tr'
+  Male = "ml",
+  Female = "fl",
+  Other = "tr"
 }
 export enum EProject {
   Self = "project-VT",

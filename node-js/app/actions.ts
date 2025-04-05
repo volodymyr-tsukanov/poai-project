@@ -22,7 +22,7 @@ export async function AGetLanguage(defaultLanguage:ELanguage=ELanguage.ENGLISH){
     const lang = (await cookies()).get(CLanguage.KEY)?.value;
     if(lang){
       return CLanguage.StoL(lang);
-    } else console.warn('empty language cookie');
-  } catch(e){console.warn('language not loaded: '+e);}
+    } else console.warn("empty language cookie");
+  } catch(e){console.warn("language not loaded: "+e);}
   return defaultLanguage;
 }

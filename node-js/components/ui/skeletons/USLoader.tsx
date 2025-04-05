@@ -6,16 +6,16 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 // THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-import style from './USLoader.module.css';
-import { IComponentProps } from '@/lib/interfaces';
-import { CLanguage, CUID } from '@/lib/classes';
-import React from 'react';
+import style from "./USLoader.module.css";
+import { IComponentProps } from "@/lib/interfaces";
+import { CLanguage, CUID } from "@/lib/classes";
+import React from "react";
 
 
 export default function USLoader({uid,language}:IComponentProps){
   const lang = new CLanguage(language);
-  const text:string = lang.getResByUID(new CUID(uid.root+'.loading.text')) as string;
-  const textA:string[] = lang.getResByUID(new CUID(uid.root+'.loading.textA')) as string[];
+  const text:string = lang.getResByUID(new CUID(uid.root+".loading.text")) as string;
+  const textA:string[] = lang.getResByUID(new CUID(uid.root+".loading.textA")) as string[];
 
   return (
     <div className={style.loaderCard}>

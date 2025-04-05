@@ -23,37 +23,37 @@ export async function POST(req:Request) : Promise<NextResponse>{
     if(reqBody){
       /*Sender*/
       if(!reqBody.sender){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'sender'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"sender"});
       } else if(reqBody.sender.length<4||reqBody.sender.length>70){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'sender'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"sender"});
       } else if(!DRegexName.test(reqBody.sender)){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'sender'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"sender"});
       }
       /*Email*/
       if(!reqBody.email){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'email'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"email"});
       } else if(reqBody.email.length<7||reqBody.email.length>60){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'email'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"email"});
       } else if(!DRegexEmail.test(reqBody.email)){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'email'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"email"});
       }
       /*Gender*/
       if(!reqBody.gender){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'gender'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"gender"});
       } else if(!DEnum2Array(EGender).includes(reqBody.gender)){  //<--- fraud
         return NextResponse.json({t:EServerResponse.FraudOuterValue});
       }
       /*Subject*/
       if(!reqBody.subject){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'subject'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"subject"});
       } else if(!DEnum2Array(EProject).includes(reqBody.subject)){  //<-- fraud
         return NextResponse.json({t:EServerResponse.FraudOuterValue});
       }
       /*Comment*/
       if(!reqBody.comment){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'comment'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"comment"});
       } else if(reqBody.comment.length<5||reqBody.comment.length>2500){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:'comment'});
+        return NextResponse.json({t:EServerResponse.WrongParam,p:"comment"});
       }
       /*ABD*/
       //TODO process abd

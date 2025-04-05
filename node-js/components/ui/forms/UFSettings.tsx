@@ -16,7 +16,7 @@ import { ELanguage } from "@/lib/enums";
 import { IFormProps } from "@/lib/interfaces";
 import { CLanguage } from "@/lib/classes";
 import React, { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
@@ -27,10 +27,10 @@ async function requestLanguageSave(language:ELanguage,router:AppRouterInstance) 
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({typ:'lang',val:language})
+      body: JSON.stringify({typ:"lang",val:language})
     });
     if(response.status===307){
-      console.log('Language changed!');
+      console.log("Language changed!");
       router.refresh();
     }
   } catch(e) {

@@ -11,25 +11,25 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import style from './Navig.module.css';
-import { ELanguage } from '@/lib/enums';
-import { CUID } from '@/lib/classes';
-import UBNavig from '../ui/buttons/UBNavig';
-import UTVariable from '../ui/text/UTVariable';
-import { FSubtitleItalic } from '../ui/fonts';
+import style from "./Navig.module.css";
+import { ELanguage } from "@/lib/enums";
+import { CUID } from "@/lib/classes";
+import UBNavig from "../ui/buttons/UBNavig";
+import UTVariable from "../ui/text/UTVariable";
+import { FSubtitleItalic } from "../ui/fonts";
 
 
 export function Navig(props:{language:ELanguage}){
   return (
     <div className={style.navig}>
       <div id={style.navigBtns}>
-        <UBNavig uid={new CUID('navig.buttons.main')} props={{iconSrc:"/icons/info.png",iconAlt:"Main",prefetch:false}} language={props.language} />
-        <UBNavig uid={new CUID('navig.buttons.projects')} props={{iconSrc:"/icons/portfolio.png",iconAlt:"Projects"}} language={props.language} />
-        <UBNavig uid={new CUID('navig.buttons.feedback')} props={{iconSrc:"/icons/comment.png",iconAlt:"Comment"}} language={props.language} />
-        <UBNavig uid={new CUID('navig.buttons.contact')} props={{iconSrc:"/icons/contacts.png",iconAlt:"Contacts"}} language={props.language} />
-        <UBNavig uid={new CUID('navig.buttons.settings')} props={{iconSrc:"/icons/settings.png",iconAlt:"Settings",prefetch:false}} language={props.language} />
+        <UBNavig uid={new CUID('navig.buttons.main')} props={{iconSrc:'/icons/info.png',iconAlt:"Main"}} language={props.language} />
+        <UBNavig uid={new CUID('navig.buttons.projects')} props={{iconSrc:'/icons/portfolio.png',iconAlt:"Projects",prefetch:true}} language={props.language} />
+        <UBNavig uid={new CUID('navig.buttons.feedback')} props={{iconSrc:'/icons/comment.png',iconAlt:"Comment"}} language={props.language} />
+        <UBNavig uid={new CUID('navig.buttons.contact')} props={{iconSrc:'/icons/contacts.png',iconAlt:"Contacts",prefetch:true}} language={props.language} />
+        <UBNavig uid={new CUID('navig.buttons.settings')} props={{iconSrc:'/icons/settings.png',iconAlt:"Settings",prefetch:false}} language={props.language} />
       </div>
-      <UTVariable uidPart='title' id={style.navigClosed} className={FSubtitleItalic.className} lang={props.language} />
+      <UTVariable uidPart="title" id={style.navigClosed} className={FSubtitleItalic.className} lang={props.language} />
       <button id={style.navigCBtn1}>
         Menu {/* TODO lang+uid */}
       </button>

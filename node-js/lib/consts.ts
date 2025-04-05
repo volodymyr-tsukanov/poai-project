@@ -11,7 +11,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import crypto from 'crypto';
+import crypto from "crypto";
 
 
 export const DIconSide:number = 320;
@@ -25,7 +25,7 @@ export const DRandomInt = (min:number,max:number)=>{
   return min + Math.floor(Math.random() * (max-min+1));
 };
 export const DRandomString = (length:number)=>{
-  return Array(length).fill(null).map(()=>Math.random().toString(36).charAt(length-1)).join('');
+  return Array(length).fill(null).map(()=>Math.random().toString(36).charAt(length-1)).join("");
 };
 export const DRandomHash = (algorithm:'md5'|'sha256'|'sha512',digest:crypto.BinaryToTextEncoding='hex')=>{
   const hash = crypto.createHash(algorithm);

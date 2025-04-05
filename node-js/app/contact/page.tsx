@@ -11,10 +11,8 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CUID } from "@/lib/classes";
 import { FSpecial } from "@/components/ui/fonts";
 import UIExternal from "@/components/ui/images/UIExternal";
-import USLoader from "@/components/ui/skeletons/USLoader";
 import { AGetLanguage } from "../actions";
 
 
@@ -37,7 +35,7 @@ export default async function Home() {
           height={50}
           alt="Linkedin"
           className="height-max:50" 
-          fallback={USLoader({uid:new CUID('contact.l'),language:language})} />
+          fallback='LinkedIn' />
       </a> <br/>
     </div>
   );

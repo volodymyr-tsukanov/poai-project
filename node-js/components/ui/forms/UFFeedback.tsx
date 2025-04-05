@@ -15,12 +15,12 @@
 import { EGender, EProject, EServerResponse } from "@/lib/enums";
 import { IFormProps, IFeedbackLetter, IFeedbackLetterAction } from "@/lib/interfaces";
 import { DEnum2Array, DRegexEmail, DRegexName } from "@/lib/consts";
-import React, { ReactEventHandler, useEffect, useReducer, useRef } from "react";
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useReducer, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
-export const LETTER_KEY = 'letter';
+export const LETTER_KEY = "letter";
 
 const letterInitState:IFeedbackLetter = {
   sender: "",
@@ -65,7 +65,7 @@ async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance
       router.refresh();
     } else{
       alert(resMap.get('dialogs.formRejected'));
-      console.warn('Feedback::letter rejected: '+resBody.t);
+      console.warn("Feedback::letter rejected: "+resBody.t);
     }
   } catch(e) {
     console.warn(e);
@@ -181,27 +181,27 @@ export default function UFFeedback(props:IFormProps){
     <form onSubmit={handleSubmit} onReset={handleReset}>
       <fieldset>
         <legend>{props.resMap.get('legend')}</legend>
-        <label htmlFor="sender">{props.resMap.get('inputs.sender')}</label><input name="sender" id="sender" type="text" autoComplete="name" required value={state.sender} onChange={handleSenderhange} />
+        <label htmlFor="sender">{props.resMap.get("inputs.sender")}</label><input name="sender" id="sender" type="text" autoComplete="name" required value={state.sender} onChange={handleSenderhange} />
         <span id="error_sender" className="error">{state.errors && state.errors.sender}</span> <br/>
 
-        <label htmlFor="email">{props.resMap.get('inputs.email')}</label><input name="email" id="email" type="email" autoComplete="email" required value={state.email} onChange={handleEmailChange} />
+        <label htmlFor="email">{props.resMap.get("inputs.email")}</label><input name="email" id="email" type="email" autoComplete="email" required value={state.email} onChange={handleEmailChange} />
         <span id="error_email" className="error">{state.errors && state.errors.email}</span> <br/>
 
         <fieldset className="w-fit">
-          <legend>{props.resMap.get('gender.legend')}</legend>
+          <legend>{props.resMap.get("gender.legend")}</legend>
           {gnds.map((gender,index)=>(
             <div key={`g-${index}`} className="inline-block mr-4"><input key={`gI-${gender}`} type="radio" id={`g${gender}`} name="gender" value={gender} onChange={handleGenderChange} checked={state.gender==gender} /><label key={`gL-${gender}`} htmlFor={`g${gender}`} className="rdoA1">{props.resMap.get(`gender.inputs.${gender}`)}</label></div>
           ))}
           <span id="error_gender" className="error">{state.errors && state.errors.gender}</span>
         </fieldset>
 
-        <label htmlFor="prjt">{props.resMap.get('subject.legend')}</label>:<select name="project" id="prjt" onChange={handleSubjectSelect}>
+        <label htmlFor="prjt">{props.resMap.get("subject.legend")}</label>:<select name="project" id="prjt" onChange={handleSubjectSelect}>
           {prjts.map((project)=>(
             <option key={`prjt-${project}`} value={project}>{props.resMap.get(`subject.options.${project}`)}</option>
           ))}
         </select> <span id="error_project" className="error">{state.errors && state.errors.subject}</span> <br/>
       
-        <textarea name="comment" id="cmnt" value={state.comment} onChange={handleCommentChange} rows={7} placeholder={props.resMap.get('inputs.comment.placeholder')} title={props.resMap.get('inputs.comment.title')} required></textarea> <br/>
+        <textarea name="comment" id="cmnt" value={state.comment} onChange={handleCommentChange} rows={7} placeholder={props.resMap.get("inputs.comment.placeholder")} title={props.resMap.get("inputs.comment.title")} required></textarea> <br/>
         <span id="error_comment" className="error">{state.errors && state.errors.comment}</span>
       </fieldset>
 

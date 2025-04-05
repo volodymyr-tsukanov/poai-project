@@ -20,7 +20,7 @@ import { ELanguage } from "@/lib/enums";
 export default function Loading() {
   return (
     <div className={FSpecial.className}>
-      <USLoader uid={new CUID('contact.l')} lang={ELanguage.ENGLISH} />
+      <USLoader uid={new CUID("contact.l")} language={ELanguage.ENGLISH} />
     </div>
   );
 }

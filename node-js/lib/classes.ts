@@ -11,9 +11,9 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import langs from '@/data/langs.json';
-import { EGender, ELanguage, EProject } from "./enums";
-import crypto from 'crypto';
+import langs from "@/data/langs.json";
+import { ELanguage } from "./enums";
+import crypto from "crypto";
 
 
 export class CUID {
@@ -21,7 +21,7 @@ export class CUID {
   private hash : string;
   private leafes : string[];
 
-  constructor(uid:string,separator:string='.'){
+  constructor(uid:string,separator:string="."){
     const leaves = uid.split(separator);
     this.leafes = [];
     this.ok = true;
@@ -66,7 +66,7 @@ export class CUID {
 }
 
 export class CLanguage {
-  public static readonly KEY = 'lang';
+  public static readonly KEY = "lang";
   private lang:ELanguage;
 
   constructor(language:ELanguage){
@@ -80,18 +80,18 @@ export class CLanguage {
   objHasNested(obj:any) : boolean{
     for(const key in obj){
       if(obj.hasOwnProperty(key)){
-        if(obj[key] !== null && typeof obj[key]==='object'){
+        if(obj[key]!==null && typeof obj[key]==='object'){
           return true;
         }
       }
     }
     return false;
   }
-  mapNested(obj:any,parentKey='',result=new Map<string,string>()) : Map<string,string>{
+  mapNested(obj:any,parentKey:string="",result:Map<string,string>) : Map<string,string>{
     for(const key in obj){
       if(obj.hasOwnProperty(key)){
-        const fullPath = parentKey?parentKey+'.'+key:key;
-        if(obj[key] !== null && typeof obj[key]==='object'){  //obj has next
+        const fullPath = parentKey?parentKey+"."+key:key;
+        if(obj[key]!==null && typeof obj[key]==='object'){  //obj has next
           this.mapNested(obj[key],fullPath,result);
         } else {  //obj is last
           result.set(fullPath,String(obj[key]));
@@ -116,7 +116,7 @@ export class CLanguage {
     if(this.objHasNested(lPointer)) return true;
     return lPointer;
   }
-  public getResMapByUID(uid:CUID) : Map<string,any>|boolean{
+  public getResMapByUID(uid:CUID,simplified:boolean=true) : Map<string,any>|Map<string,string>|boolean{
     if(!uid.isOk) return false;
 
     let lPointer : any = langs[this.lang];
@@ -124,7 +124,20 @@ export class CLanguage {
       lPointer = lPointer[leaf];
     });
     if(lPointer){
-      return this.mapNested(lPointer);
+      if(simplified){
+        const result = new Map<string,string>();
+        this.mapNested(lPointer,undefined,result);
+        return result;
+      }
+      else{
+        const result = new Map<string,any>();
+        for(const key in lPointer){
+          if(lPointer.hasOwnProperty(key) && lPointer[key]!==null){
+            result.set(key,lPointer[key]);
+          }
+        }
+        return result;
+      }
     } else return false;
   }
 

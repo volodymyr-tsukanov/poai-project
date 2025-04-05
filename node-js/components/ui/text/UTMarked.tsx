@@ -12,19 +12,23 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 'use client';
-import style from './UTMarked.module.css';
 import { UTextConverger } from "@/lib/utils/UTextConverger";
 
+
+interface UTMarkedProps {
+  text: string;
+  className?: string;
+}
 
 /** MarkedText element. Rendered on **client** 
  * @param props text = marked string 
  * */
-export default function UTMarked(props:{text:string}) {
+export default function UTMarked(props:UTMarkedProps) {
   const TextConverger = new UTextConverger();
   const content = TextConverger.md2html(props.text);
 
   return (
-    <div className={style.utMarked}>
+    <div className={props.className}>
       {content}
     </div>
   );

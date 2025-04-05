@@ -11,10 +11,10 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { Courier_Prime } from 'next/font/google';
-import { Faculty_Glyphic } from 'next/font/google';
-import { Lekton } from 'next/font/google';
-import { Sixtyfour_Convergence } from 'next/font/google';
+import { Courier_Prime } from "next/font/google";
+import { Faculty_Glyphic } from "next/font/google";
+import { Lekton } from "next/font/google";
+import { Sixtyfour_Convergence } from "next/font/google";
 
 
 export const FTitle = Faculty_Glyphic({

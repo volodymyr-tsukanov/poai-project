@@ -11,15 +11,21 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CUID } from "@/lib/classes";
-import { FOrdinary } from "@/components/ui/fonts";
+import { CLanguage, CUID } from "@/lib/classes";
+import ProjectsView from "@/components/layout/ProjectsView";
 import { AGetLanguage } from "../actions";
+import { notFound } from "next/navigation";
 
 
 export default async function Home() {
-  const language = await AGetLanguage();
+  const lang = new CLanguage(await AGetLanguage());
+  const tileMap = lang.getResMapByUID(new CUID('projects.tiles'),false);
+  if(typeof tileMap==='boolean'){
+    console.error("Projects::tile map not found");
+    notFound();
+  }
 
   return (
-    'Projects'
+    <ProjectsView language={lang.language} projMap={tileMap} />
   );
 }

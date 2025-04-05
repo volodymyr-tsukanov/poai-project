@@ -11,17 +11,17 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { DDelay, DIcon404 } from '@/lib/consts';
-import { ReactNode, Suspense } from 'react';
+import { DDelay, DIcon404 } from "@/lib/consts";
+import { ReactNode, Suspense } from "react";
 
 
 interface UIExternalProps {
-  src:string,
-  height?:number,
-  width?:number,
-  alt:string,
-  className?:string,
-  fallback?:ReactNode
+  src: string;
+  height?: number;
+  width?: number;
+  alt: string;
+  className?: string;
+  fallback?: ReactNode;
 }
 
 async function checkImage(src:string):Promise<boolean>{
@@ -43,7 +43,7 @@ async function UIExternal(props:UIExternalProps){
       width={props.width}
       height={props.height}
       className={props.className}
-      alt={props.alt??'no-alt'}
+      alt={props.alt??"no-alt"}
     />
   );
 }

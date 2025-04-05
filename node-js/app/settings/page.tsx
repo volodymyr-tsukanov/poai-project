@@ -20,8 +20,8 @@ import { notFound } from "next/navigation";
 export default async function Home() {
   const lang = new CLanguage(await AGetLanguage());
   const resMap = lang.getResMapByUID(new CUID('settings.form'));
-  if(typeof resMap==="boolean"){
-    console.error('Settings::language map not found');
+  if(typeof resMap==='boolean'){
+    console.error("Settings::language map not found");
     notFound();
   }
 
