@@ -34,17 +34,29 @@
         "project-VT":{
           "icon":"favicon.ico",
           "title":"This site",
-          "text":"Actually this site. Explore it and feel free to leave your response on ~bFeedback~ page."
+          "text":"Actually this site. Explore it and feel free to leave your response on ~bFeedback~ page.",
+          "badges":{
+            "github":"https://github.com/volodymyr-tsukanov/poai-project"
+          }
         },
         "pear":{
           "icon":"https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true",
           "title":"Pear",
-          "text":"~iOracle Database~ for Apple product sales system. Logical and relational database models, SQL server only (without frontend and backend). Team project."
+          "text":"~iOracle Database~ for Apple product sales system. Logical and relational database models, SQL server only (without frontend and backend). Team project.",
+          "galery":[
+            "/icons/404.svg",
+            "/icons/butt-plug.svg"
+          ]
         },
         "telephone-book":{
           "icon":"https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
           "title":"Telephone Book",
-          "text":"Simple contact phone application. The main idea was to make an app in the style of an old yellow phone book and basic contacts functions."
+          "text":"Simple contact phone application. The main idea was to make an app in the style of an old yellow phone book and basic contacts functions.",
+          "galery":[
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true",
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true"
+          ]
         }
       }
     },

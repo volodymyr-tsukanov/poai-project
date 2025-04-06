@@ -12,7 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import { DDelay, DIcon404 } from "@/lib/consts";
-import { ReactNode, Suspense } from "react";
+import { MouseEventHandler, ReactNode, Suspense } from "react";
 
 
 interface UIExternalProps {
@@ -22,20 +22,27 @@ interface UIExternalProps {
   alt: string;
   className?: string;
   fallback?: ReactNode;
+  OnClick?: MouseEventHandler<HTMLImageElement>;
 }
 
 async function checkImage(src:string):Promise<boolean>{
+  const ac = new AbortController();
+  const tmoId = setTimeout(()=>ac.abort(),1000);  //1s timeout
   try{
-    const res = await fetch(src,{cache:'force-cache'});
+    const res = await fetch(src,{method:'GET',cache:'force-cache',signal:ac.signal});
+    clearTimeout(tmoId);
     return res.ok;
-  } catch (e) {console.warn(e);return false;}
+  } catch (e:any){
+    if(e.name==='AbortError') console.warn('UIExternal::fetch timeout');
+    else console.warn(e);
+  }
+  return false;
 }
 
 async function UIExternal(props:UIExternalProps){
   let src = props.src;
   const imgAvailable = await checkImage(props.src);
   if(!imgAvailable) src = DIcon404(96);
-  await DDelay(2000);
 
   return (
     <img
@@ -44,6 +51,7 @@ async function UIExternal(props:UIExternalProps){
       height={props.height}
       className={props.className}
       alt={props.alt??"no-alt"}
+      onClick={props.OnClick}
     />
   );
 }

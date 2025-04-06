@@ -14,39 +14,59 @@
 'use client';
 import style from "./ProjectsView.module.css";
 import { ELanguage, EProject } from "@/lib/enums";
-import { DEnum2Array } from "@/lib/consts";
-import { FOrdinary } from "../ui/fonts";
+import { DEnum2Array, DObject2Map } from "@/lib/consts";
 import UTMarked from "../ui/text/UTMarked";
 import UIExternal from "../ui/images/UIExternal";
-import { useState } from "react";
 import USImage from "../ui/skeletons/USImage";
+import { FOrdinary } from "../ui/fonts";
+import { Dispatch, MouseEvent, MouseEventHandler, SetStateAction, useState } from "react";
+import PureSlider from "./PureSlider";
 
 
 interface ProjectsViewProps {
   language: ELanguage;
   projMap: Map<string,any>;
 }
+interface ProjectProps {
+  id: string;
+  icon: string;
+  title: string;
+  text: string;
+  badges?: any;
+  OpenImageViewHandler?: Dispatch<SetStateAction<string|undefined>>;
+}
 
-function Project({props}:{props:any}){
+function Project(props:ProjectProps){
+  const badges = DObject2Map(props.badges);
+
   return (
     <div className={style.project}>
-      <UIExternal src={props.icon} alt={props.title} height={400} width={400} fallback={USImage({})} />
+      <UIExternal src={props.icon} alt={props.title} height={400} width={400} fallback={USImage({})} className={style.projectIcon} OnClick={()=>{if(props.OpenImageViewHandler) props.OpenImageViewHandler(props.id)}}/>
       <h2 className="antialiased">{props.title}</h2>
-      <UTMarked text={props.text} className={style.projectBody} />
+      <div className={style.projectBody}>
+        <UTMarked text={props.text} />
+        {badges.size>1 && <h3>Badges</h3> /*TODO badges*/}
+        {badges.size>0 && <div className={style.projectBadges}>{Array.from(badges.entries()).map((value,index)=>( //!unsafe shit
+          <div key={`${props.title}-badge-${index}`}>{value[0]}</div>
+        ))}</div>}
+      </div>
     </div>
   );
 }
 
 export default function ProjectsView(props:ProjectsViewProps){
-  const [selectedImgView,setSelectedImgView] = useState<string|undefined>();
+  const [selectedProject,setSelectedProject] = useState<string|undefined>();
 
   const prjts = DEnum2Array(EProject);
   prjts.pop();  //removes nspec
 
   return (
     <div className={`${FOrdinary.className}`}>
+      {selectedProject && <PureSlider imgSrcs={props.projMap.get(selectedProject).galery as string[]} OnClose={()=>{ //!unsafe typing
+        setSelectedProject(undefined);
+      }} />}
       {prjts.map((project)=>(
-        <Project key={project} props={props.projMap.get(project)} />
+        <Project key={project} id={project} {...props.projMap.get(project)} OpenImageViewHandler={(props.projMap.get(project).galery)?setSelectedProject:undefined} />
       ))}
     </div>
   );

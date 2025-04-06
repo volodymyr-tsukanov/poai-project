@@ -17,7 +17,7 @@ import crypto from "crypto";
 export const DIconSide:number = 320;
 export const DIcon404 = (sobriety:number=98)=>{
   const c = DRandomInt(0,100);
-  const icon = (c>(sobriety%100)) ? 'butt-plug' : '404'
+  const icon = (c>(sobriety%100))?'butt-plug':'404'
   return `/icons/${icon}.svg`;
 };
 
@@ -40,7 +40,18 @@ export const DDelay = (ms:number)=>{
 
 export const DEnum2Array = (enumerable:any)=>{
   return Object.values(enumerable) as string[];
-}
+};
+export const DObject2Map = (obj:any)=>{
+  const result = new Map<string,any>();
+  if(!obj) return result;
+  for(const key in obj){
+    if(obj.hasOwnProperty(key) && obj[key]!==null){
+      if(typeof obj[key]==='string'||typeof obj==='number'||typeof obj==='boolean') result.set(key,obj[key]);
+      else result.set(key,'');
+    }
+  }
+  return result;
+};
 
 export const DRegexName = /^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\-\s])*$/;
 export const DRegexEmail = /^[a-zA-Z0-9._%+-]+@[a-z.-]+\.[a-z]{2,}$/;
