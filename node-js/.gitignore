@@ -43,3 +43,6 @@ next-env.d.ts
 
 # temp
 *.tmp
+
+# db
+data/*.db

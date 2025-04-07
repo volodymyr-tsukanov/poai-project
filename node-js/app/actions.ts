@@ -14,6 +14,7 @@
 'use server';
 import { ELanguage } from "@/lib/enums";
 import { CLanguage } from "@/lib/classes";
+import { db } from "@/lib/database";
 import { cookies } from "next/headers";
 
 
@@ -25,4 +26,8 @@ export async function AGetLanguage(defaultLanguage:ELanguage=ELanguage.ENGLISH){
     } else console.warn("empty language cookie");
   } catch(e){console.warn("language not loaded: "+e);}
   return defaultLanguage;
+}
+
+export async function AGetUsers(){
+  return db.prepare('SELECT * FROM users').all();
 }

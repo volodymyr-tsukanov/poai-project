@@ -1,0 +1,43 @@
+//    poai-project  Copyright  2025  volodymyr-tsukanov
+
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+
+//        http://www.apache.org/licenses/LICENSE-2.0
+
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+import path from "path";
+import fs from "fs";
+import Database from "better-sqlite3";
+
+
+const DB_PATH = path.join(process.cwd(),'data','data.db');
+
+class DB {
+  private static instance:Database.Database;
+
+  public static getInstance() : Database.Database{
+    if(!DB.instance){  //global init
+      if(!fs.existsSync(DB_PATH)){
+        fs.writeFileSync(DB_PATH,'');
+      }
+      DB.instance = new Database(DB_PATH);
+      DB.initSchema();
+    } else return DB.instance;
+  }
+
+  private static initSchema(){  //TODO db init schema
+    DB.instance.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        alias VARCHAR(20) NOT NULL
+      );
+      `);
+  }
+}
+export const db = DB.getInstance();
