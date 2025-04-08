@@ -15,20 +15,21 @@
 import { AGetLanguage, AGetUsers } from "@/app/actions";
 import { CryptoN } from "@/lib/session";
 
+interface User {
+  id: number;
+  alias: string;
+  pass: string;
+}
 
 export default async function Home({params}:{params:Promise<{user:string}>}){
   const language = await AGetLanguage();
   const props = await params;
-  const users = await AGetUsers();
-
+  const users = await AGetUsers() as User[];
   const crp = CryptoN.GetInstance();
-  const s = crp.protectSecret(props.user);
-  console.log(crp.verifySecret(props.user,s));
 
   return (
     <div>
       Hello {props.user} <br/>
-      {s}
     </div>
   );
 }

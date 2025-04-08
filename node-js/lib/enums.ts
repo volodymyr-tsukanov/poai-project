@@ -25,7 +25,8 @@ export enum EServerResponse {
   WrongContentType = "wt",
   WrongParam = "wp",
   ErrorGlobal = "eg",
-  ErrorSpecific = "es"
+  ErrorSpecific = "es",
+  TooMany = "tm"
 };
 
 export enum EGender {
