@@ -12,14 +12,10 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import "./globals.css";
-import { ELanguage } from "@/lib/enums";
-import { CUID } from "@/lib/classes";
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
-import USLoader from "@/components/ui/skeletons/USLoader";
-import { FSpecial, FSubtitleItalic } from "@/components/ui/fonts";
+import { FSubtitleItalic } from "@/components/ui/fonts";
 import { AGetLanguage } from "./actions";
-import { Suspense } from "react";
 
 
 async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){
@@ -43,9 +39,5 @@ async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){
 }
 
 export default function RootLayout({children}:Readonly<{children:React.ReactNode;}>) {
-  return (
-    <Suspense fallback={<html><head></head><body><div className={FSpecial.className}><USLoader uid={new CUID('main.l')} language={ELanguage.ENGLISH}/></div></body></html>}>
-      {BodyLayout({children})}
-    </Suspense>
-  );
+  return BodyLayout({children});
 }

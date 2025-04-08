@@ -21,23 +21,34 @@ const DB_PATH = path.join(process.cwd(),'data','data.db');
 class DB {
   private static instance:Database.Database;
 
-  public static getInstance() : Database.Database{
+  public static GetInstance() : Database.Database{
     if(!DB.instance){  //global init
       if(!fs.existsSync(DB_PATH)){
         fs.writeFileSync(DB_PATH,'');
       }
       DB.instance = new Database(DB_PATH);
       DB.initSchema();
-    } else return DB.instance;
+    }
+    return DB.instance;
   }
 
   private static initSchema(){  //TODO db init schema
     DB.instance.exec(`
+      PRAGMA encoding = "UTF-8";
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        alias VARCHAR(20) NOT NULL
+        alias VARCHAR(10) NOT NULL UNIQUE,
+        pass VARCHAR(128) NOT NULL
       );
-      `);
+      CREATE TABLE IF NOT EXISTS letters (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        sender VARCHAR(60) NOT NULL,
+        email VARCHAR(254) NOT NULL,
+        gender VARCHAR(2) NOT NULL CHECK(gender IN ('ml','fl','tr')) DEFAULT 'fl',
+        subject VARCHAR(20) NOT NULL CHECK(subject IN ('project-VT','pear','telephone-book','nspec')) DEFAULT 'nspec',
+        comment TEXT NOT NULL,
+        sentAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );`);
   }
 }
-export const db = DB.getInstance();
+export const db = DB.GetInstance();
