@@ -11,8 +11,9 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { DDelay, DIcon404 } from "@/lib/consts";
-import { MouseEventHandler, ReactNode, Suspense } from "react";
+'use client';
+import { DIcon404 } from "@/lib/consts";
+import { MouseEventHandler, ReactNode, useState, useEffect } from "react";
 
 
 interface UIExternalProps {
@@ -21,41 +22,62 @@ interface UIExternalProps {
   width?: number;
   alt: string;
   className?: string;
+  timeout?: number;
   fallback?: ReactNode;
   OnClick?: MouseEventHandler<HTMLImageElement>;
 }
 
-async function checkImage(src:string):Promise<boolean>{
-  const ac = new AbortController();
-  const tmoId = setTimeout(()=>ac.abort(),1000);  //1s timeout
-  try{
-    const res = await fetch(src,{method:'GET',cache:'force-cache',signal:ac.signal});
-    clearTimeout(tmoId);
-    return res.ok;
-  } catch (e:any){
-    if(e.name==='AbortError') console.warn('UIExternal::fetch timeout');
-    else console.warn(e);
+export default function UIExternal(props:UIExternalProps){
+  const [isLoading,setIsLoading] = useState(true);
+  const [hasError,setHasError] = useState(false);
+
+  useEffect(()=>{
+    const img = new window.Image();
+    img.src = props.src;
+
+    const tmoId = setTimeout(()=>handleError,props.timeout??2000);
+    const handleLoad = ()=>{
+      clearTimeout(tmoId);
+      setIsLoading(false);
+      setHasError(false);
+    };
+    const handleError = ()=>{
+      clearTimeout(tmoId);
+      setIsLoading(false);
+      setHasError(true);
+    };
+
+    img.onload = handleLoad;
+    img.onerror = handleError;
+    img.onabort = handleError;
+
+    return ()=>{
+      img.onload = null;
+      img.onerror = null;
+      img.onabort = null;
+      clearTimeout(tmoId);
+    }
+  },[props.src])
+
+  if(hasError) return <img
+    src={DIcon404(96)}
+    width={props.width}
+    height={props.height}
+    className={props.className}
+    alt={props.alt??"no-alt"}
+    loading='lazy'
+    onClick={props.OnClick}
+  />;
+  else{
+    if(isLoading&&props.fallback) return <>{props.fallback}</>;
+    else return <img
+        src={props.src}
+        width={props.width}
+        height={props.height}
+        className={props.className}
+        alt={props.alt??"no-alt"}
+        loading='lazy'
+        onClick={props.OnClick}
+      />;
   }
-  return false;
-}
-
-async function UIExternal(props:UIExternalProps){
-  let src = props.src;
-  const imgAvailable = await checkImage(props.src);
-  if(!imgAvailable) src = DIcon404(96);
-
-  return (
-    <img
-      src={src}
-      width={props.width}
-      height={props.height}
-      className={props.className}
-      alt={props.alt??"no-alt"}
-      onClick={props.OnClick}
-    />
-  );
-}
-export default function UIExternalWrapper(props:UIExternalProps){
-  if(props.fallback) return(<Suspense fallback={props.fallback}>{UIExternal(props)}</Suspense>);
-  else return UIExternal(props);
 }
