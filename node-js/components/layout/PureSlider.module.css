@@ -18,17 +18,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 .pureSlider {
-  position: absolute;
+  position: relative;
   z-index: 11;
-  left: 50%;
-  top: 50%;
+  left: 25%;
+  /*top: 50%;*/
   height: var(--pureSlider-height);
   width: var(--pureSlider-width);
   background-color: #0a0a0a;
   box-shadow: inset 0 0 2px hsla(0,0%,0%,.2),
         0 3px 1px hsla(0, 0%, 25%, 0.75),
         0 -1px 1px 2px hsla(0,0%,0%,.1);
-  margin: -9em -15em;
+  /*margin: -9em -15em;*/
   padding: .5em;
 }
 

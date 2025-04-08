@@ -9,8 +9,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+'use client';
 import style from "./PureSlider.module.css";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 
 
 interface PureSliderProps {
@@ -19,13 +20,15 @@ interface PureSliderProps {
 }
 
 export default function PureSlider(props:PureSliderProps){
+  const [selectedImage,setSelectedImage] = useState(0);
+
   return (
     <div>
       <button className={style.pureSliderButton} onClick={props.OnClose}>X</button>
       <ul className={style.pureSlider}>
         {props.imgSrcs.map((src,index)=>(
           <li key={`pureSlider-li-${index}`}>
-            <input type="radio" name="pureSlide" id={`pureSlide-${index}`} />
+            <input type="radio" name="pureSlide" id={`pureSlide-${index}`} checked={index===selectedImage} onChange={()=>setSelectedImage(index)} />
             <label htmlFor={`pureSlide-${index}`}></label>
             <img src={src} alt="no-alt" />
           </li>
