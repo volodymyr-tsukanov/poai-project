@@ -19,21 +19,21 @@ import Database from "better-sqlite3";
 const DB_PATH = path.join(process.cwd(),'data','data.db');
 
 class DB {
-  private static instance:Database.Database;
-
-  public static GetInstance() : Database.Database{
-    if(!DB.instance){  //global init
+  private static _instance:Database.Database;
+  
+  public static Get_instance() : Database.Database{
+    if(!DB._instance){  //global init
       if(!fs.existsSync(DB_PATH)){
         fs.writeFileSync(DB_PATH,'');
       }
-      DB.instance = new Database(DB_PATH);
+      DB._instance = new Database(DB_PATH);
       DB.initSchema();
     }
-    return DB.instance;
+    return DB._instance;
   }
 
   private static initSchema(){  //TODO db init schema
-    DB.instance.exec(`
+    DB._instance.exec(`
       PRAGMA encoding = "UTF-8";
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,4 +51,4 @@ class DB {
       );`);
   }
 }
-export const db = DB.GetInstance();
+export const db = DB.Get_instance();

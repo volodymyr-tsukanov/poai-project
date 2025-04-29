@@ -19,7 +19,7 @@ export interface IComponentProps {
   uid: CUID;
   language: ELanguage;
   props?: any;
-};
+}
 export interface IFormProps {
   language: ELanguage;
   resMap: Map<string,string>;
@@ -37,4 +37,10 @@ export interface IFeedbackLetter {
 export interface IFeedbackLetterAction {
   type: "UPD_sender"|"UPD_email"|"UPD_comment"|"SET_gender"|"SET_subject"|"SET_errors"|"RST";
   payload: any;
+}
+
+export interface IUser {
+  id: number;
+  alias: string;
+  pass: string;
 }

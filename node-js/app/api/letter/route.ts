@@ -11,6 +11,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+'use server';
 import { EGender, EProject, EServerResponse } from "@/lib/enums";
 import { DEnum2Array, DRegexEmail, DRegexName } from "@/lib/consts";
 import { NextResponse } from "next/server";

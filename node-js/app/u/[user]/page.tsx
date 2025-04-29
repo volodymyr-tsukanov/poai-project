@@ -12,24 +12,16 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 'use server';
-import { AGetLanguage, AGetUsers } from "@/app/actions";
-import { CryptoN } from "@/lib/session";
+import UFAuth from "@/components/ui/forms/UFAuth";
 
-interface User {
-  id: number;
-  alias: string;
-  pass: string;
-}
 
 export default async function Home({params}:{params:Promise<{user:string}>}){
-  const language = await AGetLanguage();
   const props = await params;
-  const users = await AGetUsers() as User[];
-  const crp = CryptoN.GetInstance();
 
   return (
     <div>
-      Hello {props.user} <br/>
+      Hello <b>{props.user}</b> lets check your id <br/>
+      <UFAuth alias={props.user} />
     </div>
   );
 }

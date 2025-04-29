@@ -11,30 +11,26 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { EServerResponse } from "@/lib/enums";
+import { sessiont, SESSION_KEY } from "@/lib/session";
+import { IpRateLimiter } from "@/lib/utils/UIpRateLimiter";
 import { NextRequest, NextResponse } from "next/server";
 
 
-interface IpRateLimit {
-  count: number;
-  timer: NodeJS.Timeout;
-}
-
-const REQUEST_LIMIT_PM = 9;
-const LIMIT_RESPONSE = {sr:EServerResponse.TooMany,message:"Too many requests for poor tiny server"};
-const ipRateLimits = new Map<string,IpRateLimit>();
-
 export function middleware(request:NextRequest){
-  const clientIp = request.headers.get('x-real-ip')??request.headers.get('x-forwarded-for')??request.referrer;  //?
-  if(!ipRateLimits.has(clientIp)){
-    ipRateLimits.set(clientIp,{count:0,timer:setTimeout(()=>{ipRateLimits.delete(clientIp)},60*1000)});
-  }
+  const pathName = request.nextUrl.pathname;
+  const rateLimiter = IpRateLimiter.Get_instance();
+  let res:NextResponse|undefined;
 
-  const rl = ipRateLimits.get(clientIp)!;
-  rl.count++;
+  res = rateLimiter.limitIpRate(request);
+  if(res) return res;
 
-  if(rl.count>REQUEST_LIMIT_PM){
-    return new NextResponse(JSON.stringify(LIMIT_RESPONSE),{status:429,headers:{'Content-Type':'application/json'}});
+  if(pathName.startsWith('/u/board')){
+    const responseBlocked = new NextResponse(null,{status:403});
+    const sessionId = request.cookies.get(SESSION_KEY)?.value;
+    if(sessionId===undefined) return responseBlocked;
+    const session = sessiont.getSession(sessionId);
+    if(session===undefined) return responseBlocked;
+    return NextResponse.next();
   }
 
   return NextResponse.next();

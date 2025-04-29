@@ -38,6 +38,11 @@ export const DDelay = (ms:number)=>{
   return new Promise((resolve)=>setTimeout(resolve,ms));
 };
 
+export const DIsRelease = ()=>process.env.NODE_ENV==='production';
+export const DIsArrayOf = (value:unknown,type:'string'|'number')=>{
+  return Array.isArray(value) && value.every(item=>(typeof item)===type);
+};
+
 export const DEnum2Array = (enumerable:any)=>{
   return Object.values(enumerable) as string[];
 };

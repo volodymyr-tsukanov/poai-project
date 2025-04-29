@@ -63,7 +63,7 @@ export default function ProjectsView(props:ProjectsViewProps){
   return (
     <div className={`${FOrdinary.className}`}>
       {prjts.map((project)=>{
-        if(selectedProject===project) return <PureSlider imgSrcs={props.projMap.get(selectedProject).galery as string[]} OnClose={()=>setSelectedProject(undefined)} />; //!unsafe typing
+        if(selectedProject===project) return <PureSlider key={project} imgSrcs={props.projMap.get(selectedProject).galery as string[]} OnClose={()=>setSelectedProject(undefined)} />; //!unsafe typing
         else return <Project key={project} id={project} {...props.projMap.get(project)} OpenImageViewHandler={(props.projMap.get(project).galery)?setSelectedProject:undefined} />;
       })}
     </div>

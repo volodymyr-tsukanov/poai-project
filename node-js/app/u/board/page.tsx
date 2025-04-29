@@ -12,17 +12,12 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 'use server';
-import { ELanguage } from "@/lib/enums";
-import { CLanguage } from "@/lib/classes";
-import { cookies } from "next/headers";
 
 
-export async function AGetLanguage(defaultLanguage:ELanguage=ELanguage.ENGLISH):Promise<ELanguage>{
-  try{
-    const lang = (await cookies()).get(CLanguage.KEY)?.value;
-    if(lang){
-      return CLanguage.StoL(lang);
-    } else console.warn("empty language cookie");
-  } catch(e){console.warn("language not loaded: "+e);}
-  return defaultLanguage;
+export default async function Home(){
+  return (
+    <div>
+      Welcome to ProjectVT Board
+    </div>
+  );
 }

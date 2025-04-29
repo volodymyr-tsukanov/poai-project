@@ -11,14 +11,8 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { scryptSync, randomBytes, ScryptOptions, timingSafeEqual } from "crypto";
+import { scryptSync, randomBytes, ScryptOptions, timingSafeEqual, randomUUID } from "crypto";
 
-
-const SALT_LENGTH = 16;
-const KEY_LENGTH = 32;
-const BLOCK_SIZE = 8;
-const COST = 16384; //CPU/mem
-const PARALLEL = 1; //paralellization factor
 
 interface CryptoDuo {
   hash: string;
@@ -29,8 +23,14 @@ export enum CryptoVersion {
   Awakening = 'a'
 }; const VERSION_ACTUAL = CryptoVersion.Awakening;
 
-export class CryptoN {
-  private static instance:CryptoN;
+const SALT_LENGTH = 16;
+const KEY_LENGTH = 32;
+const BLOCK_SIZE = 8;
+const COST = 16384; //CPU/mem
+const PARALLEL = 1; //paralellization factor
+
+class CryptoN {
+  private static _instance:CryptoN;
   private version:CryptoVersion;
   private keyLength:number;
   private saltEncoding:BufferEncoding;
@@ -52,13 +52,13 @@ export class CryptoN {
         break;
     }
   }
-
   public static GetInstance(version:CryptoVersion=VERSION_ACTUAL) : CryptoN{
-    if(!CryptoN.instance){
-      CryptoN.instance = new CryptoN(version);
+    if(!CryptoN._instance){
+      CryptoN._instance = new CryptoN(version);
     }
-    return CryptoN.instance;
+    return CryptoN._instance;
   }
+
   private static WrapUpHash(version:CryptoVersion,cd:CryptoDuo) : string{
     switch(version){
       case CryptoVersion.Awakening:
@@ -90,3 +90,63 @@ export class CryptoN {
     else return false;
   }
 }
+export const cryptonV = (version:CryptoVersion)=>CryptoN.GetInstance(version);
+export const crypton = CryptoN.GetInstance();
+
+
+interface Session {
+  uId: number;
+  startedT: number;
+}
+
+export const SESSION_KEY = "sess";
+export const SESSION_DURATION = 7*60 * 60*1000;  //7h
+
+class SessionStore {
+  private static _instance:SessionStore;
+  private sessions:Map<string,Session>;
+
+  private constructor(){
+    this.sessions = new Map<string,Session>();
+  }
+  public static GetInstance(){
+    if(!SessionStore._instance){
+      SessionStore._instance = new SessionStore();
+    }
+    return SessionStore._instance;
+  }
+
+  public startSession(userId:number) : string{
+    const timestamp = Date.now();
+    const sessionId = randomUUID();
+    this.sessions.set(sessionId,{
+      uId:userId,
+      startedT:timestamp
+    });
+    return sessionId;
+  }
+  public getSession(sessionId:string) : Session|undefined{
+    const timestamp = Date.now();
+    const session = this.sessions.get(sessionId);
+    if(session){
+      if(timestamp-session.startedT > SESSION_DURATION){
+        this.sessions.delete(sessionId);
+      } else return session;
+    }
+  }
+  public stopSession(sessionId:string){
+    const session = this.sessions.get(sessionId);
+    if(session){
+      this.sessions.delete(sessionId);
+    }
+  }
+
+  public get All(){
+    return Array.from(this.sessions.entries()).map(([id,session])=>({
+      id,
+      userId:session.uId,
+      startedT:new Date(session.startedT).toISOString()
+    }));
+  }
+}
+export const sessiont = SessionStore.GetInstance();
