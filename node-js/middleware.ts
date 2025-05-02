@@ -11,26 +11,22 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { sessiont, SESSION_KEY } from "@/lib/session";
 import { IpRateLimiter } from "@/lib/utils/UIpRateLimiter";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export function middleware(request:NextRequest){
+export function middleware(request:NextRequest) {
   const pathName = request.nextUrl.pathname;
-  const rateLimiter = IpRateLimiter.Get_instance();
+  const rateLimiter = IpRateLimiter.GetInstance();
   let res:NextResponse|undefined;
 
   res = rateLimiter.limitIpRate(request);
+  console.log(rateLimiter.All);
   if(res) return res;
 
   if(pathName.startsWith('/u/board')){
-    const responseBlocked = new NextResponse(null,{status:403});
-    const sessionId = request.cookies.get(SESSION_KEY)?.value;
-    if(sessionId===undefined) return responseBlocked;
-    const session = sessiont.getSession(sessionId);
-    if(session===undefined) return responseBlocked;
-    return NextResponse.next();
+    const sessionId = request.cookies.get("sess")?.value;
+    if(sessionId===undefined) return new NextResponse(null,{status:403,statusText:'no cookie'});
   }
 
   return NextResponse.next();

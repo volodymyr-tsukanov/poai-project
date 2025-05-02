@@ -17,7 +17,7 @@ import { IFormProps, IFeedbackLetter, IFeedbackLetterAction } from "@/lib/interf
 import { DEnum2Array, DRegexEmail, DRegexName } from "@/lib/consts";
 import React, { useEffect, useReducer, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { AppRouter_instance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
 export const LETTER_KEY = "letter";
@@ -48,7 +48,7 @@ const reducer = (state:IFeedbackLetter,action:IFeedbackLetterAction)=>{
   }
 }
 
-async function requestLetterSend(letter:IFeedbackLetter,router:AppRouter_instance,resMap:Map<string,string>) {
+async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance,resMap:Map<string,string>) {
   try{
     const abd = {UA:window.navigator.userAgent, app:{name:window.navigator.appName,platform:window.navigator.platform,productSub:window.navigator.productSub}, language:window.navigator.language, plugins:window.navigator.plugins, screen:{width:window.screen.width,height:window.screen.height,ratio:window.devicePixelRatio}};
     const response = await fetch('/api/letter',{

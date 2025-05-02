@@ -12,15 +12,15 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 'use server';
-import { ELanguage, EServerResponse } from "@/lib/enums";
-import { IUser } from "@/lib/interfaces";
+import { EServerResponse } from "@/lib/enums";
 import { DIsArrayOf, DIsRelease } from "@/lib/consts";
 import { CLanguage } from "@/lib/classes";
 import { db } from "@/lib/database";
-import { crypton, sessiont, SESSION_DURATION, SESSION_KEY } from "@/lib/session";
+import { crypton, SESSION_DURATION, SESSION_KEY, sessionClose, sessionStart } from "@/lib/session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { redirect, RedirectType } from "next/navigation";
 
 
 function statusResponse(status:EServerResponse,message?:String) : NextResponse{
@@ -28,6 +28,8 @@ function statusResponse(status:EServerResponse,message?:String) : NextResponse{
 }
 
 export async function POST(req:Request) : Promise<NextResponse>{
+  let redirectTarget:string|undefined;
+  let redirectType = RedirectType.replace;
   try{
     if(req.headers.get('Content-Type')!=='application/json') return NextResponse.json({t:EServerResponse.WrongContentType});
     const reqBody = await req.json();
@@ -50,27 +52,28 @@ export async function POST(req:Request) : Promise<NextResponse>{
             if(arr.length!==3 || arr[0].length<2 || arr[1].length<4 || arr[2].length!==1) return statusResponse(EServerResponse.NotEnoughParams);
             switch(arr[2]){
               case "i": //in
-                const user = db.prepare('SELECT * FROM users WHERE alias = ?').get([arr[0]]) as IUser|undefined;
+                const user = db.getUserByAlias(arr[0]);
                 if(user){
                   if(crypton.verifySecret(arr[1],user.pass)){
                     cookieStore.delete(SESSION_KEY);
-                    const sessionId = sessiont.startSession(user.id);
+                    const sessionId = sessionStart(user.id);
+                    if(sessionId===undefined) return statusResponse(EServerResponse.ErrorSpecific);
                     cookieStore.set(SESSION_KEY,sessionId,{
                       httpOnly: true,
-                      sameSite: 'lax',
                       secure: DIsRelease(),
                       maxAge: SESSION_DURATION / 60,
-                      path: '/u'
+                      path: '/u/board'
                     });
-                    revalidatePath('/u');
-                    return new NextResponse(null,{status:307}); //temp redirect
+                    redirectTarget = '/u/board';
+                    redirectType = RedirectType.replace;
+                    // goes to finally
                   } else return statusResponse(EServerResponse.FraudOuterValue);
                 }
                 break;
               case "o": //out
                 const sessionId = cookieStore.get(SESSION_KEY)?.value;
                 if(sessionId){
-                  sessiont.stopSession(sessionId);
+                  sessionClose(sessionId);
                   cookieStore.delete(SESSION_KEY);
                 }
                 break;
@@ -84,5 +87,9 @@ export async function POST(req:Request) : Promise<NextResponse>{
   } catch(e){
     const err = e as Error;
     return statusResponse(EServerResponse.ErrorGlobal,`${err.name}::${err.message} in ${err.stack}`);
+  } finally {
+    if(redirectTarget){
+      redirect(redirectTarget,redirectType);
+    }
   }
 }

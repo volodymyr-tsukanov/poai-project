@@ -12,6 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import { scryptSync, randomBytes, ScryptOptions, timingSafeEqual, randomUUID } from "crypto";
+import { TSession } from "./types";
+import { db } from "./database";
 
 
 interface CryptoDuo {
@@ -21,7 +23,7 @@ interface CryptoDuo {
 
 export enum CryptoVersion {
   Awakening = 'a'
-}; const VERSION_ACTUAL = CryptoVersion.Awakening;
+}; const ACTUAL_VERSION = CryptoVersion.Awakening;
 
 const SALT_LENGTH = 16;
 const KEY_LENGTH = 32;
@@ -40,7 +42,7 @@ class CryptoN {
   private constructor(version:CryptoVersion){
     this.version = version;
     switch(version){
-      case VERSION_ACTUAL:
+      case ACTUAL_VERSION:
         this.keyLength = KEY_LENGTH;
         this.saltEncoding = 'hex';
         this.hashEncoding = 'base64';
@@ -52,7 +54,7 @@ class CryptoN {
         break;
     }
   }
-  public static GetInstance(version:CryptoVersion=VERSION_ACTUAL) : CryptoN{
+  public static GetInstance(version:CryptoVersion=ACTUAL_VERSION) : CryptoN{
     if(!CryptoN._instance){
       CryptoN._instance = new CryptoN(version);
     }
@@ -94,59 +96,21 @@ export const cryptonV = (version:CryptoVersion)=>CryptoN.GetInstance(version);
 export const crypton = CryptoN.GetInstance();
 
 
-interface Session {
-  uId: number;
-  startedT: number;
-}
-
 export const SESSION_KEY = "sess";
-export const SESSION_DURATION = 7*60 * 60*1000;  //7h
-
-class SessionStore {
-  private static _instance:SessionStore;
-  private sessions:Map<string,Session>;
-
-  private constructor(){
-    this.sessions = new Map<string,Session>();
-  }
-  public static GetInstance(){
-    if(!SessionStore._instance){
-      SessionStore._instance = new SessionStore();
-    }
-    return SessionStore._instance;
-  }
-
-  public startSession(userId:number) : string{
-    const timestamp = Date.now();
-    const sessionId = randomUUID();
-    this.sessions.set(sessionId,{
-      uId:userId,
-      startedT:timestamp
-    });
-    return sessionId;
-  }
-  public getSession(sessionId:string) : Session|undefined{
-    const timestamp = Date.now();
-    const session = this.sessions.get(sessionId);
-    if(session){
-      if(timestamp-session.startedT > SESSION_DURATION){
-        this.sessions.delete(sessionId);
-      } else return session;
-    }
-  }
-  public stopSession(sessionId:string){
-    const session = this.sessions.get(sessionId);
-    if(session){
-      this.sessions.delete(sessionId);
-    }
-  }
-
-  public get All(){
-    return Array.from(this.sessions.entries()).map(([id,session])=>({
-      id,
-      userId:session.uId,
-      startedT:new Date(session.startedT).toISOString()
-    }));
-  }
+export const SESSION_DURATION = 7*60 * 60*1000; //ms
+export const sessionStart = (userId:number)=>{
+  const session:TSession = {id:randomUUID(),userId:userId,startedT:Date.now()};
+  return db.insertSession(session) ? session.id : undefined;
 }
-export const sessiont = SessionStore.GetInstance();
+export const sessionCheck = (sessionId:string)=>{
+  const session = db.getSession(sessionId);
+  if(session===undefined) return undefined;
+  if(Date.now()-session.startedT>SESSION_DURATION){
+    db.deleteSession(sessionId);  //no deletion check
+    return undefined;
+  }
+  return session;
+};
+export const sessionClose = (sessionId:string)=>{
+  return db.deleteSession(sessionId);
+}

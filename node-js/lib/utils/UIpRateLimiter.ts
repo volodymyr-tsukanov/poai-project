@@ -35,7 +35,7 @@ export class IpRateLimiter {
   private constructor(){
     this.ipRateLimits = new Map<string,IpRateLimit>();
   }
-  public static Get_instance(){
+  public static GetInstance(){
     if(!IpRateLimiter._instance){
       IpRateLimiter._instance = new IpRateLimiter();
     }
@@ -82,5 +82,16 @@ export class IpRateLimiter {
 
   reset(){
     this.ipRateLimits.clear();
+  }
+
+  // DEBUG ONLY
+  public get All(){
+    return Array.from(this.ipRateLimits.entries()).map(([ip,entry])=>({
+      ip,
+      count: entry.count,
+      penalty: entry.penalty,
+      startedT: new Date(entry.startedT).toISOString(),
+      lastT: new Date(entry.lastT).toISOString()
+    }));
   }
 }

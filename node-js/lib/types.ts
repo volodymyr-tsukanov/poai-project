@@ -11,28 +11,14 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { SESSION_KEY, sessionCheck } from "@/lib/session";
-import { cookies } from "next/headers";
-import { redirect, RedirectType } from "next/navigation";
+export type TUser = {
+  id: number;
+  alias: string;
+  pass: string;
+};
 
-
-export default async function Home(){
-  let isOk = true;
-  const cok = await cookies();
-  const sessionId = cok.get(SESSION_KEY)?.value;
-  if(sessionId===undefined){
-    isOk = false;
-    redirect('/',RedirectType.replace);
-  }
-  const session = sessionCheck(sessionId);
-  if(session===undefined){
-    isOk = false;
-    redirect('/',RedirectType.replace);
-  }
-
-  return isOk ? (
-    <div>
-      Welcome to ProjectVT Board
-    </div>
-  ) : 'NO WAY';
-}
+export type TSession = {
+  id: string;
+  userId: number;
+  startedT: number;
+};

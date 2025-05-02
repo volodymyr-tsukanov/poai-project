@@ -38,9 +38,3 @@ export interface IFeedbackLetterAction {
   type: "UPD_sender"|"UPD_email"|"UPD_comment"|"SET_gender"|"SET_subject"|"SET_errors"|"RST";
   payload: any;
 }
-
-export interface IUser {
-  id: number;
-  alias: string;
-  pass: string;
-}
