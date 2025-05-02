@@ -19,7 +19,7 @@ import UTMarked from "../ui/text/UTMarked";
 import UIExternal from "../ui/images/UIExternal";
 import USImage from "../ui/skeletons/USImage";
 import { FOrdinary } from "../ui/fonts";
-import { Dispatch, MouseEvent, MouseEventHandler, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import PureSlider from "./PureSlider";
 
 

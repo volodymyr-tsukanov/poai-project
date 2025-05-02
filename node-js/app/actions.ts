@@ -15,9 +15,11 @@
 import { ELanguage } from "@/lib/enums";
 import { CLanguage } from "@/lib/classes";
 import { cookies } from "next/headers";
+import { IFeedbackLetter } from "@/lib/interfaces";
+import { revalidatePath } from "next/cache";
 
 
-export async function AGetLanguage(defaultLanguage:ELanguage=ELanguage.ENGLISH):Promise<ELanguage>{
+export async function ALanguageGet(defaultLanguage:ELanguage=ELanguage.ENGLISH) : Promise<ELanguage>{
   try{
     const lang = (await cookies()).get(CLanguage.KEY)?.value;
     if(lang){
@@ -25,4 +27,17 @@ export async function AGetLanguage(defaultLanguage:ELanguage=ELanguage.ENGLISH):
     } else console.warn("empty language cookie");
   } catch(e){console.warn("language not loaded: "+e);}
   return defaultLanguage;
+}
+export async function ALanguageSet(language:ELanguage){
+  (await cookies()).set(CLanguage.KEY,language,{
+    httpOnly: true,
+    maxAge: (60*60*24)*30, //30 days
+    path: '/'
+  });
+  revalidatePath('/','layout');
+}
+
+
+export async function AGetLetters() : Promise<IFeedbackLetter[]>{
+  return [];
 }

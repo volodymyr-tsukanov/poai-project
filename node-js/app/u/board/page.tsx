@@ -12,11 +12,12 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 import { SESSION_KEY, sessionCheck } from "@/lib/session";
+import UFBoard from "@/components/ui/forms/UFBoard";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 
 
-export default async function Home(){
+export default async function Page(){
   let isOk = true;
   const cok = await cookies();
   const sessionId = cok.get(SESSION_KEY)?.value;
@@ -32,7 +33,8 @@ export default async function Home(){
 
   return isOk ? (
     <div>
-      Welcome to ProjectVT Board
+      Welcome to ProjectVT Board <br/>
+      <UFBoard userId={session.userId}/>
     </div>
   ) : 'NO WAY';
 }

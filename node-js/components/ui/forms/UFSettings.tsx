@@ -15,28 +15,12 @@
 import { ELanguage } from "@/lib/enums";
 import { IFormProps } from "@/lib/interfaces";
 import { CLanguage } from "@/lib/classes";
+import { ALanguageSet } from "@/app/actions";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
-async function requestLanguageSave(language:ELanguage,router:AppRouterInstance) {
-  try{
-    const response = await fetch('/api/cook',{
-      method: "POST",
-      headers: {
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify({typ:"lang",val:language})
-    });
-    if(response.status===307){
-      console.log("Language changed!");
-      router.refresh();
-    }
-  } catch(e) {
-    console.warn(e);
-  }
-}
 function cacheClear(){
   //TODO
 }
@@ -50,11 +34,11 @@ export default function UFSettings(props:IFormProps){
 
   const handleSubmit = (ev:React.FormEvent)=>{
     ev.preventDefault();
-    requestLanguageSave(selectedLang,router);
+    ALanguageSet(selectedLang);
   }
   const handleReset = (ev:React.FormEvent)=>{
     const defaultLanguage = ELanguage.ENGLISH;
-    requestLanguageSave(defaultLanguage,router);
+    ALanguageSet(defaultLanguage);
     setSelectedLang(defaultLanguage);
   }
   const handleLangsChange = (ev:React.ChangeEvent<HTMLInputElement>)=>{

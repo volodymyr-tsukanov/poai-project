@@ -11,11 +11,14 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-'use server';
+import { SESSION_KEY } from "@/lib/session";
 import UFAuth from "@/components/ui/forms/UFAuth";
+import { cookies } from "next/headers";
+import { redirect, RedirectType } from "next/navigation";
 
 
-export default async function Home({params}:{params:Promise<{user:string}>}){
+export default async function Page({params}:{params:Promise<{user:string}>}){
+  if((await cookies()).has(SESSION_KEY)) redirect('/u/board',RedirectType.replace);
   const props = await params;
 
   return (

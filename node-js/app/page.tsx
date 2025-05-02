@@ -14,12 +14,12 @@
 import { CLanguage, CUID } from "@/lib/classes";
 import { FOrdinary } from "@/components/ui/fonts";
 import UTMarked from "@/components/ui/text/UTMarked";
-import { AGetLanguage } from "./actions";
+import { ALanguageGet } from "./actions";
 import React from "react";
 
 
 export default async function Home() {
-  const lang = new CLanguage(await AGetLanguage());
+  const lang = new CLanguage(await ALanguageGet());
   const textAUID = new CUID('main.textA');
   const textA:string[] = lang.getResByUID(textAUID) as string[];
 

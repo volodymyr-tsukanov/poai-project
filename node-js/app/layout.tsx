@@ -15,11 +15,11 @@ import "./globals.css";
 import { Navig } from "@/components/layout/Navig";
 import { Titler } from "@/components/layout/Titler";
 import { FSubtitleItalic } from "@/components/ui/fonts";
-import { AGetLanguage } from "./actions";
+import { ALanguageGet } from "./actions";
 
 
 async function BodyLayout({children}:Readonly<{children:React.ReactNode;}>){
-  const language = await AGetLanguage();
+  const language = await ALanguageGet();
 
   return (
     <html lang="en">

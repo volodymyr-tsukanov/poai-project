@@ -11,23 +11,32 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { CLanguage, CUID } from "@/lib/classes";
-import UFSettings from "@/components/ui/forms/UFSettings";
-import { ALanguageGet } from "../actions";
-import { notFound } from "next/navigation";
+'use client';
+import { useRouter } from "next/navigation";
 
 
-export default async function Page() {
-  const lang = new CLanguage(await ALanguageGet());
-  const resMap = lang.getResMapByUID(new CUID('settings.form'));
-  if(typeof resMap==='boolean'){
-    console.error("Settings::language map not found");
-    notFound();
-  }
+interface UFBoardProps {
+  userId: number;
+};
 
-  return (
-    <div>
-      <UFSettings language={lang.language} resMap={resMap}/>
-    </div>
-  );
+export default function UFBoard(props:UFBoardProps){
+  const router = useRouter();
+
+  const handleLogout = async ()=>{
+    const response = await fetch('/api/sess',{
+      method: "POST",
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({typ:"sess",val:['-','-',"o"]})
+    });
+    if(response.ok){
+      router.replace('/');
+    }
+  };
+
+
+  return (<div>
+    <input type="button" value="Logout" onClick={handleLogout} />
+  </div>);
 }

@@ -13,12 +13,12 @@
 //    limitations under the License.
 import { CLanguage, CUID } from "@/lib/classes";
 import UFFeedback from "@/components/ui/forms/UFFeedback";
-import { AGetLanguage } from "../actions";
+import { ALanguageGet } from "../actions";
 import { notFound } from "next/navigation";
 
 
-export default async function Home() {
-  const lang = new CLanguage(await AGetLanguage());
+export default async function Page() {
+  const lang = new CLanguage(await ALanguageGet());
   const resMap = lang.getResMapByUID(new CUID('feedback.form'));
   if(typeof resMap==='boolean'){
     console.error('Feedback::language map not found');

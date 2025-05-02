@@ -13,11 +13,11 @@
 //    limitations under the License.
 import { FSpecial } from "@/components/ui/fonts";
 import UIExternal from "@/components/ui/images/UIExternal";
-import { AGetLanguage } from "../actions";
+import { ALanguageGet } from "../actions";
 
 
-export default async function Home() {
-  const language = await AGetLanguage();
+export default async function Page() {
+  const language = await ALanguageGet();
 
   return (
     <div className={`${FSpecial.className} text-center`}>

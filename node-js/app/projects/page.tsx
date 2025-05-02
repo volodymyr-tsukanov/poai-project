@@ -13,12 +13,12 @@
 //    limitations under the License.
 import { CLanguage, CUID } from "@/lib/classes";
 import ProjectsView from "@/components/layout/ProjectsView";
-import { AGetLanguage } from "../actions";
+import { ALanguageGet } from "../actions";
 import { notFound } from "next/navigation";
 
 
-export default async function Home() {
-  const lang = new CLanguage(await AGetLanguage());
+export default async function Page() {
+  const lang = new CLanguage(await ALanguageGet());
   const tileMap = lang.getResMapByUID(new CUID('projects.tiles'),false);
   if(typeof tileMap==='boolean'){
     console.error("Projects::tile map not found");
