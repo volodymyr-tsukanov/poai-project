@@ -120,8 +120,8 @@
         },
         "dialogs":{
           "confirmReset":"This will reset all feedback fields. Continue?",
-          "formAccepted":"?",
-          "formRejected":"!"
+          "formAccepted":"Letter has been successfully sent",
+          "formRejected":"Failed sending letter!"
         }
       }
     },
@@ -190,9 +190,104 @@
       }
     },
     "projects":{
-      "title":"?"
+      "title":"Strona Projektowa",
+      "tiles":{
+        "project-VT":{
+          "icon":"favicon.ico",
+          "title":"Ta strona",
+          "text":"W rzeczywistości ta strona. Badaj ją i czuj się swobodnie, aby zostawić swoją ~bOpinię~.",
+          "badges":{
+            "github":"https://github.com/volodymyr-tsukanov/poai-project"
+          }
+        },
+        "pear":{
+          "icon":"https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true",
+          "title":"Pear",
+          "text":"~iBaza danych Oracle~ dla systemu sprzedaży produktów Apple. Modele logiczne i relacyjne baz danych, tylko SQL Server (bez frontendu i backendu). Projekt zespołowy.",
+          "galery":[
+            "/icons/404.svg",
+            "/icons/butt-plug.svg"
+          ]
+        },
+        "telephone-book":{
+          "icon":"https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
+          "title":"Telephone Book",
+          "text":"Prosta aplikacja telefoniczna kontaktów. Głównym pomysłem było stworzenie aplikacji w stylu starego żółtego telefonu i podstawowych funkcji kontaktów.",
+          "galery":[
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true",
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true"
+          ]
+        }
+      }
     },
-    "contact":{"title":"Kontakt",
+    "feedback":{
+      "title":"Opinia",
+      "form": {
+        "legend": "Zostaw swoją opinię",
+        "inputs": {
+          "sender": "Imię",
+          "email": "Email",
+          "comment": {
+            "title": "Komentarz",
+            "placeholder": "Komentarz..."
+          }
+        },
+        "gender": {
+          "legend": "Płeć",
+          "inputs": {
+            "ml": "Mężczyzna",
+            "fl": "Kobieta",
+            "tr": "Robot"
+          }
+        },
+        "subject": {
+          "legend": "Temat zwrotnego",
+          "options": {
+            "project-VT": "Ta strona",
+            "pear": "Pear",
+            "telephone-book": "TelephoneBook",
+            "nspec": "NoThInG"
+          }
+        },
+        "buttons": {
+          "submit": "Wyślij",
+          "reset": "Resetuj"
+        },
+        "errors": {
+          "sender": {
+            "null": "Imię jest potrzebne",
+            "length": "Wprowadzone imię ma nieprawidłową długość. Spróbuj: 4-30 symboli",
+            "regex": "Wprowadzone imię jest nieobsługiwane. Spróbuj: tylko litery"
+          },
+          "email": {
+            "null": "Email jest potrzebny",
+            "length": "Wprowadzony email ma nieprawidłową długość. Spróbuj: 7-60 symboli",
+            "regex": "Wprowadzony email jest nieobsługiwany. Spróbuj: prawidłowy email"
+          },
+          "gender": {
+            "null": "Naprawdę?"
+          },
+          "subject": {
+            "null": "Nie możemy mówić o niczym"
+          },
+          "comment": {
+            "null": "Pusta treść listu",
+            "short": "Komentarz jest za krótki. Potrzebne jest trochę więcej tekstu",
+            "long": "Komentarz jest za długi.",
+            "huge": "Wow, ten duży tekst nie zmieści się w liście",
+            "massive": "To jest masowe... Wiesz, co jeszcze jest MASOWE?!"
+          }
+        },
+        "dialogs": {
+          "confirmReset": "To zresetuje wszystkie pola zwrotne. Kontynuować?",
+          "formAccepted": "List został pomyślnie wysłany",
+          "formRejected": "Wysyłanie listu nie powiodło się!"
+        }
+      }
+    },
+    "contact":{
+      "title":"Kontakt",
       "loading":{
         "text":"ładowanie",
         "textA":[
@@ -230,11 +325,11 @@
     "titler":"Project VT",
     "navig":{
       "buttons":{
-        "main":"?",
-        "projects":"?",
-        "feedback":"?",
-        "contact":"?",
-        "settings":"?"
+        "main":"Титульна Cторінка",
+        "projects":"Проєкти",
+        "feedback":"Звротній зв'язок",
+        "contact":"Контакт",
+        "settings":"Налаштування"
       }
     },
     "main":{
@@ -245,18 +340,128 @@
         "Радий вас бачити на моїй ~bportfolio~! Я створив її як проєкт для одного з моїх предметів (інформація для моєї професорки нижче). Вона містить в собі список моїх робіт, формуляр для відгуків й мою контактну інформацію."
       ],
       "loading":{
-        "text":"loading",
+        "text":"завантаження",
         "textA":[
-          "text",
-          "styles",
-          "positive emotions 😸",
-          "scripts",
-          "languages"
+          "тексту",
+          "стилю",
+          "позитивних емоцій 😸",
+          "скриптів",
+          "мов"
         ]
       }
     },
-    "projects":{},
-    "contact":{},
+    "projects":{
+      "title":"Проєкти",
+      "tiles":{
+        "project-VT":{
+          "icon":"favicon.ico",
+          "title":"Цей сайт",
+          "text":"Власне цей сайт. Досліджуйте його і вільно залишайте свою відповідь на ~bЗворотній зв'язок~.",
+          "badges":{
+            "github":"https://github.com/volodymyr-tsukanov/poai-project"
+          }
+        },
+        "pear":{
+          "icon":"https://github.com/volodymyr-tsukanov/bazy-danych-project-apple/blob/icon/icon/pear-7.jpg?raw=true",
+          "title":"Pear",
+          "text":"~iБаза даних Oracle~ для систему продажу ел.товарів. Логічна і фізична моделі, тільки SQL сервер. Коиандний робота.",
+          "galery":[
+            "/icons/404.svg",
+            "/icons/butt-plug.svg"
+          ]
+        },
+        "telephone-book":{
+          "icon":"https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
+          "title":"Telephone Book",
+          "text":"Простий додаток для тел. контактів. Головна ідея: стилізавана під стару жовту тел. книгу программа для мобільного телефону (Android).",
+          "galery":[
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/app_icon.png?raw=true",
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/contact.png?raw=true",
+            "https://github.com/volodymyr-tsukanov/telephone-book/blob/main/app/src/main/res/drawable-xhdpi/search.png?raw=true"
+          ]
+        }
+      }
+    },
+    "feedback":{
+      "title":"Зворотній зв'язок",
+      "form": {
+        "legend": "Надайте зворотній зв'язок",
+        "inputs": {
+          "sender": "Ім'я",
+          "email": "Електронна пошта",
+          "comment": {
+            "title": "Коментар",
+            "placeholder": "Коментар..."
+          }
+        },
+        "gender": {
+          "legend": "Стать",
+          "inputs": {
+            "ml": "Чоловік",
+            "fl": "Жінка",
+            "tr": "Робот"
+          }
+        },
+        "subject": {
+          "legend": "Тема зворотнього зв'язку",
+          "options": {
+            "project-VT": "Цей сайт",
+            "pear": "Pear",
+            "telephone-book": "TelephoneBook",
+            "nspec": "NoThInG"
+          }
+        },
+        "buttons": {
+          "submit": "Надіслати",
+          "reset": "Скинути"
+        },
+        "errors": {
+          "sender": {
+            "null": "Ім'я потрібно",
+            "length": "Введене ім'я має неправильну довжину. Спробуйте: 4-30 символів",
+            "regex": "Введене ім'я не підтримується. Спробуйте: тільки літери"
+          },
+          "email": {
+            "null": "Електронна пошта потрібна",
+            "length": "Введена електронна пошта має неправильну довжину. Спробуйте: 7-60 символів",
+            "regex": "Введена електронна пошта не підтримується. Спробуйте: справжня електронна пошта"
+          },
+          "gender": {
+            "null": "Насправді?"
+          },
+          "subject": {
+            "null": "Ми не можемо говорити про нічого"
+          },
+          "comment": {
+            "null": "Пусте тіло листа",
+            "short": "Коментар за короткий. Потрібно трохи більше тексту",
+            "long": "Коментар за довгий.",
+            "huge": "Вов, цей великий текст не вміститься в листі",
+            "massive": "Це масивне... Ви знаєте, що ще є МАСИВНЕ?!"
+          }
+        },
+        "dialogs": {
+          "confirmReset": "Це скине всі поля зворотнього зв'язку. Продовжити?",
+          "formAccepted": "Лист було успішно надіслано",
+          "formRejected": "Помилка відправки листа!"
+        }
+      }
+    },
+    "contact":{
+      "title":"Контакт",
+      "loading":{
+        "text":"завантаження",
+        "textA":[
+          "тексту",
+          "посилань",
+          "стилю",
+          "позитивних емоцій 😸",
+          "скриптів",
+          "світлин",
+          "мов"
+        ]
+      }
+    },
     "settings":{
       "title":"Налаштування",
       "form":{
