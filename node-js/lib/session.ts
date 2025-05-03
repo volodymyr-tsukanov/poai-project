@@ -99,13 +99,13 @@ export const crypton = CryptoN.GetInstance();
 export const SESSION_KEY = "sess";
 export const SESSION_DURATION = 7*60 * 60*1000; //ms
 export const sessionStart = (userId:number)=>{
-  const session:TSession = {id:randomUUID(),userId:userId,startedT:Date.now()};
+  const session:TSession = {id:randomUUID(),userId:userId,startedAt:Date.now()};
   return db.insertSession(session) ? session.id : undefined;
 }
 export const sessionCheck = (sessionId:string)=>{
   const session = db.getSession(sessionId);
   if(session===undefined) return undefined;
-  if(Date.now()-session.startedT>SESSION_DURATION){
+  if(Date.now()-session.startedAt>SESSION_DURATION){
     db.deleteSession(sessionId);  //no deletion check
     return undefined;
   }

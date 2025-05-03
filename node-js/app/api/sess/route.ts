@@ -60,7 +60,7 @@ export async function POST(req:Request){
               if(sessionId){
                 sessionClose(sessionId);
               }
-              break;
+              return statusResponse(EServerResponse.Good);
           }
           return statusResponse(EServerResponse.WrongParam);
         default:  //<-- fraud

@@ -59,6 +59,7 @@ async function requestLetterSend(letter:IFeedbackLetter,router:AppRouterInstance
       body: JSON.stringify({...letter,abd:abd})
     });
     const resBody = await response.json();
+    console.log(resBody);
     if(resBody.t===EServerResponse.Good){
       alert(resMap.get('dialogs.formAccepted'));
       window.localStorage.removeItem(LETTER_KEY);
@@ -139,7 +140,6 @@ export default function UFFeedback(props:IFormProps){
     ev.preventDefault();
     const errors = checkLeter(state,props.resMap);
     if(errors===null){
-      dispatch({type:"RST",payload:null});
       //TODO lock form
       requestLetterSend(state,router,props.resMap);
     } else dispatch({type:"SET_errors",payload:errors});

@@ -11,30 +11,18 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-import { SESSION_KEY, sessionCheck } from "@/lib/session";
 import UFBoard from "@/components/ui/forms/UFBoard";
-import { cookies } from "next/headers";
-import { redirect, RedirectType } from "next/navigation";
+import { ABoardGetData } from "@/app/actions";
 
 
 export default async function Page(){
-  let isOk = true;
-  const cok = await cookies();
-  const sessionId = cok.get(SESSION_KEY)?.value;
-  if(sessionId===undefined){
-    isOk = false;
-    redirect('/',RedirectType.replace);
-  }
-  const session = sessionCheck(sessionId);
-  if(session===undefined){
-    isOk = false;
-    redirect('/',RedirectType.replace);
-  }
-
-  return isOk ? (
-    <div>
-      Welcome to ProjectVT Board <br/>
-      <UFBoard userId={session.userId}/>
-    </div>
-  ) : 'NO WAY';
+  const boardData = await ABoardGetData();
+  if(boardData){
+    return(
+      <div>
+        Welcome to ProjectVT Board <br/>
+        <UFBoard {...boardData} />
+      </div>
+    );
+  } else return 'NO WAY';
 }

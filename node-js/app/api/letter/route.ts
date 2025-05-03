@@ -14,8 +14,13 @@
 'use server';
 import { EGender, EProject, EServerResponse } from "@/lib/enums";
 import { DEnum2Array, DRegexEmail, DRegexName } from "@/lib/consts";
+import { db } from "@/lib/database";
 import { NextResponse } from "next/server";
 
+
+function statusResponse(status:EServerResponse,p?:String) : NextResponse{
+  return NextResponse.json({t:status,p:p});
+}
 
 export async function POST(req:Request) : Promise<NextResponse>{
   try{
@@ -23,7 +28,7 @@ export async function POST(req:Request) : Promise<NextResponse>{
     const reqBody = await req.json();
     if(reqBody){
       /*Sender*/
-      if(!reqBody.sender){
+      if(!reqBody.sender || typeof reqBody.comment!=='string'){
         return NextResponse.json({t:EServerResponse.WrongParam,p:"sender"});
       } else if(reqBody.sender.length<4||reqBody.sender.length>70){
         return NextResponse.json({t:EServerResponse.WrongParam,p:"sender"});
@@ -31,12 +36,12 @@ export async function POST(req:Request) : Promise<NextResponse>{
         return NextResponse.json({t:EServerResponse.WrongParam,p:"sender"});
       }
       /*Email*/
-      if(!reqBody.email){
+      if(!reqBody.email || typeof reqBody.comment!=='string'){
         return NextResponse.json({t:EServerResponse.WrongParam,p:"email"});
       } else if(reqBody.email.length<7||reqBody.email.length>60){
         return NextResponse.json({t:EServerResponse.WrongParam,p:"email"});
       } else if(!DRegexEmail.test(reqBody.email)){
-        return NextResponse.json({t:EServerResponse.WrongParam,p:"email"});
+        return statusResponse(EServerResponse.WrongParam,"email");
       }
       /*Gender*/
       if(!reqBody.gender){
@@ -51,17 +56,28 @@ export async function POST(req:Request) : Promise<NextResponse>{
         return NextResponse.json({t:EServerResponse.FraudOuterValue});
       }
       /*Comment*/
-      if(!reqBody.comment){
+      if(!reqBody.comment || typeof reqBody.comment!=='string'){
         return NextResponse.json({t:EServerResponse.WrongParam,p:"comment"});
       } else if(reqBody.comment.length<5||reqBody.comment.length>2500){
         return NextResponse.json({t:EServerResponse.WrongParam,p:"comment"});
       }
       /*ABD*/
       //TODO process abd
-//TODO inser letter into db
-      return NextResponse.json({t:EServerResponse.Good});
+      if(db.insertLetter({
+        id:-1,
+        status:'new',
+        sentAt:new Date(),
+        sender:reqBody.sender,
+        email:reqBody.email,
+        gender:reqBody.gender,
+        subject:reqBody.subject,
+        comment:reqBody.comment,
+        abd: JSON.stringify(reqBody.abd)
+      })) return statusResponse(EServerResponse.Good);
+      else return statusResponse(EServerResponse.ErrorSpecific);
     } else return NextResponse.json({t:EServerResponse.EmptyBody});
-  } catch(_){
+  } catch(e){
+    console.log(e);
     return NextResponse.json({t:EServerResponse.ErrorGlobal});
   }
 }

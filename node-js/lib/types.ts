@@ -15,10 +15,22 @@ export type TUser = {
   id: number;
   alias: string;
   pass: string;
+  type: "slave"|"master";
 };
-
 export type TSession = {
   id: string;
   userId: number;
-  startedT: number;
+  startedAt: number;
+};
+
+export type TLetter ={
+  id: number;
+  sender: string;
+  email: string;
+  gender: "ml"|"fl"|"tr";
+  subject: "project-VT"|"pear"|"telephone-book"|"nspec";
+  comment: string;
+  status: "new"|"read"|"important"|"done";
+  abd: string;
+  sentAt: Date;
 };
