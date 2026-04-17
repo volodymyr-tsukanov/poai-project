@@ -40,6 +40,13 @@ _Backend_+_Frontend_ version of **poai-project** <br>
 
 ---
 
+# Portfolio web page
+in Node.js <br>
+
+**Node.js**, **TypeScript**, **TilewindCSS** <br><br>
+
+---
+
 # Assets
 Packages and assets of **poai-project** <br>
 

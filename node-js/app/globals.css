@@ -1,0 +1,280 @@
+/*
+   poai-project  Copyright  2025  volodymyr-tsukanov
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+@import "tailwindcss";
+
+:root {
+  --background: black;
+  --foreground: whitesmoke;
+
+  /* - Colors */
+    /*Dark*/
+  --color-dark-accent: #0B0B0B;
+  --color-dark-chinese-black: #141414;
+  --color-dark-eerie-black: #161A1D;
+  --color-dark-jet: #2F2F2F;
+  --color-dark-raisin-black: #32323F;
+  --color-dark-outer-space: #3E4C4C;
+    /*Light*/
+  --color-light-off-white: #EBEBEB;
+  --color-light-mint-cream: #E8EEEA;
+  --color-light-linen: #F5ECE4;
+  --color-light-platinum: #D9D9D9;
+  --color-light-silver: #C7C3C3;
+  --color-light-silver2: #B6B6B6;
+  --color-light-battleship-gray: #959595;
+
+  /* - Metrics */
+  --font-size: 15pt;
+}
+
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-size: var(--font-size);
+  cursor: default;
+}
+
+footer {
+  order: 5;
+  width: 95%;
+  margin: 25px 0 0 0;
+  background: var(--color-dark-outer-space);
+  border-radius: 20px 20px 0 0;
+  box-shadow: #edeee70f -2px -3px;
+  color: whitesmoke;
+  text-align: center;
+  font-size: 140%;
+  cursor: default;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+b, i {
+  font-size: 100%;
+  transition: font-size 0.3s linear;
+}
+b:hover, i:hover {
+  font-size: 102%;
+}
+
+form {
+  margin: 10px;
+  background: linear-gradient(45deg, var(--color-dark-accent) 0%, var(--color-dark-raisin-black) 30%, var(--color-dark-jet) 80%);
+  border-radius: 1px;
+  box-shadow: #0b0b0b5e 1px 3px;
+}
+fieldset {
+  margin: 2px 12px 0 2px;
+  padding: 0 3px 0 3px;
+  border-radius: 6px 4px 0 4px;
+  border-width: 2px;
+  border-color: var(--color-light-platinum);
+}
+fieldset:first-of-type {
+  border-radius: 6px 23px 0 4px;
+}
+fieldset:last-of-type {
+  border-radius: 6px 4px 23px 6px;
+}
+label {
+  margin-top: 8px;
+  cursor: help;
+}
+input {
+  margin: 8px 0 0 5px;
+  background: var(--color-light-linen);
+  font-size: 100%;
+  color: black;
+}
+select {
+  margin: 8px 0 0 10px;
+  background: var(--color-light-mint-cream);
+  font-size: 84%;
+  color: black;
+}
+textarea {
+  min-width: 50%;
+  max-width: 94%;
+  margin-top: 8px;
+  background: var(--color-light-mint-cream);
+  color: black;
+  font-size: 92%;
+  font-family: Consolas, monospace;
+}
+
+
+#cntnr {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin: 1px;
+	background: var(--color-dark-eerie-black);
+	border-radius: 6px;
+	color: whitesmoke;
+	font-size: 15pt;
+}
+#mainBody {
+	order: 4;
+	width: 100%;
+	padding: 0 10px 0 30px;
+}
+
+
+.btnA1 {
+  padding: 2px;
+  background: var(--color-light-battleship-gray);
+  border-radius: 8px;
+  box-shadow: #0b0b0b8d 2px 4px;
+  color: var(--color-dark-jet);
+  font-size: 100%;
+  margin: 3px;
+  cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s, font-size 0.2s linear;
+}
+.btnA1:hover {
+  background: var(--color-light-silver2);
+  color: var(--color-dark-raisin-black);
+  box-shadow: none;
+  font-size: 105%;
+}
+.btnA1:active {
+  background: #898989;
+}
+.btnB1 {
+  /*TODO normal button*/
+  padding: 2px;
+  background: var(--color-dark-jet);
+  border-radius: 8px;
+  box-shadow: #0b0b0b8d 6px 5px;
+  color: var(--color-light-silver2);
+  font-size: 216%;
+  margin: 5px;
+  cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s, font-size 0.1s linear;
+}
+.btnB1:hover {
+  background: var(--color-light-mint-cream);
+  color: var(--color-dark-raisin-black);
+  box-shadow: none;
+  font-size: 205%;
+}
+.btnB1:active {
+  background: #898989;
+}
+
+.rdoA1 {
+  font-size: 100%;
+  cursor: default;
+  transition: font-size 0.2s linear;
+}
+.rdoA1:hover {
+  font-size: 105%;
+}
+
+.lnkA1 {
+  font-size: 120%;
+  cursor: alias;
+  transition: font-size 0.2s linear;
+}
+.lnkA1:hover {
+  font-size: 130%;
+}
+.lnkA1 img {
+  height: 50px;
+  width: auto;
+  transition: height 0.3s linear;
+}
+.lnkA1:hover img {
+  height: 56px;
+  width: auto;
+}
+
+.smlA1 {
+  display: inline;
+  font-size: 100%;
+  cursor: none;
+  transition: font-size 0.3s linear;
+}
+.smlA1:hover {
+  font-size: 108%;
+}
+
+.embededCode {
+  color: var(--color-light-linen);
+  font-size: 90%;
+  font-family: "Courier New", Courier, monospace;
+  cursor: copy;
+}
+
+.error {
+  color: palevioletred;
+  font-size: 110%;
+  cursor: not-allowed;
+}
+
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17pt;
+  transition: opacity 0.5s ease-in-out;
+}
+
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /*--font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);*/
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: black;
+    --foreground: whitesmoke;
+  }
+}
+@media screen and (max-width: 840px) and (orientation : landscape) {
+	#cntnr {
+		font-size: 16pt;
+	}
+	#mainBody {
+		padding: 0 5px 0 10px;
+	}
+}
+@media screen and (max-width: 720px) and (orientation : portrait) {
+	#cntnr {
+		font-size: 17pt;
+	}
+	#mainBody {
+		padding: 10px 2px 0 4px;
+	}
+}

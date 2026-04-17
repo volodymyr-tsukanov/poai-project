@@ -1,0 +1,73 @@
+/*
+   poai-project  Copyright  2025  volodymyr-tsukanov
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+.project {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  flex-wrap: wrap;
+  background: var(--color-dark-jet);
+  border-radius: 10px;
+  margin: 0 10px 10px 0;
+}
+
+.projectIcon {
+  width: 20%;
+  margin: 4px 40px 4px 5px;
+  border-radius: 37%;
+  border-width: 4px;
+  border-style: dashed groove ridge;
+  border-color: var(--color-dark-platinum);
+  filter: blur(0.5px) brightness(95%) contrast(105%) grayscale(47%);
+  cursor: pointer;
+  transition: filter 0.2s, border-radius 0.3s, border-width 0.3s, border-style 0.45s ease-in-out;
+}
+.projectIcon:hover {
+  border-radius: 43%;
+  border-width: 3px;
+  border-style: solid dashed groove ridge;
+  filter: drop-shadow(5px 5px 8px var(--color-outer-space));
+}
+
+.project h2 {
+  flex-grow: 2;
+  min-width: 50%;
+  align-self: flex-end;
+  font-size: 280%;
+  color: var(--color-light-linen);
+}
+
+.projectBody {
+  flex-grow: 1;
+  background: var(--color-dark-outer-space);
+  border-radius: 16px;
+  font-size: 100%;
+  margin: 6px;
+  padding: 5px;
+}
+
+.project h3 {
+  min-width: 50%;
+  align-self: flex-end;
+  font-size: 185%;
+  color: var(--color-light-silver2);
+}
+
+.projectBadges {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,109 @@
+/*
+   poai-project  Copyright  2025  volodymyr-tsukanov
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+#navigBtns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(0);
+  transition: opacity 0.4s, transform 0.25s ease-in-out;
+}
+.navig:hover #navigBtns {
+  opacity: 1;
+  transform: translateY(32px);
+}
+
+#navigClosed {
+  opacity: 1;
+  font-size: 90%;
+  transform: translateY(0);
+  transition: opacity 0.4s, transform 0.25s ease-out;
+}
+.navig:hover #navigClosed {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+#navigCBtn1 {
+  display: none;
+}
+
+
+.navig {
+  order: 2;
+  width: 95%;
+  position: relative;
+  z-index: 1;
+  transform: translateY(-40px);
+  opacity: 0.8;
+  background: radial-gradient(circle, var(--color-light-battleship-gray) 0%, #171717 15%);
+  border-radius: 20px 20px 22px 22px;
+  border: 2px solid var(--color-light-platinum);
+  color: white;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 170%;
+  transition: opacity 0.2s, transform 0.3s, background 0.1s ease-in;
+}
+.navig:hover {
+  opacity: 1;
+  transform: translateY(-22px);
+  background: radial-gradient(circle, var(--color-light-battleship-gray) 0%, #2F2F2F 21%);
+}
+
+
+@media screen and (max-width: 720px) and (orientation : portrait) {
+  .navig {
+    width: 80%;
+    transform: translateY(0);
+    opacity: 1;
+    background: var(--color-dark-jet);
+    border-radius: 10px 10px 12px 12px;
+  }
+  .navig:hover {
+    transform: translateY(0);
+    background: var(--color-dark-jet);
+  }
+  .nav:hover #navigClosed {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  #navigBtns {
+    display: none;
+    margin: 10px;
+    flex-direction: column;
+    opacity: 1;
+  }
+  .navig:hover #navigBtns {
+    transform: translateY(0);
+  }
+
+  #navigClosed {
+    display: none;
+  }
+  #navigCBtn1 {
+    display: block;
+    width: 100%;
+    padding: 2px;
+    background: #161A1D00;
+    border-style: none;
+    color: var(--color-light-platinum);
+    cursor: pointer;
+    font-size: 80%;
+  }
+}

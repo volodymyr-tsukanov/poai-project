@@ -1,0 +1,39 @@
+/*
+Copyright (c) 2024 by Ruediger Stursberg (https://codepen.io/stursberg/pen/PoezjG)
+Fork of an original work Pure CSS Featured Image Slider (https://codepen.io/joshnh/pen/kOWrXk
+edited by volodymyr-tsukanov  2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+'use client';
+import style from "./PureSlider.module.css";
+import { MouseEventHandler, useState } from "react";
+
+
+interface PureSliderProps {
+  imgSrcs: string[];
+  OnClose: MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function PureSlider(props:PureSliderProps){
+  const [selectedImage,setSelectedImage] = useState(0);
+
+  return (
+    <div>
+      <button className={style.pureSliderButton} onClick={props.OnClose}>X</button>
+      <ul className={style.pureSlider}>
+        {props.imgSrcs.map((src,index)=>(
+          <li key={`pureSlider-li-${index}`}>
+            <input type="radio" name="pureSlide" id={`pureSlide-${index}`} checked={index===selectedImage} onChange={()=>setSelectedImage(index)} />
+            <label htmlFor={`pureSlide-${index}`}></label>
+            <img src={src} alt="no-alt" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
