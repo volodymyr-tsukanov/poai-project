@@ -1,0 +1,23 @@
+# Extensions
+*.env
+*.log
+*.ini
+
+# cache files
+/cache/*
+/tmp/*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# compiled PHP files
+*.phar
+*.opcache
+
+# backup files
+*~
+
+
+# Asset folder
+res/assets/*

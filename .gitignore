@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IDEs
 .vs
 .vscode
@@ -5,3 +6,8 @@
 # Extensions
 *.exe
 *.*swp
+=======
+# Colliding branches
+db/*
+assets/*
+>>>>>>> github.com/php
