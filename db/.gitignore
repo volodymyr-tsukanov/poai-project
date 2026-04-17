@@ -1,0 +1,14 @@
+# log files
+*.log
+
+# cache files
+/cache/*
+/tmp/*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# backup files
+*~
+*.bak

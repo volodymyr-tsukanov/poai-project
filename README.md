@@ -12,6 +12,16 @@ Informatyka l stopień 4 semestr; Podstawy aplikacji internetowych <br>
 
 **HTML**; **CSS**; **JavaScript**; **JSON**; **Fetch API** </br></br>
 
+---
+
+# Database
+for **poai-project** <br>
+
+> [!NOTE]
+> Informatyka Ⅰ stopień 5 semestr; Podstawy aplikacji internetowych
+
+**SQL**, **MariaDB** <br><br>
+
 
 Shields: [![Apache 2.0][apache-shield]][apache]
 
